@@ -1,9 +1,11 @@
-import { beforeAll, afterAll, describe, expect, it } from 'vitest';
-import { eq } from 'drizzle-orm';
+import { beforeAll, afterAll, describe, expect, it, vi } from 'vitest';
+import { and, eq, like } from 'drizzle-orm';
+import { createHash } from 'node:crypto';
 import { testDatabase } from './database';
 import { createAuth } from '@/lib/auth';
 import { createLibrary } from '@/lib/library';
-import { account, user, verification } from '@/db/schema';
+import { account, user, verification, emailRecords } from '@/db/schema';
+import { authErrorMessage, emailRequestFeedback } from '@/lib/auth-feedback';
 import { normalizeRecipe } from '@/lib/recipes';
 import type { Mail } from '@/lib/email';
 import { rawMeal } from './fixtures';
@@ -101,6 +103,73 @@ describe('Better Auth against migrated PostgreSQL, no external mail', () => {
     const session = await (await call('get-session', undefined, cookie)).json();
     expect(await createLibrary(database.db).favorites(session.user.id)).toHaveLength(1);
   });
+  it('rejects replayed verification links without creating a new session', async () => {
+    const url = outbox
+      .find((m) => m.kind === 'verification')!
+      .text.split('\n')
+      .at(-1)!;
+    const response = await auth.handler(new Request(url));
+    expect(response.headers.get('location')).toContain('error=INVALID_TOKEN');
+    expect(sessionCookie(response)).not.toContain('session_token');
+  });
+  it('sends a replacement link and rejects expired verification links', async () => {
+    const secondEmail = 'unverified@example.test';
+    await call('sign-up/email', { name: 'Other Cook', email: secondEmail, password });
+    const first = outbox.findLast((m) => m.to === secondEmail && m.kind === 'verification')!;
+    const url = new URL(first.text.split('\n').at(-1)!);
+    const tokenId = `email-link:${createHash('sha256').update(url.searchParams.get('token')!).digest('hex')}`;
+    await database.db
+      .update(verification)
+      .set({ expiresAt: new Date(0) })
+      .where(eq(verification.id, tokenId));
+    url.searchParams.delete('callbackURL');
+    expect((await auth.handler(new Request(url))).status).toBe(400);
+    // JWTs issued in the same second are identical; move the clock for resend.
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 2000);
+    try {
+      expect((await call('send-verification-email', { email: secondEmail })).status).toBe(200);
+    } finally {
+      vi.restoreAllMocks();
+    }
+    const replacement = outbox.findLast((m) => m.to === secondEmail && m.kind === 'verification')!;
+    expect(replacement.key).not.toBe(first.key);
+  });
+  it('does not expose account existence when email delivery fails or is throttled', async () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const failedAuth = createAuth(database.db, {
+      baseURL: origin,
+      secret: 'test-only-secret-32-characters-or-longer-no-production',
+      transport: async () => {
+        throw new Error('provider-private-details');
+      },
+    });
+    const request = (address: string) =>
+      failedAuth.handler(
+        new Request(`${origin}/api/auth/request-password-reset`, {
+          method: 'POST',
+          headers: {
+            origin,
+            'content-type': 'application/json',
+            'x-real-ip': `198.51.100.${nextIP++}`,
+          },
+          body: JSON.stringify({ email: address, redirectTo: '/nytt-passord' }),
+        }),
+      );
+    try {
+      const known = await request('unverified@example.test');
+      const unknown = await request('unknown@example.test');
+      expect(known.status).toBe(unknown.status);
+      expect(await known.json()).toEqual(await unknown.json());
+      expect(
+        await database.db.select().from(emailRecords).where(eq(emailRecords.status, 'failed')),
+      ).toHaveLength(1);
+      expect(JSON.stringify(log.mock.calls)).not.toContain('provider-private-details');
+      expect(emailRequestFeedback).toContain('stadfestar vi ikkje');
+      expect(authErrorMessage('PRIVATE_PROVIDER_ERROR')).not.toContain('PRIVATE_PROVIDER');
+    } finally {
+      log.mockRestore();
+    }
+  });
   it('does not authenticate a wrong password or forged session', async () => {
     expect((await call('sign-in/email', { email, password: 'incorrect-password' })).status).toBe(
       401,
@@ -143,7 +212,12 @@ describe('Better Auth against migrated PostgreSQL, no external mail', () => {
       .text.split('\n')
       .at(-1)!;
     const token = new URL(url).pathname.split('/').at(-1)!;
-    await database.db.update(verification).set({ expiresAt: new Date(0) });
+    await database.db
+      .update(verification)
+      .set({ expiresAt: new Date(0) })
+      .where(
+        and(eq(verification.value, userId), like(verification.identifier, 'reset-password:%')),
+      );
     expect(
       (await call('reset-password', { newPassword: 'another-password-789', token })).status,
     ).toBeGreaterThanOrEqual(400);
@@ -165,5 +239,14 @@ describe('Better Auth against migrated PostgreSQL, no external mail', () => {
       }),
     );
     expect(response.status).toBe(403);
+    const oversized = await authRoute(
+      new Request(`${origin}/api/auth/sign-up/email`, {
+        method: 'POST',
+        headers: { origin, 'content-type': 'application/json' },
+        body: JSON.stringify({ name: 'a'.repeat(17000) }),
+      }),
+    );
+    expect(oversized.status).toBe(413);
+    expect(oversized.headers.get('cache-control')).toBe('private, no-store');
   });
 });

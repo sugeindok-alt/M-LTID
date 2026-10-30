@@ -4,7 +4,14 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import * as schema from './schema';
 export function createDatabase(url: string) {
   neonConfig.webSocketConstructor = WebSocket;
-  return drizzle(new Pool({ connectionString: url, max: 5 }), { schema });
+  const pool = new Pool({
+    connectionString: url,
+    max: 5,
+    idleTimeoutMillis: 10_000,
+    connectionTimeoutMillis: 15_000,
+  });
+  pool.on('error', () => console.error('Database connection failed.'));
+  return drizzle(pool, { schema });
 }
 export type Database = ReturnType<typeof createDatabase>;
 let database: Database | undefined;

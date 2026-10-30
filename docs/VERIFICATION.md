@@ -1,88 +1,60 @@
 # Verifikasjon — 30. oktober 2026
 
-## Gjennomførte kontrollar
+## Kontoflyten
 
-| Kontroll                        | Resultat                       | Kva det dokumenterer                                               |
-| ------------------------------- | ------------------------------ | ------------------------------------------------------------------ |
-| TypeScript, `npm run typecheck` | Bestått                        | Streng typesjekk av frontend, backend, migreringsoppsett og testar |
-| ESLint, `npm run lint`          | Bestått utan åtvaringar        | Next.js/React, TypeScript og tilgjengelegheitsreglar               |
-| Vitest, `npm test`              | 65 testar bestått              | API-grenser, NOVA, mengder, PostgreSQL, konto og e-postflyt        |
-| Next.js, `npm run build`        | Bestått                        | Fullt produksjonsbygg med webpack og éin byggjearbeidar            |
-| TheMealDB live                  | HTTP 200 og data i nettlesaren | Lookup, søk, kategoriar, ingrediensar og ekte bilete               |
-| Desktop, faktisk nettlesar      | Visuelt kontrollert            | Framside, oppskriftsdetaljar og ingrediensutforsking               |
-| Mobil, 390 px                   | Framside og meny kontrollerte  | Responsiv framside utan horisontal overflyt; mobilmeny opnar       |
+- TypeScript og ESLint: bestått.
+- Vitest: **74 testar bestått** i fem testfiler.
+- Next.js-produksjonsbygg: bestått med webpack.
+- Playwright mot produksjonsbygget: **16 av 16 bestått**, desktop og mobil.
+- Playwright med to separate nettlesarøkter mot **ekte Neon-utviklingsdatabase**: **bestått**. E-posttransporten var lokal fil; ingen eksterne meldingar vart sende.
 
-Testane bruker PGlite, som køyrer PostgreSQL i WASM, og den faktiske SQL-migreringa i `drizzle/`. Dei bruker Better Auth og den faktiske Drizzle-adapteren. Det er ikkje ein handskriven auth-mock eller ein test mot Neon. Berre den eksterne e-postleveringa blir erstatta med ein trygg transport.
+Neon-nettlesartesten køyrer registrering → sperra innlogging før verifisering → verifisering → innlogging; lagring av favoritt → omlasting → utlogging → ny nettlesarøkt → same favoritt; to kontoar med isolerte favorittar og forsøk på fjerning med forfalska eigar; gløymt passord → nytt passord → tidlegare økt tilbakekalla → ny innlogging med favoritten bevart.
 
-Testane dekkjer blant anna:
+Dei automatiserte PostgreSQL-testane bruker PGlite og same migrering og Better Auth-kode. Dei dekkjer i tillegg ugyldige, brukte og utgåtte verifiserings-/reset-lenkjer, passordhashing, feil passord, falske og ikkje-verifiserte økter, sikre HTTPS-informasjonskapslar, førespurnadsgrenser, opphavskontroll og personleg Cache-Control. API-testen brukar to ekte Better Auth-økter gjennom bibliotekrutene; berre ekstern oppskriftsleverandør og e-posttransport blir erstatta.
 
-- Feilforma eksterne data, tidsavbrot, tomme søk og ikkje-eksisterande oppskrifter.
-- Fjerning av tomme ingrediensfelt og bevaring av ukjende mengder.
-- NOVA 1–4 og ukjende/ugyldige verdiar, utan utleiing frå produktnamn.
-- Dokumenterte API-ruter og identifiserande User-Agent.
-- Registrering med hasha passord, sperre før e-postverifisering, verifisering og velkomst.
-- Innlogging, utlogging, falske økt-token og feil passord.
-- Passordreset med gyldig, utgått og brukt token; tilbakekalling av økter.
-- Favorittar etter utlogging/ny innlogging, unik lagring og isolasjon mellom to brukarar.
-- Varig handleliste, kompatibel mengdesamanslåing, redigering, kjøpt-status og eigarkontroll.
-- Samtidige dupliserte handleimportar, atomisk rate limiting, idempotent e-postsending og providerfeil.
-- Same-origin-sperre på faktiske auth-ruter og inputgrense/trygge feilsvar.
+Test av sendefeil dokumenterer likt offentleg svar for kjend og ukjend adresse, registrert failed-status og ingen leverandørdetaljar i loggen. Produksjonskode brukar Next.js after() slik at leverandørventing ikkje røper konto gjennom svartid. Dette er ikkje ein varig jobbkø. UI stadfestar aldri utsending eller innbokslevering frå ein anonym førespurnad.
 
-## Playwright
+## Database og miljø
 
-Produksjonsserver: **16 av 16 testar bestått**, med det ferdige Next.js-produksjonsbygget. Desktop og mobil er kontrollerte.
+Neon-prosjekt: maltid-production, Frankfurt, PostgreSQL 17, organisasjonen sin Free-plan. Eit eldre, uvedkomande prosjekt vart ikkje endra.
 
-Siste fullførte køyring mot utviklingsserveren gav **14 av 16 bestått**. To testar trefte Next.js-feilen `SyntaxError: Unexpected end of JSON input` under sidekompilering og fekk tidsavbrot. Det er ikkje ein bestått utviklingsserverpakke. Produksjonskøyringa blir rapportert separat ovanfor.
+- Produksjonsgrein: production.
+- Separat test-/utviklingsgrein: development.
+- Migrering 0000_ambitious_spencer_smythe er brukt i éin transaksjon etter at tomt skjema vart stadfesta.
+- **14 tabellar**, framandnøklar, unike indeksar og Drizzle-migreringsjournal er stadfesta i produksjonsdatabasen.
+- Migreringshash: d058d4bbe19f6daaaf880f8e83a944035983b4d91dc59ac7a217aea315fca744.
+- Ingen produksjonsbrukarar eller produksjonsfavorittar er oppretta. Testkontoane ligg berre i development.
+- Poola WebSocket-tilkopling er brukt av den faktiske lokale nettsida i nettlesartesten.
+- DATABASE_URL, BETTER_AUTH_SECRET og BETTER_AUTH_URL er lagra som skjulte Production-variablar i Vercel. Utvikling har separat URL og sesjonsløyndom i Git-ignorert .env.local.
+- Ingen endring slettar eksisterande produksjonsdata. Ingen betalt plan er aktivert.
 
-Pakken har åtte testar kvar for desktop og mobil: bilete og overflyt, navigasjon, søk/filter/sortering, oppskriftssteg, ingredienssøk, produktfeil/ukjend NOVA, private sider og not-found/noindex. TheMealDB blir brukt live. OFF-resultat og feil blir erstatta ved HTTP-grensa; dette er ikkje ein live OFF-test.
+## Feil som vart funne og retta
 
-Køyr utan auth-nøklar i testmiljøet:
+- Ein tidleg favorittklikk kunne gå tapt før React var klar, og første favorittoppslag kunne konkurrere med lagring. Kontrollane ventar no på oppstart og favorittstatus, og viser lastingsfeil med nytt forsøk.
+- Den gamle gløymt-passord-adressa gav 404 i den faktiske Windows-nettlesartesten. Intern navigasjon brukar no /gloymt-passord, med omdirigering frå den gamle adressa. Brukarvend tekst er framleis nynorsk.
+- Verifiseringslenkjer blir no konsumerte atomisk som tokenhashar i databasen; replay gir ikkje ny økt.
+- Auth-skjema brukar POST også før JavaScript er klart, og ukjende interne feilmeldingar blir ikkje viste til brukaren.
+- Auth-ruter avviser for store førespurnader og set private, no-store.
+- Lokal request-logging er slått av slik at lenkjetoken ikkje hamnar i utviklingsloggen.
 
-```powershell
-npm run test:e2e
-```
+## Produksjon og konkrete blokkeringar
 
-For produksjonsbygget, stopp eventuell server på port 3000 først:
+Den eksisterande publiserte versjonen på https://m-ltid.vercel.app/ kjem frå commit a233187e0d4a62fcf5721acb07c0ee2f7829811b. Den nye kontokoden er ikkje aktivert som ferdig produksjonsfunksjonalitet enno.
 
-```powershell
-npm run build
-$env:PLAYWRIGHT_PRODUCTION='1'
-npm run test:e2e
-Remove-Item Env:PLAYWRIGHT_PRODUCTION
-```
+Resend-kontoen er tilgjengeleg, men det einaste eksisterande domenet hadde status Failed. Eigaren opplyser at han ikkje eig eit avsendardomene. Resend krev eit verifisert domene for å sende til vanlege brukarar. resend.dev kan berre brukast til testing mot adressa til Resend-kontoen. Produksjonsvakta avviser testdomenet.
 
-Playwright startar og stoppar serveren. Google Chrome er standard; set `PLAYWRIGHT_CHANNEL=msedge` for Edge. Testserveren får eksplisitt lokalt opphav, også i produksjonsmodus. Han får ingen database- eller e-postnøklar frå testoppsettet.
+Faktisk Resend-levering, full kontoflyt på produksjonsadressa og endeleg publisering er **ikkje verifiserte**. Nettlesartest med lokale e-postfiler er ikkje dokumentasjon på faktisk e-postlevering. Eigaren har avklart ei privat testadresse; ho blir ikkje lagra i Git. Ingen andre mottakarar er godkjende.
 
-## Avhengigheiter
+## Køyre testane
 
-Installering og npm sin audit-kontroll rapporterte **0 kjende sårbarheiter** etter ei avgrensa oppdatering av `esbuild` under `@esbuild-kit/core-utils`. Dette er ikkje ei uavhengig sikkerheitsrevisjon. Drizzle-genereringa, 65 Vitest-testar og produksjonsbygget vart kontrollerte etter oppdateringa.
+Standardkontroll: npm run check og npm run build.
 
-## Skjermbilete frå faktisk køyring
+Offentlege sider: set PLAYWRIGHT_PRODUCTION=1 og køyr npm run test:e2e. Testserveren brukar ingen auth-løyndomar, også når lokal konfigurasjon finst. TheMealDB blir brukt live; OFF-svar blir erstatta ved HTTP-grensa.
 
-- [Desktop, framside](screenshots/desktop-home.png)
-- [Mobil, framside](screenshots/mobile-home.png)
-- [Desktop, oppskriftsdetaljar](screenshots/desktop-recipe.png)
-- [Mobil, oppskriftsdetaljar](screenshots/mobile-recipe.png)
+Kontoflyt: sett den separate utviklingsdatabasen i .env.local med EMAIL_TRANSPORT=file og køyr npm run test:e2e:auth. Serveren brukar port 3100. Testen opprettar nye example.test-kontoar og held spor, video og skjermbilete avslått. Produksjonsdatabasen må aldri brukast til denne testen.
 
-Bileta kjem frå Playwright med ekte TheMealDB-data og foto. Dei er ikkje designmockupar.
+Den beståtte kontokøyringa er skild frå tidlegare feila forsøk: første forsøk fann favorittknappen; andre fann 404-adressa; siste to fullførte heile flyten.
 
-## Offentleg publisering
+## Neste arbeid
 
-- Produksjonsadresse: [m-ltid.vercel.app](https://m-ltid.vercel.app/), Vercel Hobby, publisert frå GitHub-greina `main` den 30. oktober 2026.
-- Vercel viste `Ready` for kjeldecommit `d1819ec`, etter at `vercel.json` vart sett til den faktiske byggjemappa `.next-production`.
-- Fem førespurnader utan autentisering gav HTTP 200 og venta sideinnhald: framside, oppskriftssøk etter Arrabiata, oppskrift 52771, ingrediensen Apples og innloggingssida.
-- Framsida og det faktiske hovudbiletet er kontrollerte i nettlesaren på produksjonsadressa.
-- [GitHub Actions](https://github.com/sugeindok-alt/M-LTID/actions/runs/41035049823) bestod typesjekk, lint, 65 testar og produksjonsbygg for same commit.
-- Dette dokumenterer den offentlege nettsida. Konto, privat datalagring og e-post er framleis avgrensa av oppsettet nedanfor.
-
-## Avgrensingar som krev eksternt oppsett
-
-- Ingen Neon-tilkoplingsstreng var tilgjengeleg. Produksjonsmigrering, nettverk, pooling og to faktiske nettlesarkontoar mot Neon er ikkje live-verifiserte.
-- Ingen Resend-nøkkel eller verifisert avsendardomene var tilgjengeleg. Faktisk levering til innboks og providerlogg er ikkje verifiserte.
-- Ingen Open Food Facts-kontaktadresse var konfigurert. Live produkt- og Search-a-licious-oppslag er ikkje verifiserte i denne installasjonen; adapterane er testa med eksterne responsformat ved grensa.
-
-## Windows-miljø
-
-Produksjonsbygget fullførte med vanlege prosessrettar. Sandbox-køyringar fekk stundom `EPERM` på genererte mapper; automatiske tilgangskontrollar fekk òg tidsavbrot. Desse forsøka er ikkje rekna som beståtte testar. Next.js bruker éin byggjearbeidar og separate mapper for utvikling (`.next`) og produksjon (`.next-production`).
-
-Les [README](../README.md) for miljøvariablar, migreringar, lisensgrenser og full live-sjekkliste.
+Brukaren har bedt om norsk oppskriftskatalog, nytt innhaldsutval og bilete/struktur. Dette skal utførast **etter at innloggingsarbeidet er fullført**. Det er ikkje påbegynt i denne endringa.

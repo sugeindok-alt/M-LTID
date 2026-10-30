@@ -4,15 +4,16 @@ Ei redaksjonell matplattform med Next.js App Router, React, TypeScript, Tailwind
 
 Offentleg kjeldekode: [sugeindok-alt/M-LTID](https://github.com/sugeindok-alt/M-LTID).
 
-Publisert nettside: [MÅLTID](https://m-ltid.vercel.app/). Vercel Hobby byggjer og publiserer automatisk frå `main` i GitHub-repoet. GitHub Actions køyrer typesjekk, lint, 65 testar og produksjonsbygg.
+Publisert nettside: [MÅLTID](https://m-ltid.vercel.app/). Vercel Hobby byggjer og publiserer automatisk frå `main` i GitHub-repoet. GitHub Actions køyrer typesjekk, lint, automatiserte testar og produksjonsbygg.
 
 ## Status og kva som er verifisert
 
 - Lokalt implementert: oppskrifts- og ingrediensutforsking, søk/filter/sortering, detaljsider, kokesteg, favorittar, handleliste, produktoppslag/NOVA, konto, verifisering, passordbyte, profil og fem tema.
 - TheMealDB er verifisert med ekte HTTP-svar og bilete i nettlesaren.
-- Autentisering og datalagring blir testa med den faktiske Better Auth-koden og Drizzle-migreringane i PGlite (PostgreSQL i WASM). Dette er **ikkje** ein verifikasjon av ein Neon-konto eller Neon sitt nettverk.
+- Autentisering og datalagring blir testa med Better Auth og Drizzle i PGlite. I tillegg har ein heil Playwright-flyt med to separate nettlesarkontoar passert mot den faktiske Neon-utviklingsgreina. E-posttransporten i testen er lokal fil, ikkje Resend.
 - E-posttestane erstattar berre leveringstransporten. Dei testar ekte verifiserings- og reset-token. Ingen ekte e-post er send under testane.
-- Nettsida er publisert på Vercel og kontrollert utan innlogging. Neon, Resend-levering og Open Food Facts krev framleis oppsett frå eigaren. Konto, personleg lagring og e-post er difor ikkje aktiverte i produksjon. Ingen nøklar eller kontoar vart oppdikta.
+- Neon Free er oppretta for MÅLTID med separate produksjons- og utviklingsgreiner. Alle 14 tabellane og migreringsjournalen er oppretta utan sletting av eksisterande data. DATABASE_URL, BETTER_AUTH_SECRET og BETTER_AUTH_URL er lagra som skjulte Production-variablar i Vercel.
+- Produksjonsaktivering ventar på Resend-nøkkel og eit avsendardomene eigaren kontrollerer og kan verifisere. Ingen verkeleg e-postlevering er stadfesta. Desse endringane skal ikkje publiserast som ferdige kontofunksjonar før dette er løyst.
 - Sjå [testoversikta](docs/VERIFICATION.md) for resultat og avgrensingar.
 
 ## Kom i gang
@@ -40,15 +41,9 @@ Databaseklienten bruker `@neondatabase/serverless` over WebSocket og Drizzle sin
 
 ### 2. Better Auth
 
-Generer ein hemmeleg verdi lokalt:
+Generer ein kryptografisk tilfeldig løyndom på minst 32 byte og lagre han direkte i miljøvariabeloppsettet utan å skrive verdien til terminal, Git eller chat. Bruk ulike verdiar i utvikling og produksjon. Set `BETTER_AUTH_SECRET` til verdien, og `BETTER_AUTH_URL=http://localhost:3000`. Bruk same vertsnamn i nettlesaren; `localhost` og `127.0.0.1` er ulike opphav når URL-en er konfigurert.
 
-```powershell
-node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"
-```
-
-Set `BETTER_AUTH_SECRET` til verdien, og `BETTER_AUTH_URL=http://localhost:3000`. Bruk same vertsnamn i nettlesaren; `localhost` og `127.0.0.1` er ulike opphav når URL-en er konfigurert.
-
-Better Auth handterer passordhashing, sikre øktinformasjonskapslar, e-postverifisering og expirerande token. E-post må vere stadfesta før innlogging. Reset-token varer i 30 minutt; verifiseringstoken varer i éin time. Passordbyte trekkjer tilbake eksisterande økter.
+Better Auth handterer passordhashing, sikre øktinformasjonskapslar, e-postverifisering og expirerande token. E-post må vere stadfesta før innlogging. Reset-token varer i 30 minutt; verifiseringstoken varer i éin time. Verifiseringslenkjer blir konsumerte atomisk i databasen med berre tokenhash lagra, slik at same lenkje ikkje kan brukast igjen. Passordbyte trekkjer tilbake eksisterande økter.
 
 Autentisering har databasebasert rate limiting. Applikasjonsmutasjonar kontrollerer `Origin`, krev servervalidert økt og utleier eigaren frå økta. Set aldri `disableOriginCheck` eller `disableCSRFCheck`. Vercel/proxy må overskrive `x-real-ip`; ikkje stol på klientleverte IP-headerar dersom du driftar ein eigen offentleg origin.
 
@@ -85,7 +80,7 @@ Standard testavsendar på `resend.dev` kan berre sende til kontoeigaren si adres
 
 Verifisering, velkomst, reset og oppskriftsdeling har eigne HTML-malar. Oppskrifter blir berre sende til den innlogga brukaren si stadfesta adresse. E-postlogging har unik idempotensnøkkel; same oppskrift blir deduplisert i fem minutt. Oppskriftsdeling er avgrensa til fem førespurnader per brukar per time. `accepted` betyr at leverandøren tok imot meldinga, **ikkje** at ho vart levert i innboksen. Leverings-/bounce-webhooks er ikkje implementerte.
 
-Velkomstfeil blir logga utan å trekkje tilbake ei fullført verifisering. Andre sendefeil blir kasta vidare. Ein mislukka idempotensnøkkel blir ikkje automatisk sendt på nytt; be om ny lenkje, eller vent til neste femminuttsvindauge for oppskriftsdeling. Dette prioriterer å unngå doble sendingar etter uklåre leveringsfeil.
+Anonyme kontoførespurnader stadfestar berre mottak av førespurnaden. Sending skjer i Next.js `after()` innan levetida til Vercel-funksjonen, slik at leverandørlatens eller sendefeil ikkje blir eit oppslag på om ein konto finst. UI stadfestar uttrykkeleg ikkje utsending eller levering. Feil blir registrerte som `failed` i `email_send_records` og logga utan e-postadresse, token eller leverandørdetaljar. Dette er ikkje ein varig kø med automatisk ny sending: kontroller feila/pending meldingar ved driftsfeil. Oppskriftsdeling, som krev innlogging, rapporterer sendefeil direkte. Velkomstfeil trekkjer ikkje tilbake ei fullført verifisering. Ein mislukka idempotensnøkkel blir ikkje automatisk sendt på nytt; be om ny lenkje, eller vent til neste femminuttsvindauge for oppskriftsdeling. Dette prioriterer å unngå doble sendingar etter uklåre leveringsfeil.
 
 ### 5. Open Food Facts
 
@@ -164,3 +159,7 @@ Vercel Hobby, Neon Free og Resend Free har bruksgrenser og vilkår, og eignar se
 - Mat-/produktdata kan vere ufullstendige. Kontroller allergen på emballasje; NOVA er ikkje medisinsk rådgjeving eller ei full næringsvurdering.
 - Engelsk kjeldeinnhald er ikkje maskinomsett eller merka som kvalitetssikra omsetjing.
 - Ingen uavhengig sikkerheitsrevisjon eller full WCAG-sertifisering er utført. Testresultat viser konkret utførte sjekkar.
+
+### Nettlesartest med Neon og lokal e-post
+
+Bruk berre den separate utviklingsdatabasen i `.env.local` og `EMAIL_TRANSPORT=file`. Køyr `npm run test:e2e:auth`. Testen brukar to separate Chrome-økter og nye `example.test`-kontoar, og testar registrering, stadfesting, innlogging, eigarskap, favorittar etter ny økt og passordreset. Han startar ein lokal utviklingsserver på port 3100. Ingen meldingar blir sende til eksterne adresser. Traces, video og skjermbilete er slått av for denne testen. Testkontoane blir liggjande i utviklingsgreina; produksjonen blir ikkje brukt.

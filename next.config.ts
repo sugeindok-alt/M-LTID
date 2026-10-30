@@ -4,6 +4,14 @@ const config: NextConfig = {
   distDir: process.env.NODE_ENV === 'development' ? '.next' : '.next-production',
   experimental: { cpus: 1, webpackBuildWorker: false },
   poweredByHeader: false,
+  // Verification/reset URLs contain bearer tokens. Do not log request URLs in development.
+  logging: { incomingRequests: false },
+  async redirects() {
+    return [
+      { source: '/gløymt-passord', destination: '/gloymt-passord', permanent: true },
+      { source: '/gl%C3%B8ymt-passord', destination: '/gloymt-passord', permanent: true },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'www.themealdb.com', pathname: '/images/**' },

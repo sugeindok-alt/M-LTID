@@ -102,7 +102,7 @@ export function Profile({
         <button className="button" disabled={busy}>
           Lagre endringar
         </button>
-        <Link href="/gløymt-passord" className="text-link">
+        <Link href="/gloymt-passord" className="text-link">
           Endre passord med sikker e-postlenkje <ArrowUpRight size={15} />
         </Link>
         <button className="text-link" type="button" onClick={logout} disabled={busy}>
