@@ -13,6 +13,7 @@ import {
 import type { Recipe } from './recipes';
 import { parseMeasure } from './quantities';
 import { AppError } from './errors';
+import { presentSavedRecipe } from '@/data/catalog';
 export function createLibrary(db: Database) {
   return {
     async favorites(userId: string) {
@@ -22,7 +23,7 @@ export function createLibrary(db: Database) {
         .innerJoin(recipeCache, eq(favorites.recipeId, recipeCache.id))
         .where(eq(favorites.userId, userId))
         .orderBy(desc(favorites.createdAt));
-      return rows.map((row) => row.recipe);
+      return rows.map((row) => presentSavedRecipe(row.recipe));
     },
     async saveFavorite(userId: string, recipe: Recipe) {
       await db.transaction(async (tx) => {

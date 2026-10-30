@@ -12,7 +12,7 @@ vi.mock('@/lib/firebase-auth', async (original) => ({
   ...(await original<object>()),
   getFirebaseAuth: () => services.auth,
 }));
-vi.mock('@/lib/meal-api', () => ({ mealApi: { detail: async () => normalizeRecipe(rawMeal) } }));
+vi.mock('@/lib/catalog', () => ({ currentRecipe: async () => normalizeRecipe(rawMeal) }));
 import { GET, POST } from '@/app/api/library/[resource]/route';
 
 afterAll(() => vi.unstubAllEnvs());

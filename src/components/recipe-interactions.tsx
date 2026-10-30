@@ -115,7 +115,7 @@ export function RecipeActions({
         </div>
       )}
       <span className="source-note">
-        Foto og oppskrift: TheMealDB · <Link href="/logg-inn">Logg inn for å lagre</Link>
+        Oppskrift: MÅLTID · <Link href="/logg-inn">Logg inn for å lagre</Link>
       </span>
     </div>
   );
@@ -130,7 +130,7 @@ export function IngredientsPanel({ recipe }: { recipe: Recipe }) {
   async function add() {
     setBusy(true);
     try {
-      await api('shopping', { recipeId: recipe.id, requestId });
+      await api('shopping', { recipeId: recipe.id, requestId, scale });
       notify('Ingrediensane er lagra i handlelista.');
       setRequestId(crypto.randomUUID());
     } catch (error) {
@@ -145,15 +145,18 @@ export function IngredientsPanel({ recipe }: { recipe: Recipe }) {
       <h2>Ingrediensar</h2>
       {scalable ? (
         <div className="scale-control">
-          <label htmlFor="scale">Mengdefaktor</label>
+          <label htmlFor="scale">Porsjonar</label>
           <select
             id="scale"
             value={scale}
-            onChange={(event) => setScale(Number(event.target.value))}
+            onChange={(event) => {
+              setScale(Number(event.target.value));
+              setRequestId(crypto.randomUUID());
+            }}
           >
-            <option value={0.5}>½ ×</option>
-            <option value={1}>1 ×</option>
-            <option value={2}>2 ×</option>
+            <option value={0.5}>{(recipe.servings || 4) / 2} porsjonar</option>
+            <option value={1}>{recipe.servings || 4} porsjonar</option>
+            <option value={2}>{(recipe.servings || 4) * 2} porsjonar</option>
           </select>
         </div>
       ) : (
@@ -165,7 +168,9 @@ export function IngredientsPanel({ recipe }: { recipe: Recipe }) {
       <ul>
         {recipe.ingredients.map((ingredient, index) => (
           <li key={`${ingredient.name}-${index}`}>
-            <Link href={`/ingrediensar/${ingredientSlug(ingredient.name)}`}>{ingredient.name}</Link>
+            <Link href={`/ingrediensar/${ingredient.slug || ingredientSlug(ingredient.name)}`}>
+              {ingredient.name}
+            </Link>
             <span>{scaleMeasure(ingredient.measure, scale) || 'Ikkje oppgitt'}</span>
           </li>
         ))}
@@ -175,7 +180,9 @@ export function IngredientsPanel({ recipe }: { recipe: Recipe }) {
         {busy ? 'Legg til …' : 'Legg til i handlelista'}
       </button>
       {scalable && scale !== 1 && (
-        <p className="source-note">Handlelista brukar originalmengdene (1 ×).</p>
+        <p className="source-note">
+          Handlelista får mengdene for dei valde porsjonane. Smak til salt og krydder undervegs.
+        </p>
       )}
       <p className="source-note" style={{ marginTop: 14 }}>
         Bruk konkrete produkt og kontroller allergen på pakninga.
@@ -256,7 +263,7 @@ export function ProcessingPanel({
         <span>
           {hasNova4
             ? 'Inneheld minst éin registrert NOVA 4-vare i produktvala dine'
-            : 'Ikkje nok informasjon om dei konkrete produkta'}
+            : 'Ukjent – vi manglar informasjon om dei konkrete produkta'}
         </span>
       </div>
       {linked.length > 0 && (

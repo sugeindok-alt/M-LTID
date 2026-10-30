@@ -5,6 +5,9 @@ const aliases: Record<string, string> = {
   kg: 'kg',
   ml: 'ml',
   l: 'l',
+  dl: 'dl',
+  ts: 'ts',
+  ss: 'ss',
   tsp: 'tsp',
   teaspoon: 'tsp',
   teaspoons: 'tsp',
@@ -19,6 +22,7 @@ export function parseMeasure(value: string): { amount: number; unit: string } | 
   const match = value
     .trim()
     .toLowerCase()
+    .replace(',', '.')
     .match(/^(\d+(?:\.\d+)?|\d+\/\d+|\d+ \d+\/\d+)\s*([a-z]*)$/);
   if (!match || (match[2] && !aliases[match[2]])) return null;
   const amount = match[1].split(' ').reduce((sum, part) => {
@@ -29,7 +33,7 @@ export function parseMeasure(value: string): { amount: number; unit: string } | 
   return { amount, unit: aliases[match[2]] ?? '' };
 }
 export function formatMeasure(amount: number, unit: string) {
-  return `${Number(amount.toFixed(3))}${unit ? ` ${unit}` : ''}`;
+  return `${Number(amount.toFixed(3)).toLocaleString('nn-NO', { maximumFractionDigits: 3 })}${unit ? ` ${unit}` : ''}`;
 }
 export function scaleMeasure(value: string, factor: number) {
   const p = parseMeasure(value);

@@ -91,6 +91,12 @@ export const recipeCache = pgTable('recipe_cache', {
   data: jsonb('data').$type<Recipe>().notNull(),
   fetchedAt: created(),
 });
+// Public editorial content is separate from saved snapshots and personal associations.
+export const recipeCatalog = pgTable('recipe_catalog', {
+  id: text('id').primaryKey(),
+  data: jsonb('data').$type<Recipe>().notNull(),
+  updatedAt: updated(),
+});
 // A saved recipe is a user's favourite. One association, no conflicting duplicate lists.
 export const favorites = pgTable(
   'favorites',

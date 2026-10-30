@@ -7,6 +7,7 @@ import { authClient } from '@/lib/auth-client';
 import { api } from '@/lib/client-api';
 import { useToast } from './providers';
 import { categoryLabels } from '@/lib/recipes';
+import { dinnerCategories } from '@/lib/catalog-filter';
 export function Profile({
   user,
   preferences,
@@ -82,9 +83,9 @@ export function Profile({
           Favorittkategori
           <select name="favoriteCategory" defaultValue={preferences.favoriteCategory}>
             <option value="">Ingen vald</option>
-            {Object.entries(categoryLabels).map(([value, label]) => (
+            {dinnerCategories.map((value) => (
               <option value={value} key={value}>
-                {label}
+                {value}
               </option>
             ))}
           </select>
@@ -92,11 +93,11 @@ export function Profile({
         <label>
           Visuelt tema
           <select name="theme" defaultValue={preferences.theme}>
-            <option value="olive">Olive & Cream</option>
-            <option value="tomato">Tomato & Vanilla</option>
-            <option value="nordic">Nordic</option>
-            <option value="dark">Dark Gourmet</option>
-            <option value="basil">Basil & Pastel</option>
+            <option value="olive">Oliven og krem</option>
+            <option value="tomato">Tomat og vanilje</option>
+            <option value="nordic">Nordisk</option>
+            <option value="dark">Mørk</option>
+            <option value="basil">Basilikum og pastell</option>
           </select>
         </label>
         <button className="button" disabled={busy}>
@@ -121,7 +122,7 @@ export function Profile({
           <p style={{ marginTop: 30 }}>
             <Link
               className="text-link"
-              href={`/oppskrifter?category=${encodeURIComponent(preferences.favoriteCategory)}`}
+              href={`/oppskrifter?category=${encodeURIComponent(categoryLabels[preferences.favoriteCategory] || preferences.favoriteCategory)}`}
             >
               Utforsk {categoryLabels[preferences.favoriteCategory] || preferences.favoriteCategory}{' '}
               <ArrowUpRight size={16} />

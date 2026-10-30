@@ -2,7 +2,8 @@ import { z } from 'zod';
 import { getDb } from '@/db';
 import { requireSession, assertOrigin, body, respond } from '@/lib/http';
 import { createLibrary } from '@/lib/library';
-import { mealApi } from '@/lib/meal-api';
+import { currentRecipe } from '@/lib/catalog';
+import { scaleMeasure } from '@/lib/quantities';
 import { mealId } from '@/lib/recipes';
 import { AppError } from '@/lib/errors';
 import { createMailer, recipeMail } from '@/lib/email';
@@ -44,7 +45,7 @@ export async function POST(request: Request, context: Context) {
     if (resource === 'favorites') {
       const input = await body(request, z.object({ recipeId: mealId, saved: z.boolean() }));
       if (input.saved) {
-        const recipe = await mealApi.detail(input.recipeId);
+        const recipe = await currentRecipe(input.recipeId);
         if (!recipe) throw new AppError('Fann ikkje oppskrifta.', 404);
         await library.saveFavorite(user.id, recipe);
       } else await library.removeFavorite(user.id, input.recipeId);
@@ -58,12 +59,18 @@ export async function POST(request: Request, context: Context) {
           recipeId: mealId.optional(),
           name: z.string().trim().min(1).max(100).optional(),
           measure: z.string().trim().max(80).default(''),
+          scale: z.number().min(0.25).max(4).default(1),
         }),
       );
       if (input.recipeId) {
-        const recipe = await mealApi.detail(input.recipeId);
+        const recipe = await currentRecipe(input.recipeId);
         if (!recipe) throw new AppError('Fann ikkje oppskrifta.', 404);
-        await library.addItems(user.id, recipe.ingredients, input.requestId, recipe.id);
+        await library.addItems(
+          user.id,
+          recipe.ingredients.map((i) => ({ ...i, measure: scaleMeasure(i.measure, input.scale) })),
+          input.requestId,
+          recipe.id,
+        );
       } else if (input.name)
         await library.addItems(
           user.id,
@@ -88,7 +95,7 @@ export async function POST(request: Request, context: Context) {
     if (resource === 'email') {
       const input = await body(request, z.object({ recipeId: mealId }));
       await consumeLimit(db, `recipe-email:${user.id}`, 5, 3600);
-      const recipe = await mealApi.detail(input.recipeId);
+      const recipe = await currentRecipe(input.recipeId);
       if (!recipe) throw new AppError('Fann ikkje oppskrifta.', 404);
       const key = `recipe:${user.id}:${recipe.id}:${Math.floor(Date.now() / 300000)}`;
       const result = await createMailer(db)(
@@ -109,7 +116,7 @@ export async function POST(request: Request, context: Context) {
           barcode: barcodeSchema,
         }),
       );
-      const recipe = await mealApi.detail(input.recipeId);
+      const recipe = await currentRecipe(input.recipeId);
       if (!recipe?.ingredients.some((i) => i.name === input.ingredient))
         throw new AppError('Ingrediensen høyrer ikkje til oppskrifta.');
       const product = (await lookupProducts(input.barcode, true))[0];

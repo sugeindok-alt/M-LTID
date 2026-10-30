@@ -1,24 +1,23 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
-import { mealApi } from '@/lib/meal-api';
-import { ingredientGroup } from '@/lib/ingredient-groups';
-import { Photo } from '@/components/photo';
+import { catalog } from '@/lib/catalog';
+import { findIngredient } from '@/data/ingredients';
+import { IngredientSymbol } from '@/components/ingredient-symbol';
 import { RecipeGrid } from '@/components/recipe-card';
 import { SourceFailure, SectionHeading } from '@/components/shared';
 import { ProductSearch } from '@/components/product-search';
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const ingredient = findIngredient((await params).slug);
+  return { title: ingredient?.name || 'Ukjend råvare', description: ingredient?.description };
+}
 export default async function IngredientDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const ingredients = await mealApi.ingredients().catch(() => null);
-  if (!ingredients)
-    return (
-      <div className="container page-shell">
-        <SourceFailure href={`/ingrediensar/${encodeURIComponent(slug)}`} />
-      </div>
-    );
-  const ingredient = ingredients.find((i) => i.slug === slug);
+  const ingredient = findIngredient(slug);
   if (!ingredient) notFound();
-  const recipes = await mealApi.browse({ ingredient: ingredient.name }).catch(() => null);
+  if (decodeURIComponent(slug) !== ingredient.slug)
+    permanentRedirect(`/ingrediensar/${ingredient.slug}`);
+  const recipes = await catalog.browse({ ingredient: ingredient.name }).catch(() => null);
   return (
     <div className="container page-shell">
       <nav className="breadcrumb" aria-label="Brødsmulesti">
@@ -28,24 +27,15 @@ export default async function IngredientDetail({ params }: { params: Promise<{ s
       </nav>
       <section className="ingredient-detail">
         <div className="ingredient-detail-image">
-          <Photo
-            src={ingredient.image}
-            alt={ingredient.name}
-            contain
-            priority
-            sizes="(max-width:800px) 300px, 40vw"
-          />
+          <IngredientSymbol group={ingredient.group} />
         </div>
         <div>
-          <p className="eyebrow">{ingredientGroup(ingredient.name)}</p>
+          <p className="eyebrow">{ingredient.group}</p>
           <h1>{ingredient.name}</h1>
           <div className="ingredient-description">
-            <p>
-              {ingredient.description ||
-                'TheMealDB har ikkje ei skildring av denne ingrediensen enno. Utforsk oppskriftene nedanfor for konkrete bruksområde.'}
-            </p>
+            <p>{ingredient.description}</p>
           </div>
-          <p className="source-note">Skildring og foto: TheMealDB. Originalspråket er bevart.</p>
+          <p className="source-note">Råvareguiden til MÅLTID.</p>
         </div>
       </section>
       <section>
@@ -56,8 +46,7 @@ export default async function IngredientDetail({ params }: { params: Promise<{ s
           link="Alle oppskrifter med råvara"
         />
         <p className="source-note" style={{ marginBottom: 23 }}>
-          Bruksområda nedanfor kjem frå oppskrifter som inneheld {ingredient.name}. Ingen
-          bruksområde er gjetta.
+          Middagar i katalogen som inneheld {ingredient.name}.
         </p>
         {recipes === null ? (
           <SourceFailure href={`/ingrediensar/${slug}`} />
@@ -65,7 +54,7 @@ export default async function IngredientDetail({ params }: { params: Promise<{ s
           <RecipeGrid recipes={recipes.slice(0, 6)} />
         ) : (
           <div className="empty-state">
-            <p>Kjelda har ikkje oppskrifter med denne ingrediensen akkurat no.</p>
+            <p>Vi har ikkje lagt til middagar med denne råvara enno.</p>
           </div>
         )}
       </section>

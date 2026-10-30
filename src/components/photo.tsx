@@ -16,9 +16,9 @@ export function Photo({
   contain?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
-  if (failed)
+  if (failed || !src)
     return (
-      <div className="photo-fallback">
+      <div className="photo-fallback" role="img" aria-label={`Bilete manglar: ${alt}`}>
         <ImageOff size={28} />
         <span>Biletet er ikkje tilgjengeleg</span>
       </div>

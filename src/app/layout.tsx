@@ -6,12 +6,14 @@ import '@fontsource/dm-sans/latin-600.css';
 import '@fontsource/dm-serif-display/latin-400.css';
 import '@fontsource/dm-serif-display/latin-400-italic.css';
 import './globals.css';
+import './editorial.css';
 import { Header } from '@/components/header';
 import { Providers } from '@/components/providers';
 import { authConfigured } from '@/lib/auth';
 export const metadata: Metadata = {
   title: { default: 'MÅLTID — God mat. Kvar dag.', template: '%s | MÅLTID' },
-  description: 'Oppdag middagsrettar, utforsk ingrediensane og lær meir om maten du et.',
+  description:
+    'Norske kvardagsmiddagar, kjende råvarer og matglede for heile hushaldet. Finn middag etter tid, ingrediensar og smak.',
   robots: { index: true, follow: true },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -37,15 +39,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link href="/ingrediensar">Utforsk råvarene</Link>
                 <Link href="/om-maten">Om maten</Link>
                 <Link href="/personvern">Personvern</Link>
+                <Link href="/om-innhaldet">Om innhaldet</Link>
               </nav>
             </div>
             <div className="container footer-bottom">
               <span>Laga for gode kvardagar.</span>
               <span>
-                Oppskrifter og foto:{' '}
-                <a href="https://www.themealdb.com" target="_blank" rel="noreferrer">
-                  TheMealDB
-                </a>{' '}
+                <Link href="/om-innhaldet">
+                  Oppskrifter: MÅLTID · KI-genererte matillustrasjonar
+                </Link>{' '}
                 · Produktdata:{' '}
                 <a href="https://world.openfoodfacts.org" target="_blank" rel="noreferrer">
                   Open Food Facts

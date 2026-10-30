@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Search, ArrowUpRight } from 'lucide-react';
-import { mealApi } from '@/lib/meal-api';
-import { ingredientGroup, ingredientGroups } from '@/lib/ingredient-groups';
-import { Photo } from '@/components/photo';
-import { SourceFailure, SectionHeading } from '@/components/shared';
+import { ingredients, ingredientGroups } from '@/data/ingredients';
+import { IngredientSymbol } from '@/components/ingredient-symbol';
+import { SectionHeading } from '@/components/shared';
+import { fold } from '@/lib/catalog-filter';
 import { ProductSearch } from '@/components/product-search';
 export const metadata: Metadata = { title: 'Ingrediensar' };
 export default async function Ingredients({
@@ -15,19 +15,9 @@ export default async function Ingredients({
   const params = await searchParams;
   const query = typeof params.q === 'string' ? params.q.slice(0, 80) : '';
   const group = typeof params.group === 'string' ? params.group : '';
-  const result = await mealApi.ingredients().catch(() => null);
-  if (!result)
-    return (
-      <div className="container page-shell">
-        <SourceFailure href="/ingrediensar" />
-      </div>
-    );
+  const result = ingredients;
   const filtered = result
-    .filter(
-      (i) =>
-        i.name.toLowerCase().includes(query.toLowerCase()) &&
-        (!group || ingredientGroup(i.name) === group),
-    )
+    .filter((i) => fold(i.name).includes(fold(query)) && (!group || i.group === group))
     .sort((a, b) => a.name.localeCompare(b.name));
   const page = Math.max(
     1,
@@ -51,14 +41,14 @@ export default async function Ingredients({
           id="ingredient-search"
           name="q"
           defaultValue={query}
-          placeholder="Søk etter engelsk ingrediensnamn …"
+          placeholder="Søk etter poteter, gulrøter, laks …"
           maxLength={80}
         />
         <input type="hidden" name="group" value={group} />
         <button className="button">Søk</button>
       </form>
       <nav className="tabs" aria-label="Ingredienskategoriar">
-        {['', ...ingredientGroups, 'Andre ingrediensar'].map((g) => (
+        {['', ...ingredientGroups].map((g) => (
           <Link
             href={`/ingrediensar?${new URLSearchParams({ q: query, group: g })}`}
             key={g}
@@ -69,8 +59,8 @@ export default async function Ingredients({
         ))}
       </nav>
       <p className="source-note" style={{ marginBottom: 24 }}>
-        {filtered.length} ingrediensar · Kategoriar er redaksjonelle, ikkje NOVA-vurderingar. Namn
-        og skildringar kjem frå TheMealDB.
+        {filtered.length} ingrediensar · Kategoriar er redaksjonelle, ikkje NOVA-vurderingar.
+        Råvarer og basisvarer frå MÅLTID-oppskriftene.
       </p>
       {filtered.length ? (
         <>
@@ -78,10 +68,10 @@ export default async function Ingredients({
             {filtered.slice((page - 1) * 24, page * 24).map((i) => (
               <Link className="ingredient-tile" key={i.id} href={`/ingrediensar/${i.slug}`}>
                 <div className="ingredient-image">
-                  <Photo src={i.image} alt={i.name} contain sizes="(max-width: 600px) 40vw, 20vw" />
+                  <IngredientSymbol group={i.group} />
                 </div>
                 <h3>{i.name}</h3>
-                <p>{ingredientGroup(i.name)}</p>
+                <p>{i.group}</p>
                 <ArrowUpRight size={16} />
               </Link>
             ))}
@@ -105,7 +95,7 @@ export default async function Ingredients({
       ) : (
         <div className="empty-state">
           <h2>Ingen råvarer med dette namnet.</h2>
-          <p>Prøv eit engelsk namn, eller vel ein annan kategori.</p>
+          <p>Prøv eit anna norsk namn, eller vel ein annan kategori.</p>
         </div>
       )}
       <section className="processing-panel" id="produktsok">

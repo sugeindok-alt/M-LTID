@@ -1,11 +1,16 @@
 import { z } from 'zod';
-export type Ingredient = { name: string; measure: string };
+export type Ingredient = { name: string; measure: string; slug?: string };
 export type RecipeCardData = {
   id: string;
   title: string;
   image: string;
   category?: string;
   area?: string;
+  minutes?: number;
+  vegetarian?: boolean;
+  mainIngredient?: string;
+  imageAlt?: string;
+  imageCredit?: { author: string; license: string; url: string; licenseUrl: string; note?: string };
 };
 export type Recipe = RecipeCardData & {
   category: string;
@@ -15,8 +20,13 @@ export type Recipe = RecipeCardData & {
   source: string | null;
   youtube: string | null;
   tags: string[];
+  description?: string;
+  servings?: number;
+  language?: 'nn';
+  featured?: number;
+  archived?: boolean;
 };
-export const mealId = z.string().regex(/^\d{1,10}$/);
+export const mealId = z.string().regex(/^(?:\d{1,10}|nn-[a-z0-9-]{2,70})$/);
 const text = z.string().nullish();
 const baseMeal = z
   .object({

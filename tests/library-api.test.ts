@@ -2,8 +2,9 @@ import { beforeAll, afterAll, describe, expect, it, vi } from 'vitest';
 import { testDatabase } from './database';
 import { createAuth } from '@/lib/auth';
 import { rawMeal } from './fixtures';
-import { normalizeRecipe } from '@/lib/recipes';
 import type { Mail } from '@/lib/email';
+import { catalogSnapshot } from '@/data/catalog';
+import { recipeCatalog } from '@/db/schema';
 
 const services = vi.hoisted(() => ({ db: undefined as unknown, auth: undefined as unknown }));
 vi.mock('@/db', async (original) => ({ ...(await original<object>()), getDb: () => services.db }));
@@ -11,7 +12,6 @@ vi.mock('@/lib/auth', async (original) => ({
   ...(await original<object>()),
   getAuth: () => services.auth,
 }));
-vi.mock('@/lib/meal-api', () => ({ mealApi: { detail: async () => normalizeRecipe(rawMeal) } }));
 import { GET, POST } from '@/app/api/library/[resource]/route';
 const origin = 'https://m-ltid.vercel.app';
 const outbox: Mail[] = [];
@@ -59,6 +59,9 @@ beforeAll(async () => {
   vi.stubEnv('BETTER_AUTH_URL', origin);
   database = await testDatabase();
   services.db = database.db;
+  await database.db
+    .insert(recipeCatalog)
+    .values(catalogSnapshot.map((data) => ({ id: data.id, data })));
   auth = createAuth(database.db, {
     baseURL: origin,
     secret: 'test-secret-at-least-32-characters-long-and-not-production',
@@ -80,6 +83,36 @@ afterAll(async () => {
   await database?.client.close();
 });
 describe('real sessions through the favorites API', () => {
+  it('saves a new catalogue ID and scales Norwegian shopping quantities without cross-account access', async () => {
+    const saved = await POST(request(alice, { recipeId: 'nn-laks', saved: true }), context);
+    expect(saved.status).toBe(200);
+    const fresh = await login('alice-api@example.test');
+    const a = cookies(fresh);
+    expect(
+      (await (await GET(request(a), context)).json()).recipes.some(
+        (r: { id: string }) => r.id === 'nn-laks',
+      ),
+    ).toBe(true);
+    expect((await (await GET(request(bob), context)).json()).recipes).toEqual([]);
+    await POST(request(bob, { recipeId: 'nn-laks', saved: false }), context);
+    expect(
+      (await (await GET(request(a), context)).json()).recipes.some(
+        (r: { id: string }) => r.id === 'nn-laks',
+      ),
+    ).toBe(true);
+    const shopping = { params: Promise.resolve({ resource: 'shopping' }) };
+    expect(
+      (
+        await POST(
+          request(a, { recipeId: 'nn-laks', requestId: crypto.randomUUID(), scale: 0.5 }),
+          shopping,
+        )
+      ).status,
+    ).toBe(200);
+    const items = (await (await GET(request(a), shopping)).json()).items;
+    expect(items.find((i: { name: string }) => i.name === 'laksefilet').amount).toBe(300);
+    await POST(request(a, { recipeId: 'nn-laks', saved: false }), context);
+  });
   it('rejects missing, forged and unverified sessions', async () => {
     expect((await GET(request(''), context)).status).toBe(401);
     expect((await GET(request('__Secure-better-auth.session_token=forged'), context)).status).toBe(

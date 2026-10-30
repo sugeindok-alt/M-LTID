@@ -492,7 +492,7 @@ main {
 .recipe-photo {
   display: block;
   position: relative;
-  aspect-ratio: 1.2;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: 6px;
   background: var(--surface);
@@ -1791,7 +1791,7 @@ main {
     flex-wrap: wrap;
   }
   .recipe-photo {
-    aspect-ratio: 0.95;
+    aspect-ratio: 4 / 3;
   }
   .photo-link {
     display: none;

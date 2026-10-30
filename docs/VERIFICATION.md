@@ -1,5 +1,14 @@
 # Verifikasjon — 30. oktober 2026
 
+## Gjeldande status: norsk katalog og Firebase
+
+Eigaren har stadfesta at gratisløysinga med Firebase skal bevarast. Resend-blokkeringane i den eldre testhistorikken nedanfor gjeld ikkje den aktive innlogginga.
+
+- Firebase vart kontrollert på produksjonsadressa 30. oktober kl. 12.49 UTC: verifisert innlogging, trygg øktinformasjonskapsel, avvist anonym API-tilgang, favoritt bevart etter ny innlogging og tilbakekalla økt etter utlogging. Ekte verifiseringsmelding vart levert, og eigaren stadfesta lenkja. Ekte passordresetmelding vart levert til søppelpost; eigaren si fullføring av passordbytet er ikkje verifisert.
+- Migrering 0001 og 17 katalogoppføringar er no publiserte til både Neon-utvikling og produksjon. Det nye skjemaet har 15 tabellar. Talet på eksisterande brukarar og favorittar var uendra etter publisering.
+- Dei nye innhaldstestane er summerte i siste del. GitHub/Vercel-publisering av innhaldsversjonen blir kontrollert etter commit.
+- Firebase sine eksterne standard-e-postar er på bokmål. Ingen ny ekte e-post er send under innhaldsarbeidet.
+
 ## Firebase Spark: ny kontoløysing
 
 Eigaren valde gratis Firebase Authentication utan kjøpt domene, og bad om avgrensa testing. Dei eldre resultata nedanfor gjeld Better Auth og er historikk.
@@ -13,7 +22,7 @@ Eigaren valde gratis Firebase Authentication utan kjøpt domene, og bad om avgre
 - Firebase avviser malendringar med «Email template updates are currently unavailable for this project». Norwegian er valt, men malar og standard handlingsside er på bokmål. Eigen nynorsk /konto/handling er klar, men ikkje aktivert som e-postmål.
 - Endeleg produksjonskontroll blir rapportert etter GitHub/Vercel-publisering. Tidlegare produksjonsstatus nedanfor er historisk.
 
-## Kontoflyten
+## Historikk: den tidlegare Better Auth-kontoflyten
 
 - TypeScript og ESLint: bestått.
 - Vitest: **74 testar bestått** i fem testfiler.
@@ -74,12 +83,17 @@ Etter uttrykkeleg godkjenning vart ein nøkkel med berre Sending access oppretta
 
 Standardkontroll: npm run check og npm run build.
 
-Offentlege sider: set PLAYWRIGHT_PRODUCTION=1 og køyr npm run test:e2e. Testserveren brukar ingen auth-løyndomar, også når lokal konfigurasjon finst. TheMealDB blir brukt live; OFF-svar blir erstatta ved HTTP-grensa.
+Offentlege sider: set PLAYWRIGHT_PRODUCTION=1 og køyr npm run test:e2e. Testserveren brukar ingen auth-løyndomar, også når lokal konfigurasjon finst. Sidene brukar den norske katalogen; OFF-svar blir erstatta ved HTTP-grensa.
 
 Kontoflyt: sett den separate utviklingsdatabasen i .env.local med EMAIL_TRANSPORT=file og køyr npm run test:e2e:auth. Serveren brukar port 3100. Testen opprettar nye example.test-kontoar og held spor, video og skjermbilete avslått. Produksjonsdatabasen må aldri brukast til denne testen.
 
 Den beståtte kontokøyringa er skild frå tidlegare feila forsøk: første forsøk fann favorittknappen; andre fann 404-adressa; siste to fullførte heile flyten.
 
-## Neste arbeid
+## Norsk katalog – 30. oktober 2026
 
-Brukaren har bedt om norsk oppskriftskatalog, nytt innhaldsutval og bilete/struktur. Dette skal utførast **etter at innloggingsarbeidet er fullført**. Det er ikkje påbegynt i denne endringa.
+- 16 nyskrivne nynorske middagar og 16 KI-genererte WebP-illustrasjonar. 17 katalogoppføringar med den vidareførte lagra pastaoppskrifta. Ingen oppskrift eller foto er importert frå dei undersøkte tredjepartskjeldene.
+- Drizzle 0001 opprettar berre recipe_catalog. Migrering og publisering er prøvde mot separat Neon-utviklingsgrein. Brukar- og favorittal er bevarte.
+- 63 relevante automatiserte testar bestod over katalog, norsk mengdeskalering, adapterar, migrering, persistens og tilgangskontroll. Den nye bibliotektesten brukar faktisk PostgreSQL-katalog, signerte testøkter, ny innlogging, to kontoar og skalerte handlevarer. E-post i desse testane er simulert.
+- 8 avgrensa Playwright-kontrollar bestod på mobil og PC: forside/bilete/ingen horisontal overflyt, kombinerte søk/filter/tomtilstand, oppskrift/steg/porsjonar og ingredienslenkjer. Skjermbilete er visuelt kontrollerte.
+- Typekontroll, ESLint og produksjonsbygg bestod. Ingen ny full autentiseringsrunde eller ekte test-e-post er send for innhaldsbytet. Firebase-flyten og reell levering er dokumenterte i førre del av rapporten.
+- Firebase sine standard-e-postar er framleis på bokmål; passordbyte på eigaren sin konto er avhengig av at eigaren brukar lenkja. Ingen kjøkkentesting av oppskriftene er utført.

@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Search, ArrowRight } from 'lucide-react';
-import { mealApi } from '@/lib/meal-api';
-import { categoryLabels } from '@/lib/recipes';
+import { catalog } from '@/lib/catalog';
+import { dinnerCategories, mainIngredients } from '@/lib/catalog-filter';
 import { RecipeGrid } from '@/components/recipe-card';
 import { SourceFailure } from '@/components/shared';
-export const metadata: Metadata = { title: 'Oppskrifter' };
+export const metadata: Metadata = {
+  title: 'Middagar',
+  description:
+    'Finn norske kvardagsmiddagar. Søk etter råvarer og kombiner filter for tid, hovudingrediens og vegetar.',
+};
 export default async function Recipes({
   searchParams,
 }: {
@@ -16,31 +20,21 @@ export default async function Recipes({
   const query = {
     q: val('q'),
     category: val('category'),
-    area: val('area'),
     ingredient: val('ingredient'),
+    maxTime: val('maxTime'),
+    vegetarian: val('vegetarian'),
     sort: val('sort'),
   };
-  const [results, categories, areas] = await Promise.allSettled([
-    mealApi.browse(query),
-    mealApi.categories(),
-    mealApi.areas(),
-  ]);
-  const recipes = results.status === 'fulfilled' ? results.value : [];
-  const page = Math.max(
-    1,
-    Math.min(Math.ceil(recipes.length / 12) || 1, parseInt(val('page')) || 1),
-  );
-  const pageUrl = (n: number) => {
-    const p = new URLSearchParams(Object.entries(query).filter(([, v]) => v));
-    p.set('page', String(n));
-    return `/oppskrifter?${p}`;
-  };
+  const recipes = await catalog.browse(query).catch(() => null);
   return (
     <div className="container page-shell">
       <div className="page-intro">
-        <p className="eyebrow">INSPIRASJON TIL NESTE MÅLTID</p>
-        <h1>Kva har du lyst på?</h1>
-        <p>Ein gammal favoritt eller ein heilt ny smak. Finn noko du gler deg til å lage.</p>
+        <p className="eyebrow">GOD MAT TIL VANLEGE DAGAR</p>
+        <h1>Kva blir det til middag?</h1>
+        <p>
+          Norske klassikarar og nye kvardagsfavorittar. Finn ein middag som passar tida og råvarene
+          du har.
+        </p>
       </div>
       <form action="/oppskrifter" className="discovery-form">
         <div className="search-field">
@@ -52,96 +46,86 @@ export default async function Recipes({
             id="recipe-search"
             name="q"
             defaultValue={query.q}
-            placeholder="Søk etter ei oppskrift …"
+            placeholder="Søk etter middag eller råvare …"
             maxLength={80}
           />
-          <button className="button" type="submit">
+          <button className="button">
             Søk <ArrowRight size={17} />
           </button>
         </div>
-        <div className="filter-row">
+        <div className="filter-row dinner-filters">
+          <label>
+            Tidsbruk
+            <select name="maxTime" defaultValue={query.maxTime}>
+              <option value="">Alle tider</option>
+              <option value="30">Inntil 30 min</option>
+              <option value="45">Inntil 45 min</option>
+              <option value="60">Inntil 60 min</option>
+            </select>
+          </label>
+          <label>
+            Hovudingrediens
+            <select name="ingredient" defaultValue={query.ingredient}>
+              <option value="">Alle råvarer</option>
+              {query.ingredient && !mainIngredients.includes(query.ingredient) && (
+                <option>{query.ingredient}</option>
+              )}
+              {mainIngredients.map((c) => (
+                <option key={c}>{c}</option>
+              ))}
+            </select>
+          </label>
           <label>
             Kategori
             <select name="category" defaultValue={query.category}>
-              <option value="">Alle kategoriar</option>
-              {categories.status === 'fulfilled' &&
-                categories.value.map((c) => (
-                  <option key={c.strCategory} value={c.strCategory}>
-                    {categoryLabels[c.strCategory] || c.strCategory}
-                  </option>
-                ))}
+              <option value="">Alle middagar</option>
+              {dinnerCategories.map((c) => (
+                <option key={c}>{c}</option>
+              ))}
             </select>
-          </label>
-          <label>
-            Matkultur
-            <select name="area" defaultValue={query.area}>
-              <option value="">Heile verda</option>
-              {areas.status === 'fulfilled' && areas.value.map((a) => <option key={a}>{a}</option>)}
-            </select>
-          </label>
-          <label>
-            Ingrediens
-            <input
-              name="ingredient"
-              defaultValue={query.ingredient}
-              placeholder="Til dømes chicken"
-              maxLength={80}
-            />
           </label>
           <label>
             Sorter
-            <select name="sort" defaultValue={query.sort || 'az'}>
+            <select name="sort" defaultValue={query.sort}>
+              <option value="">Vårt utval</option>
+              <option value="time">Raskast først</option>
               <option value="az">Namn A–Å</option>
               <option value="za">Namn Å–A</option>
             </select>
           </label>
-          <button className="button secondary" type="submit">
-            Bruk filter
-          </button>
+          <label className="vegetarian-check">
+            <input
+              type="checkbox"
+              name="vegetarian"
+              value="1"
+              defaultChecked={query.vegetarian === '1'}
+            />{' '}
+            Berre vegetar
+          </label>
+          <button className="button secondary">Bruk filter</button>
         </div>
       </form>
       <div className="results-heading">
-        <p>
-          {results.status === 'fulfilled'
-            ? `${recipes.length} oppskrifter i dette API-utvalet`
-            : 'Oppskrifter'}
+        <p role="status">
+          {recipes
+            ? `${recipes.length} ${recipes.length === 1 ? 'middag' : 'middagar'}`
+            : 'Middagar'}
         </p>
-        <Link href="/oppskrifter" className="text-link">
+        <Link className="text-link" href="/oppskrifter">
           Nullstill filter
         </Link>
       </div>
-      <p className="source-note search-note">
-        Søk med engelske namn frå kjelda. Utvalet er avgrensa av gratis-API-et; det er ikkje heile
-        databasen.
-      </p>
-      {results.status === 'rejected' ? (
+      {recipes === null ? (
         <SourceFailure />
       ) : recipes.length ? (
-        <>
-          <RecipeGrid recipes={recipes.slice((page - 1) * 12, page * 12)} />
-          <nav className="pagination" aria-label="Resultatsider">
-            {page > 1 && (
-              <Link className="button secondary" href={pageUrl(page - 1)}>
-                Førre
-              </Link>
-            )}
-            <span>
-              Side {page} av {Math.ceil(recipes.length / 12)}
-            </span>
-            {page * 12 < recipes.length && (
-              <Link className="button secondary" href={pageUrl(page + 1)}>
-                Neste <ArrowRight size={16} />
-              </Link>
-            )}
-          </nav>
-        </>
+        <RecipeGrid recipes={recipes} />
       ) : (
         <div className="empty-state">
           <Search size={32} />
-          <h2>Ingen oppskrifter enno.</h2>
-          <p>Prøv eit anna engelsk søkjeord eller færre filter.</p>
+          <h2>Ingen middagar passar søket.</h2>
+          <p>Prøv ei anna råvare eller færre filter.</p>
           <Link className="button secondary" href="/oppskrifter">
-            Sjå oppskrifter
+            Sjå alle middagar
           </Link>
         </div>
       )}

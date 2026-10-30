@@ -3,7 +3,7 @@ import { createLibrary } from '@/lib/library';
 import { getDb } from '@/db';
 import { Profile } from '@/components/profile';
 import { PrivateNavigation } from '@/components/private-navigation';
-export const metadata = { title: 'Min profil', robots: { index: false } };
+export const metadata = { title: 'Min konto', robots: { index: false } };
 export const dynamic = 'force-dynamic';
 export default async function Page() {
   const user = await privatePage('/profil');

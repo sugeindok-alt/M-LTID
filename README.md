@@ -1,6 +1,6 @@
 # MÅLTID
 
-Matnettside med Next.js, React, TypeScript, Firebase Authentication, Neon PostgreSQL og Drizzle. [GitHub](https://github.com/sugeindok-alt/M-LTID) publiserer automatisk frå main til [Vercel](https://m-ltid.vercel.app/). Design, oppskrifter og ingredienssider er bevarte.
+Matnettside med Next.js, React, TypeScript, Firebase Authentication, Neon PostgreSQL og Drizzle. [GitHub](https://github.com/sugeindok-alt/M-LTID) publiserer automatisk frå main til [Vercel](https://m-ltid.vercel.app/). Eit eige utval med 16 norske middagar, nynorske råvaresider, kombinerte filter og porsjonsval. Det eksisterande designet og personlege data er bevarte.
 
 ## Innlogging utan kjøpt domene
 
@@ -16,14 +16,14 @@ AUTH_PROVIDER=firebase vel den nye leverandøren og sperrar gamle auth-endepunkt
 
 Bruk Node.js 22+ og npm ci. Kopier .env.example til ei privat .env.local for utvikling.
 
-| Variabel | Bruk |
-| --- | --- |
-| DATABASE_URL | Poola Neon-tilkopling med TLS; separat utviklingsgrein |
-| AUTH_PROVIDER | firebase |
-| BETTER_AUTH_URL | Nøyaktig adresse, https://m-ltid.vercel.app i produksjon |
-| FIREBASE_PROJECT_ID | Ditt Firebase-prosjekt |
-| FIREBASE_API_KEY | Firebase web-oppsett, brukt berre frå serveren |
-| FIREBASE_SERVICE_ACCOUNT | Serverkonto-JSON, lagra som Secret i Vercel |
+| Variabel                 | Bruk                                                     |
+| ------------------------ | -------------------------------------------------------- |
+| DATABASE_URL             | Poola Neon-tilkopling med TLS; separat utviklingsgrein   |
+| AUTH_PROVIDER            | firebase                                                 |
+| BETTER_AUTH_URL          | Nøyaktig adresse, https://m-ltid.vercel.app i produksjon |
+| FIREBASE_PROJECT_ID      | Ditt Firebase-prosjekt                                   |
+| FIREBASE_API_KEY         | Firebase web-oppsett, brukt berre frå serveren           |
+| FIREBASE_SERVICE_ACCOUNT | Serverkonto-JSON, lagra som Secret i Vercel              |
 
 Ingen auth-variablar skal ha NEXT_PUBLIC_-prefiks. Private filer, nøklar og e-postlenkjer skal aldri i Git eller loggar. Produksjonsløyndomar skal ikkje delast med preview. Firebase-emulatoren er sperra i produksjon og berre tillaten lokalt med eit demo-prosjekt.
 
@@ -33,7 +33,7 @@ Ny stadfestingslenkje krev e-post og passord. Anonyme e-postførespurnader stadf
 
 ## Database og testing
 
-Neon Free har separate production- og development-greiner. Migreringa i drizzle/ opprettar 14 tabellar. Kontroller SQL før npm run db:migrate; bygg endrar ikkje databasen automatisk. Bevar eksisterande data. Drizzle brukar @neondatabase/serverless over WebSocket, poola tilkopling og ekte transaksjonar. Favorittar har ein unik brukar–oppskrift-nøkkel; metadata ligg i recipe_cache.
+Neon Free har separate production- og development-greiner. Migreringane i drizzle/ opprettar 15 tabellar; 0001 legg berre til recipe_catalog. Kontroller SQL før migrering; bygg endrar ikkje databasen automatisk. Drizzle brukar @neondatabase/serverless over WebSocket, poola tilkopling og ekte transaksjonar. Favorittar har ein unik brukar–oppskrift-nøkkel; metadata ligg i recipe_cache. Sjå [katalogrettleiinga](docs/CONTENT.md) for trygg publisering av innhald med direkte migreringstilkopling.
 
 Vanlege kommandoar: npm run dev, npm run typecheck, npm run lint, npm test og npm run build. Ein samla Firebase-test brukar den offisielle lokale Auth-emulatoren og PGlite som separat PostgreSQL-testdatabase. Ingen ekte e-post blir send:
 
@@ -48,9 +48,9 @@ Testen dekkjer verifisering, to isolerte kontoar, favorittar etter ny økt, utlo
 
 ## Innhald og andre tenester
 
-TheMealDB leverer noverande oppskrifter og bilete. Testnøkkel 1 er for utvikling/utdanning; kontroller vilkåra før kommersiell bruk. Open Food Facts leverer produktdata med kjelde/lisens og NOVA når grunnlaget finst. Ukjent skal ikkje tolkast som NOVA 1, og generelle ingrediensnamn klassifiserer ikkje ein heil rett. Innhaldsbytet til norske middagar er ei eiga etterfølgjande oppgåve.
+MÅLTID sin redaksjonelle Neon-katalog er hovudkjelde. Oppskriftstekstane er nyskrivne med KI-hjelp, med rettleiande tidsestimat; dei er ikkje kjøkkentesta. Alle 16 matillustrasjonane er genererte spesielt for rettane og blir merkte synleg. Sjå [innhald, biletrettar og vedlikehald](docs/CONTENT.md). TheMealDB-adapteren er berre att for eldre testar og er ikkje brukt av nettsida. Den tidlegare lagra pastaoppskrifta held på ID og favorittkopling, med norsk presentasjon.
 
-OPENFOODFACTS_CONTACT_EMAIL skal vere ei reell kontaktadresse. OPENFOODFACTS_ENV=staging brukar produkt-staging; namnesøk går framleis til offentleg Search-a-licious. Søk skjer ved eksplisitt innsending, med timeout, cache og førespurnadsgrenser. Bevar kjelde- og lisensopplysningar.
+Open Food Facts leverer konkrete produktdata med kjelde/lisens og NOVA når grunnlaget finst. Ukjent skal ikkje tolkast som NOVA 1. Manglande norsk produktnamn gir norsk reservevising. OPENFOODFACTS_CONTACT_EMAIL kan vere ei reell kontaktadresse; elles identifiserer User-Agent tenesta med den offentlege repo-adressa. OPENFOODFACTS_ENV=staging brukar produkt-staging; standard er produksjon. Namnesøk går til offentleg Search-a-licious. Søk skjer ved innsending, med timeout, cache og førespurnadsgrenser.
 
 Resend er valfritt for oppskrifts-e-post og eldre Better Auth. Det krev framleis verifisert avsendardomene for vanlege mottakarar. Oppskrifts-e-postknappen er skjult utan Resend-oppsett. Firebase sender berre konto-e-postar.
 

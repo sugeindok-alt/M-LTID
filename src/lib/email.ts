@@ -76,10 +76,10 @@ export function recipeMail(
     kind: 'recipe',
     key,
     userId,
-    text: `${recipe.title}\n${recipe.ingredients.map((i) => `${i.measure} ${i.name}`).join('\n')}\n${url}\nKjelde: TheMealDB`,
+    text: `${recipe.title}\n${recipe.ingredients.map((i) => `${i.measure} ${i.name}`).join('\n')}\n${url}\nOppskrift: MÅLTID. Biletet er eit KI-generert serveringsforslag.`,
     html: emailLayout(
       recipe.title,
-      `<img src="${escapeHtml(recipe.image)}" width="500" alt="${escapeHtml(recipe.title)}" style="max-width:100%;border-radius:8px"><ul style="line-height:1.8">${recipe.ingredients.map((i) => `<li>${escapeHtml(`${i.measure} ${i.name}`)}</li>`).join('')}</ul><p>Oppskrift og foto: TheMealDB. Originalt kjeldeinnhald.</p>`,
+      `<img src="${escapeHtml(new URL(recipe.image, baseUrl).href)}" width="500" alt="${escapeHtml(recipe.title)}" style="max-width:100%;border-radius:8px"><ul style="line-height:1.8">${recipe.ingredients.map((i) => `<li>${escapeHtml(`${i.measure} ${i.name}`)}</li>`).join('')}</ul><p>Oppskrift: MÅLTID. Biletet er eit KI-generert serveringsforslag.</p>`,
       url,
       'Opne oppskrifta',
     ),

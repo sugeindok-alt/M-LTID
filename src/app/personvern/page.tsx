@@ -23,7 +23,7 @@ export default function Page() {
         Firebase (Google) handterer registrering, innlogging, passord og konto-e-postar. Namn,
         e-postadresse, koplinga til kontoen og lagra innhald ligg òg i PostgreSQL-databasen hos
         Neon. Resend blir berre brukt til oppskrifts-e-post dersom den funksjonen er aktivert.
-        Oppskriftsførespurnader går frå serveren til TheMealDB. Produktsøk blir sende til Open Food
+        Oppskriftene blir henta frå vår eigen katalog i Neon. Produktsøk blir sende til Open Food
         Facts; skriv difor ikkje personopplysningar i produktsøket.
       </p>
       <h2>Informasjonskapslar og lokal lagring</h2>

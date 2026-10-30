@@ -6,9 +6,9 @@ import { Menu, X, ArrowUpRight, ShoppingBag, UserRound } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 const links = [
   ['/', 'Heim'],
-  ['/oppskrifter', 'Oppskrifter'],
+  ['/oppskrifter', 'Middagar'],
   ['/ingrediensar', 'Ingrediensar'],
-  ['/favorittar', 'Mine favorittar'],
+  ['/favorittar', 'Favorittar'],
 ];
 const subscribe = () => () => {};
 export function Header({ accountsReady }: { accountsReady: boolean }) {
@@ -40,7 +40,7 @@ export function Header({ accountsReady }: { accountsReady: boolean }) {
             <AccountLink />
           ) : (
             <Link className="login-link" href="/logg-inn">
-              Logg inn <ArrowUpRight size={16} />
+              Min konto <ArrowUpRight size={16} />
             </Link>
           )}
           <button
@@ -57,7 +57,7 @@ export function Header({ accountsReady }: { accountsReady: boolean }) {
       </div>
       {open && (
         <nav id="mobile-nav" className="mobile-nav" aria-label="Mobilmeny">
-          {[...links, ['/handleliste', 'Handleliste'], ['/logg-inn', 'Konto']].map(
+          {[...links, ['/profil', 'Min konto'], ['/handleliste', 'Handleliste']].map(
             ([href, label]) => (
               <Link href={href} key={href} onClick={() => setOpen(false)}>
                 {label}
@@ -76,11 +76,11 @@ function AccountLink() {
     <Link className="login-link" href={data ? '/profil' : '/logg-inn'}>
       {data ? (
         <>
-          <UserRound size={17} /> Min profil
+          <UserRound size={17} /> Min konto
         </>
       ) : (
         <>
-          Logg inn <ArrowUpRight size={16} />
+          Min konto <ArrowUpRight size={16} />
         </>
       )}
     </Link>

@@ -10,7 +10,8 @@ export function RecipeCard({ recipe }: { recipe: RecipeCardData }) {
         className="recipe-photo"
         aria-label={`Sjå ${recipe.title}`}
       >
-        <Photo src={recipe.image} alt={recipe.title} />
+        <Photo src={recipe.image} alt={recipe.imageAlt || recipe.title} />
+        {recipe.imageCredit && <span className="image-label">Illustrasjon</span>}
         <span className="photo-link">
           <ArrowUpRight size={20} />
         </span>
@@ -19,10 +20,16 @@ export function RecipeCard({ recipe }: { recipe: RecipeCardData }) {
         <span>
           {recipe.category ? categoryLabels[recipe.category] || recipe.category : 'Oppskrift'}
         </span>
-        {recipe.area && (
+        {recipe.minutes && (
           <>
             <span className="meta-dot" />
-            <span>{recipe.area}</span>
+            <span>Om lag {recipe.minutes} min</span>
+          </>
+        )}
+        {recipe.vegetarian && (
+          <>
+            <span className="meta-dot" />
+            <span>Vegetar</span>
           </>
         )}
       </div>

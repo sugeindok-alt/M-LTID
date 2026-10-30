@@ -1,0 +1,173 @@
+.home-search {
+  margin-top: 26px;
+  padding: 7px 7px 7px 16px;
+  max-width: 570px;
+}
+.home-search input {
+  min-width: 0;
+  font-size: 14px;
+}
+.quick-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.quick-links a {
+  padding: 8px 13px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  font-size: 12px;
+}
+.quick-links a:hover {
+  background: var(--surface);
+}
+.image-label {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  background: #faf8f0e8;
+  color: #343c2d;
+  border-radius: 3px;
+  font-size: 10px;
+  padding: 4px 7px;
+  letter-spacing: 0.04em;
+}
+.hero-visual .image-label {
+  left: auto;
+  right: 14px;
+}
+.recipe-description {
+  max-width: 690px;
+  margin: 20px auto 0;
+  line-height: 1.8;
+  font-size: 18px;
+}
+.image-credit {
+  margin: -24px 0 40px;
+}
+.dinner-entries {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.dinner-entries > a {
+  position: relative;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+.dinner-entries h3 {
+  font-size: 30px;
+  margin: 12px 0;
+}
+.dinner-entries p {
+  line-height: 1.6;
+  font-size: 14px;
+  max-width: 85%;
+}
+.dinner-entries svg {
+  position: absolute;
+  right: 20px;
+  bottom: 24px;
+  width: 20px;
+}
+.dinner-filters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+.dinner-filters .vegetarian-check {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  align-self: center;
+  font-size: 14px;
+}
+.vegetarian-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--olive);
+}
+.dinner-filters .button {
+  grid-column: 4;
+}
+.ingredient-symbol {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--olive);
+  background: var(--surface);
+}
+.ingredient-symbol svg {
+  width: 42%;
+  height: 42%;
+  max-width: 120px;
+  max-height: 120px;
+}
+.recipe-meta {
+  flex-wrap: wrap;
+  line-height: 1.6;
+}
+@media (max-width: 800px) {
+  .dinner-entries {
+    grid-template-columns: 1fr;
+  }
+  .dinner-entries > a {
+    padding: 24px;
+  }
+  .dinner-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dinner-filters .button {
+    grid-column: 2;
+  }
+  .hero-visual {
+    aspect-ratio: 4/3;
+    min-height: 0;
+  }
+  .detail-hero {
+    height: auto;
+    aspect-ratio: 4/3;
+  }
+  .recipe-description {
+    font-size: 16px;
+  }
+}
+@media (max-width: 520px) {
+  .recipe-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .recipe-card h3 {
+    font-size: 24px;
+  }
+  .recipe-meta {
+    font-size: 12px;
+    gap: 9px;
+  }
+  .image-label {
+    font-size: 10px;
+  }
+  .hero-caption {
+    padding: 16px;
+  }
+  .home-search input {
+    font-size: 14px;
+  }
+  .home-search .button {
+    padding: 12px;
+    min-width: 58px;
+  }
+  .quick-links a {
+    font-size: 12px;
+  }
+  .ingredient-catalog .ingredient-image {
+    height: 130px;
+  }
+}

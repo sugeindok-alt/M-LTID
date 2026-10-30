@@ -19,6 +19,10 @@ const productSchema = z
     code: z.string().regex(/^\d+$/),
     product_name: localizedText,
     product_name_en: z.string().nullish(),
+    product_name_no: z.string().nullish(),
+    product_name_nb: z.string().nullish(),
+    product_name_nn: z.string().nullish(),
+    lang: z.string().nullish(),
     brands: z.string().nullish(),
     image_front_small_url: z.string().nullish(),
     image_front_url: z.string().nullish(),
@@ -29,17 +33,22 @@ const productSchema = z
 export function normalizeProduct(raw: unknown): Product {
   const p = productSchema.parse(raw);
   const name =
-    typeof p.product_name === 'string'
-      ? p.product_name
-      : p.product_name?.no || p.product_name?.en || Object.values(p.product_name ?? {})[0];
+    p.product_name_nn ||
+    p.product_name_no ||
+    p.product_name_nb ||
+    (typeof p.product_name === 'string'
+      ? ['no', 'nn', 'nb'].includes(p.lang || '')
+        ? p.product_name
+        : null
+      : p.product_name?.nn || p.product_name?.no || p.product_name?.nb);
   return {
     code: p.code,
-    name: name || p.product_name_en || `Produkt ${p.code}`,
+    name: name || `Produkt ${p.code} – norsk namn manglar`,
     brands: p.brands || '',
     image: safeUrl(p.image_front_small_url || p.image_front_url, ['images.openfoodfacts.org']),
     nova: novaGroup(p.nova_group),
     url: `https://world.openfoodfacts.org/product/${p.code}`,
-    ingredients: p.ingredients_text || null,
+    ingredients: ['no', 'nn', 'nb'].includes(p.lang || '') ? p.ingredients_text || null : null,
     fetchedAt: new Date().toISOString(),
   };
 }
@@ -53,7 +62,7 @@ export function createProductAdapter(config: {
     ? 'https://world.openfoodfacts.net'
     : 'https://world.openfoodfacts.org';
   async function request(url: URL, isSearch = false): Promise<unknown> {
-    if (!z.email().safeParse(config.contact).success)
+    if (!z.email().safeParse(config.contact).success && !safeUrl(config.contact))
       throw new AppError('Produktsøket manglar kontaktadresse i tenesteoppsettet.', 503);
     try {
       const headers: Record<string, string> = {
@@ -80,7 +89,7 @@ export function createProductAdapter(config: {
       const url = new URL(`/api/v3.6/product/${code}.json`, origin);
       url.searchParams.set(
         'fields',
-        'code,product_name,brands,image_front_small_url,nova_group,ingredients_text',
+        'code,product_name,product_name_no,product_name_nb,product_name_nn,lang,brands,image_front_small_url,nova_group,ingredients_text',
       );
       const result = z
         .object({
@@ -103,8 +112,11 @@ export function createProductAdapter(config: {
       if (words.length < 2) throw new AppError('Skriv minst to bokstavar i produktnamnet.');
       url.searchParams.set('q', words);
       url.searchParams.set('page_size', '8');
-      url.searchParams.set('langs', 'no,en');
-      url.searchParams.set('fields', 'code,product_name,brands,image_front_small_url,nova_group');
+      url.searchParams.set('langs', 'no,nb,nn');
+      url.searchParams.set(
+        'fields',
+        'code,product_name,product_name_no,product_name_nb,product_name_nn,lang,brands,image_front_small_url,nova_group',
+      );
       try {
         const response = z.object({ hits: z.array(z.unknown()) }).parse(await request(url, true));
         return response.hits.map(normalizeProduct);

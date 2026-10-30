@@ -51,18 +51,13 @@ export default function Page() {
           <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noreferrer">
             Open Database License
           </a>
-          ; individuelle databaseelement under DbCL og produktfoto under CC BY-SA. Oppskrifter og
-          oppskriftsfoto kjem frå{' '}
-          <a href="https://www.themealdb.com" target="_blank" rel="noreferrer">
-            TheMealDB
-          </a>
-          .
+          ; individuelle databaseelement under DbCL og produktfoto under CC BY-SA.
         </p>
-        <h2>Oppskriftene får behalde si eiga stemme.</h2>
+        <h2>Oppskrifter for norske kvardagar.</h2>
         <p>
-          Vi viser det originale kjeldeinnhaldet, vanlegvis på engelsk. Kjelda gir ikkje
-          systematiske tidsestimat, porsjonstal, næringsverdiar eller popularitetstal. Vi diktar
-          ikkje opp desse opplysningane.
+          Oppskriftene er nyskrivne på nynorsk for MÅLTID. Tidene er rettleiande estimat, og bileta
+          er KI-genererte serveringsforslag. Vi viser ikkje næringsverdiar eller popularitetstal
+          utan grunnlag. <Link href="/om-innhaldet">Les om innhaldet og bileta.</Link>
         </p>
         <Link href="/ingrediensar#produktsok" className="button">
           Undersøk eit produkt

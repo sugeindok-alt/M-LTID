@@ -5,9 +5,7 @@ test('editorial homepage renders real images and works without horizontal overfl
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
-  await expect(
-    page.getByRole('heading', { name: 'God mat startar med gode råvarer.' }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: /God middag.*Heile veka\./ })).toBeVisible();
   const hero = page.locator('.hero-visual img');
   await expect(hero).toBeVisible();
   await expect
@@ -32,33 +30,36 @@ test('responsive navigation opens and navigates with accessible labels', async (
     );
     await page
       .getByRole('navigation', { name: 'Mobilmeny' })
-      .getByRole('link', { name: 'Oppskrifter', exact: true })
+      .getByRole('link', { name: 'Middagar', exact: true })
       .click();
   } else
     await page
       .getByRole('navigation', { name: 'Hovudmeny' })
-      .getByRole('link', { name: 'Oppskrifter', exact: true })
+      .getByRole('link', { name: 'Middagar', exact: true })
       .click();
-  await expect(page.getByRole('heading', { name: 'Kva har du lyst på?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Kva blir det til middag?' })).toBeVisible();
 });
 test('recipe search, category filtering, sorting and empty results', async ({ page }) => {
   await page.goto('/oppskrifter');
-  await page.getByRole('textbox', { name: 'Søk etter oppskrift' }).fill('Arrabiata');
+  await page.getByRole('textbox', { name: 'Søk etter oppskrift' }).fill('pasta');
   await page.getByRole('button', { name: 'Søk', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Spicy Arrabiata Penne' })).toBeVisible();
-  await page.getByRole('combobox', { name: 'Kategori', exact: true }).selectOption('Vegetarian');
+  await expect(page.getByRole('heading', { name: 'Pasta med tomat og basilikum' })).toBeVisible();
+  await page.getByRole('combobox', { name: 'Kategori', exact: true }).selectOption('Pasta');
   await page.getByRole('combobox', { name: 'Sorter', exact: true }).selectOption('za');
+  await page.getByRole('combobox', { name: 'Tidsbruk', exact: true }).selectOption('30');
+  await page.getByRole('combobox', { name: 'Hovudingrediens', exact: true }).selectOption('Pasta');
+  await page.getByRole('checkbox', { name: 'Berre vegetar' }).check();
   await page.getByRole('button', { name: 'Bruk filter' }).click();
-  await expect(page).toHaveURL(/category=Vegetarian/);
-  await expect(page.getByRole('heading', { name: 'Spicy Arrabiata Penne' })).toBeVisible();
+  await expect(page).toHaveURL(/category=Pasta/);
+  await expect(page.getByRole('heading', { name: 'Pasta med tomat og basilikum' })).toBeVisible();
   await page.getByRole('textbox', { name: 'Søk etter oppskrift' }).fill('zzznorecipemaltidzzz');
   await page.getByRole('button', { name: 'Søk', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Ingen oppskrifter enno.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Ingen middagar passar søket.' })).toBeVisible();
 });
 test('recipe details retain source content and checkable steps', async ({ page }, info) => {
-  await page.goto('/oppskrifter/52771');
+  await page.goto('/oppskrifter/nn-pasta-tomat');
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Spicy Arrabiata Penne' }),
+    page.getByRole('heading', { level: 1, name: 'Pasta med tomat og basilikum' }),
   ).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Ingrediensar', exact: true })).toBeVisible();
   const step = page.getByRole('button', { name: 'Merk steg 1 som ferdig', exact: true });
@@ -68,9 +69,11 @@ test('recipe details retain source content and checkable steps', async ({ page }
     'true',
   );
   await expect(
-    page.getByText('Ikkje nok informasjon om dei konkrete produkta', { exact: true }),
+    page.getByText('Ukjent – vi manglar informasjon om dei konkrete produkta', { exact: true }),
   ).toBeVisible();
-  await expect(page.getByText('Originalmengder frå kjelda.', { exact: false })).toBeVisible();
+  await expect(page.getByRole('combobox', { name: 'Porsjonar' })).toHaveValue('1');
+  await page.getByRole('combobox', { name: 'Porsjonar' }).selectOption('0.5');
+  await expect(page.locator('.ingredient-panel').getByText('200 g', { exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
@@ -81,14 +84,14 @@ test('recipe details retain source content and checkable steps', async ({ page }
 });
 test('ingredient discovery searches and opens actual ingredient details', async ({ page }) => {
   await page.goto('/ingrediensar');
-  await page.getByRole('textbox', { name: 'Søk etter ingrediens' }).fill('Tomatoes');
+  await page.getByRole('textbox', { name: 'Søk etter ingrediens' }).fill('tomatar');
   await page.getByRole('button', { name: 'Søk', exact: true }).first().click();
   await page
     .locator('.ingredient-catalog')
     .getByRole('link')
-    .filter({ has: page.getByRole('heading', { name: 'Tomatoes', exact: true }) })
+    .filter({ has: page.getByRole('heading', { name: 'tomatar', exact: true }) })
     .click();
-  await expect(page.getByRole('heading', { name: 'Tomatoes', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'tomatar', exact: true })).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Prosessering avheng av kva du vel.' }),
   ).toBeVisible();
@@ -109,8 +112,8 @@ test('product search is submit-only, labels unknown NOVA and recovers from failu
               products: [
                 {
                   code: '12345678',
-                  name: 'Test product',
-                  brands: 'Test fixture',
+                  name: 'Testprodukt',
+                  brands: 'Testdata',
                   image: null,
                   nova: null,
                   url: 'https://world.openfoodfacts.org/product/12345678',

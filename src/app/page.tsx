@@ -1,28 +1,13 @@
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Leaf, Sprout, Utensils } from 'lucide-react';
-import { mealApi } from '@/lib/meal-api';
+import { ArrowUpRight, Leaf, Search, Sprout, Utensils } from 'lucide-react';
+import { catalog } from '@/lib/catalog';
 import { Photo } from '@/components/photo';
 import { RecipeGrid } from '@/components/recipe-card';
 import { SectionHeading, SourceFailure, NovaEducation } from '@/components/shared';
-export const revalidate = 3600;
+export const revalidate = 300;
 export default async function Home() {
-  const [heroResult, dinnerResult, veggieResult, easyResult, ingredientsResult] =
-    await Promise.allSettled([
-      mealApi.detail('52771'),
-      mealApi.browse({ category: 'Seafood' }),
-      mealApi.browse({ category: 'Vegetarian' }),
-      Promise.all(['52977', '52814', '52772'].map((id) => mealApi.detail(id))),
-      mealApi.ingredients(),
-    ]);
-  const hero = heroResult.status === 'fulfilled' ? heroResult.value : null;
-  const ingredients =
-    ingredientsResult.status === 'fulfilled'
-      ? ['Tomatoes', 'Garlic', 'Lemon', 'Basil', 'Salmon', 'Potatoes']
-          .map((name) =>
-            ingredientsResult.value.find((i) => i.name.toLowerCase() === name.toLowerCase()),
-          )
-          .filter((i) => i !== undefined)
-      : [];
+  const recipes = await catalog.browse().catch(() => null);
+  const hero = recipes?.find((r) => r.id === 'nn-laks');
   return (
     <>
       <section className="container hero">
@@ -31,22 +16,35 @@ export default async function Home() {
             <span className="small-rule" /> GOD MAT. KVAR DAG.
           </p>
           <h1>
-            God mat startar med <em>gode råvarer.</em>
+            God middag.
+            <br />
+            <em>Heile veka.</em>
           </h1>
           <p className="hero-description">
-            Oppdag middagsrettar, utforsk ingrediensane og lær meir om maten du et.
+            Frå kjøtkaker til fredagstaco. Finn middagar som passar kvardagen, med råvarer frå
+            butikken rundt hjørnet.
           </p>
-          <div className="hero-buttons">
-            <Link href="/oppskrifter" className="button">
-              Utforsk oppskrifter <ArrowUpRight size={18} />
-            </Link>
-            <Link href="/ingrediensar" className="text-link">
-              Sjå ingrediensar <ArrowRight size={18} />
-            </Link>
+          <form action="/oppskrifter" className="search-field home-search">
+            <Search size={20} />
+            <label className="sr-only" htmlFor="home-search">
+              Søk etter middag eller råvare
+            </label>
+            <input
+              id="home-search"
+              name="q"
+              placeholder="Laks, suppe eller noko med potet?"
+              maxLength={80}
+            />
+            <button className="button">Søk</button>
+          </form>
+          <div className="quick-links" aria-label="Finn middag">
+            <Link href="/oppskrifter?maxTime=30">Under 30 min</Link>
+            <Link href="/oppskrifter?vegetarian=1">Vegetar</Link>
+            <Link href="/oppskrifter?category=Tradisjonsmat">Norske klassikarar</Link>
           </div>
           <div className="hero-footnote">
             <Sprout size={18} />
-            <span>Litt inspirasjon. Meir matglede.</span>
+            <span>Vanlege råvarer. Godt å samlast om.</span>
           </div>
         </div>
         <div className="hero-visual">
@@ -54,13 +52,14 @@ export default async function Home() {
             <>
               <Photo
                 src={hero.image}
-                alt={hero.title}
+                alt={hero.imageAlt || hero.title}
                 priority
                 sizes="(max-width: 800px) 100vw, 55vw"
               />
+              <span className="image-label">Illustrasjon</span>
               <div className="hero-caption">
                 <div>
-                  <p className="eyebrow">EIN SMAK AV ITALIA</p>
+                  <p className="eyebrow">PÅ BORDET OM LAG {hero.minutes} MINUTT</p>
                   <Link href={`/oppskrifter/${hero.id}`}>{hero.title}</Link>
                 </div>
                 <Link
@@ -80,102 +79,53 @@ export default async function Home() {
       <div className="values-strip">
         <div className="container">
           <span>
-            <Utensils size={18} /> Oppskrifter frå heile verda
+            <Utensils size={18} /> Middagar for norske hushald
           </span>
           <span>
             <Sprout size={18} /> Råvarene i sentrum
           </span>
           <span>
-            <Leaf size={18} /> Kunnskap om maten
+            <Leaf size={18} /> Plass til meir grønt
           </span>
         </div>
       </div>
       <section className="container section">
         <SectionHeading
-          kicker="KVA BLIR DET TIL MIDDAG?"
-          title="Noko godt å samlast om."
+          kicker="LITT HJELP TIL MIDDAGSVALET"
+          title="Seks gode kvardagsmiddagar."
           href="/oppskrifter"
+          link="Sjå alle middagar"
         />
-        {dinnerResult.status === 'fulfilled' ? (
-          <RecipeGrid recipes={dinnerResult.value.slice(0, 3)} />
-        ) : (
-          <SourceFailure href="/" />
-        )}
-        <p className="source-note">Eit utval frå TheMealDB. Kjelda oppgir ikkje popularitetstal.</p>
-      </section>
-      {hero && (
-        <section className="container featured">
-          <div className="featured-photo">
-            <Photo src={hero.image} alt={hero.title} sizes="(max-width: 800px) 100vw, 50vw" />
-          </div>
-          <div className="featured-copy">
-            <p className="eyebrow">PÅ MENYEN I DAG</p>
-            <h2>
-              Små ingrediensar.
-              <br />
-              <em>Stor matglede.</em>
-            </h2>
-            <p>
-              Tomat, kvitlauk og eit lite sting av chili. La ei italiensk pastaklassikar setje
-              smaken på dagen.
-            </p>
-            <Link href={`/oppskrifter/${hero.id}`} className="button light">
-              Lag {hero.title} <ArrowUpRight size={18} />
-            </Link>
-            <span className="source-note">Oppskrift frå TheMealDB · Originalspråk: engelsk</span>
-          </div>
-        </section>
-      )}
-      <section className="container section">
-        <SectionHeading
-          kicker="KVARDAGSFAVORITTAR"
-          title="Godt, utan store fakter."
-          href="/oppskrifter?category=Chicken"
-          link="Finn middagsinspirasjon"
-        />
-        {easyResult.status === 'fulfilled' ? (
-          <RecipeGrid recipes={easyResult.value.filter((r) => r !== null)} />
-        ) : (
-          <SourceFailure href="/" />
-        )}
+        {recipes ? <RecipeGrid recipes={recipes.slice(0, 6)} /> : <SourceFailure href="/" />}
         <p className="source-note">
-          Inspirasjon til kvardagsmat. Tilberedningstid er ikkje oppgitt av kjelda.
+          Valt av MÅLTID: fisk, grønt og kjende favorittar. Tidene er rettleiande og inkluderer
+          førebuing.
         </p>
       </section>
       <section className="ingredient-band">
         <div className="container">
-          <SectionHeading
-            kicker="BLI KJEND MED RÅVARENE"
-            title="Det gode startar her."
-            href="/ingrediensar"
-            link="Alle ingrediensar"
-          />
-          <div className="ingredient-strip">
-            {ingredients.map((i) => (
-              <Link href={`/ingrediensar/${i.slug}`} className="ingredient-tile" key={i.id}>
-                <div className="ingredient-image">
-                  <Photo src={i.image} alt={i.name} contain sizes="(max-width: 640px) 40vw, 15vw" />
-                </div>
-                <h3>{i.name}</h3>
-                <ArrowUpRight size={16} />
-              </Link>
-            ))}
+          <SectionHeading kicker="KVA PASSAR I DAG?" title="Finn din type middag." />
+          <div className="dinner-entries">
+            <Link href="/oppskrifter?maxTime=30">
+              <span className="eyebrow">NÅR TIDA ER KNAPP</span>
+              <h3>Raskt på bordet</h3>
+              <p>Middagar på 30 minutt eller mindre.</p>
+              <ArrowUpRight />
+            </Link>
+            <Link href="/oppskrifter?vegetarian=1">
+              <span className="eyebrow">GRØNT OG GODT</span>
+              <h3>Meir vegetar</h3>
+              <p>Linser, bønner og grønsaker i hovudrolla.</p>
+              <ArrowUpRight />
+            </Link>
+            <Link href="/oppskrifter?category=Tradisjonsmat">
+              <span className="eyebrow">SMAKAR SOM VARER</span>
+              <h3>Norske klassikarar</h3>
+              <p>Kjøtkaker, lapskaus og fårikål.</p>
+              <ArrowUpRight />
+            </Link>
           </div>
-          {!ingredients.length && <SourceFailure href="/" />}
         </div>
-      </section>
-      <section className="container section">
-        <SectionHeading
-          kicker="GRØNT PÅ TALLERKENEN"
-          title="La grønsakene spele hovudrolla."
-          href="/oppskrifter?category=Vegetarian"
-          link="Meir vegetar"
-        />
-        {veggieResult.status === 'fulfilled' ? (
-          <RecipeGrid recipes={veggieResult.value.slice(0, 3)} />
-        ) : (
-          <SourceFailure href="/" />
-        )}
       </section>
       <div className="container section nova-section">
         <NovaEducation />
