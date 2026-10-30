@@ -71,7 +71,11 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
           sizes="(max-width: 1400px) 100vw, 1280px"
         />
       </div>
-      <RecipeActions recipe={recipe} accountsReady={authConfigured()} />
+      <RecipeActions
+        recipe={recipe}
+        accountsReady={authConfigured()}
+        recipeEmailReady={Boolean(process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL)}
+      />
       <div className="detail-columns">
         <IngredientsPanel recipe={recipe} />
         <section className="method">

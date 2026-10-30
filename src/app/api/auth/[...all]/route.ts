@@ -1,4 +1,5 @@
 import { getAuth } from '@/lib/auth';
+import { getFirebaseAuth } from '@/lib/firebase-auth';
 import { AppError } from '@/lib/errors';
 import { assertOrigin } from '@/lib/http';
 async function handle(request: Request) {
@@ -12,7 +13,9 @@ async function handle(request: Request) {
       )
         throw new AppError('Førespurnaden er for stor.', 413);
     }
-    const response = await getAuth().handler(request);
+    const response = await (
+      process.env.AUTH_PROVIDER === 'firebase' ? getFirebaseAuth() : getAuth()
+    ).handler(request);
     if (
       /\/(sign-up\/email|request-password-reset|send-verification-email)$/.test(
         new URL(request.url).pathname,

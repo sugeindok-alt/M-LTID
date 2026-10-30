@@ -10,7 +10,9 @@ import * as schema from '@/db/schema';
 import { createMailer, linkMail, type MailTransport } from './email';
 import { AppError } from './errors';
 import { consumeLimit } from './rate-limit';
+import { firebaseConfigured } from './firebase-auth';
 export const authConfigured = () => {
+  if (process.env.AUTH_PROVIDER === 'firebase') return firebaseConfigured();
   const production = process.env.NODE_ENV === 'production';
   if (!process.env.DATABASE_URL || (process.env.BETTER_AUTH_SECRET?.length ?? 0) < 32) return false;
   try {
@@ -158,7 +160,7 @@ export function createAuth(
 }
 let auth: ReturnType<typeof createAuth> | undefined;
 export function getAuth() {
-  if (!authConfigured())
+  if (process.env.AUTH_PROVIDER === 'firebase' || !authConfigured())
     throw new AppError(
       'Kontoar er ikkje tilgjengelege enno. Tenesta manglar database- eller e-postoppsett.',
       503,

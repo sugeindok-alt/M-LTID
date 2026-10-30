@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import { authErrorMessage, emailRequestFeedback } from '@/lib/auth-feedback';
-type Mode = 'login' | 'register' | 'forgot' | 'reset' | 'verify';
+type Mode = 'login' | 'register' | 'forgot' | 'reset' | 'verify' | 'confirm';
 const subscribe = () => () => {};
 const titles: Record<Mode, string> = {
   login: 'Velkomen tilbake.',
@@ -13,6 +13,7 @@ const titles: Record<Mode, string> = {
   forgot: 'Gløymt passordet?',
   reset: 'Ein ny start.',
   verify: 'Stadfest e-postadressa.',
+  confirm: 'Stadfest e-postadressa.',
 };
 const descriptions: Record<Mode, string> = {
   login: 'Logg inn og finn tilbake til det du likar.',
@@ -20,11 +21,13 @@ const descriptions: Record<Mode, string> = {
   forgot: 'Vi hjelper deg med å få tilgang til kontoen igjen.',
   reset: 'Vel eit nytt, sterkt passord til kontoen din.',
   verify: 'Be om ei ny lenkje dersom den førre har gått ut.',
+  confirm: 'Trykk nedanfor for å stadfeste e-postadressa di.',
 };
 export function AuthForm({
   mode,
   ready,
   localEmail,
+  firebase = false,
   token,
   nextPath,
   queryError,
@@ -32,6 +35,7 @@ export function AuthForm({
   mode: Mode;
   ready: boolean;
   localEmail: boolean;
+  firebase?: boolean;
   token?: string;
   nextPath?: string;
   queryError?: string;
@@ -59,22 +63,34 @@ export function AuthForm({
     const password = String(data.get('password') || '');
     try {
       const result =
-        mode === 'login'
-          ? await authClient.signIn.email({ email, password, callbackURL: next })
-          : mode === 'register'
-            ? await authClient.signUp.email({
-                email,
-                password,
-                name: String(data.get('name')),
-                callbackURL: '/profil',
+        mode === 'confirm'
+          ? await authClient.$fetch('/verify-email', { method: 'POST', body: { token } })
+          : mode === 'verify' && firebase
+            ? await authClient.$fetch('/send-verification-email', {
+                method: 'POST',
+                body: { email, password },
               })
-            : mode === 'forgot'
-              ? await authClient.requestPasswordReset({ email, redirectTo: '/nytt-passord' })
-              : mode === 'verify'
-                ? await authClient.sendVerificationEmail({ email, callbackURL: '/profil' })
-                : await authClient.resetPassword({ newPassword: password, token: token || '' });
+            : mode === 'login'
+              ? await authClient.signIn.email({ email, password, callbackURL: next })
+              : mode === 'register'
+                ? await authClient.signUp.email({
+                    email,
+                    password,
+                    name: String(data.get('name')),
+                    callbackURL: '/profil',
+                  })
+                : mode === 'forgot'
+                  ? await authClient.requestPasswordReset({ email, redirectTo: '/nytt-passord' })
+                  : mode === 'verify'
+                    ? await authClient.sendVerificationEmail({ email, callbackURL: '/profil' })
+                    : await authClient.resetPassword({ newPassword: password, token: token || '' });
       if (result.error) {
-        setFeedback(authErrorMessage(result.error.code, result.error.status));
+        setFeedback(
+          authErrorMessage(
+            'code' in result.error ? String(result.error.code) : undefined,
+            result.error.status,
+          ),
+        );
         setFailed(true);
         return;
       }
@@ -85,6 +101,10 @@ export function AuthForm({
       }
       if (mode === 'reset') {
         setFeedback('Passordet er oppdatert. Du kan logge inn med det nye passordet.');
+        return;
+      }
+      if (mode === 'confirm') {
+        setFeedback('E-postadressa er stadfesta. Du kan logge inn no.');
         return;
       }
       setFeedback(
@@ -134,7 +154,7 @@ export function AuthForm({
             />
           </label>
         )}
-        {mode !== 'reset' && (
+        {!['reset', 'confirm'].includes(mode) && (
           <label>
             E-postadresse
             <input
@@ -148,15 +168,19 @@ export function AuthForm({
             />
           </label>
         )}
-        {['register', 'login', 'reset'].includes(mode) && (
+        {(['register', 'login', 'reset'].includes(mode) || (firebase && mode === 'verify')) && (
           <label>
             Passord
             <input
               name="password"
               type="password"
-              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-              placeholder={mode === 'login' ? 'Passordet ditt' : 'Minst 10 teikn'}
-              minLength={mode === 'login' ? 1 : 10}
+              autoComplete={
+                mode === 'login' || mode === 'verify' ? 'current-password' : 'new-password'
+              }
+              placeholder={
+                mode === 'login' || mode === 'verify' ? 'Passordet ditt' : 'Minst 10 teikn'
+              }
+              minLength={mode === 'login' || mode === 'verify' ? 1 : 10}
               maxLength={128}
               required
               disabled={!ready}
@@ -173,7 +197,7 @@ export function AuthForm({
         )}
         <button
           className="button"
-          disabled={!ready || !hydrated || busy || (mode === 'reset' && !token)}
+          disabled={!ready || !hydrated || busy || (['reset', 'confirm'].includes(mode) && !token)}
         >
           {busy
             ? 'Eit augeblikk …'
@@ -183,7 +207,9 @@ export function AuthForm({
                 ? 'Opprett konto'
                 : mode === 'reset'
                   ? 'Lagre nytt passord'
-                  : 'Be om ny lenkje'}
+                  : mode === 'confirm'
+                    ? 'Stadfest e-post'
+                    : 'Be om ny lenkje'}
           <ArrowRight size={17} />
         </button>
       </form>

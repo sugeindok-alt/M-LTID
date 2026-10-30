@@ -14,6 +14,8 @@ export function authErrorMessage(code?: string, status?: number) {
     INVALID_TOKEN: 'Lenkja er ugyldig, brukt eller har gått ut. Be om ei ny lenkje.',
     TOKEN_EXPIRED: 'Lenkja har gått ut. Be om ei ny lenkje.',
     TOO_MANY_REQUESTS: 'For mange forsøk. Vent litt og prøv igjen.',
+    ACCOUNT_LINK_REQUIRED:
+      'Det finst eldre kontodata som må knytast til denne innlogginga. Kontakt eigaren av nettsida for hjelp.',
   };
   return messages[code || ''] || 'Førespurnaden kunne ikkje fullførast. Prøv igjen seinare.';
 }

@@ -1,5 +1,18 @@
 # Verifikasjon — 30. oktober 2026
 
+## Firebase Spark: ny kontoløysing
+
+Eigaren valde gratis Firebase Authentication utan kjøpt domene, og bad om avgrensa testing. Dei eldre resultata nedanfor gjeld Better Auth og er historikk.
+
+- Firebase-prosjekt maltid-d2c6c: Spark, Email/Password aktivert. Ingen betalingsteneste.
+- Eksisterande Neon-tabellar blir gjenbrukte utan sletting eller automatisk samanslåing av identitetar.
+- TypeScript, ESLint og produksjonsbygg bestått. Fyrste bygg vart hindra av Windows-sandkassa; bygget fullførte med nødvendige filrettar.
+- To Firebase-testar bestått: produksjonsoppsett som feilar trygt og éin samla kontoflyt mot offisiell Auth-emulator + PGlite. Flyten dekkjer stadfesting, avvist uverifisert innlogging, private favorittar for to kontoar, duplikat, ny innlogging, utlogging, passordbyte som trekkjer tilbake gammal økt, gamle passord, brukte/ugyldige lenkjer og feil opphav. E-post her er simulert.
+- Éi ekte stadfestingsmelding frå Firebase er funnen i godkjend Gmail-konto med SPAM-etikett. Eigaren stadfesta at han opna lenkja. Dette dokumenterer levering til søppelpost, ikkje generell innboksplassering.
+- Fire Firebase-variablar er lagra som Production Secret i Vercel. Nøklar, testpassord og mottakaradresse finst berre i private lokale filer.
+- Firebase avviser malendringar med «Email template updates are currently unavailable for this project». Norwegian er valt, men malar og standard handlingsside er på bokmål. Eigen nynorsk /konto/handling er klar, men ikkje aktivert som e-postmål.
+- Endeleg produksjonskontroll blir rapportert etter GitHub/Vercel-publisering. Tidlegare produksjonsstatus nedanfor er historisk.
+
 ## Kontoflyten
 
 - TypeScript og ESLint: bestått.

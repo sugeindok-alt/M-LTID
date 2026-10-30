@@ -14,9 +14,11 @@ const subscribe = () => () => {};
 export function RecipeActions({
   recipe,
   accountsReady,
+  recipeEmailReady = false,
 }: {
   recipe: Recipe;
   accountsReady: boolean;
+  recipeEmailReady?: boolean;
 }) {
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState('');
@@ -87,14 +89,16 @@ export function RecipeActions({
               ? 'Lagra i favorittar'
               : 'Lagre oppskrift'}
       </button>
-      <button
-        className="button secondary"
-        onClick={() => act('email')}
-        disabled={!!busy || !hydrated}
-      >
-        <Mail size={17} />
-        {busy === 'email' ? 'Sender …' : 'Send til e-posten min'}
-      </button>
+      {recipeEmailReady && (
+        <button
+          className="button secondary"
+          onClick={() => act('email')}
+          disabled={!!busy || !hydrated}
+        >
+          <Mail size={17} />
+          {busy === 'email' ? 'Sender …' : 'Send til e-posten min'}
+        </button>
+      )}
       {loadError && (
         <div role="alert" className="form-message error">
           {loadError}{' '}
