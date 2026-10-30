@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { Heart, Mail, ShoppingBag, Check, Info, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -10,22 +10,45 @@ import { useToast } from './providers';
 import { ProductSearch } from './product-search';
 import { NovaBadge } from './shared';
 import type { Product } from '@/lib/products';
+const subscribe = () => () => {};
 export function RecipeActions({
   recipe,
   accountsReady,
+  recipeEmailReady = false,
 }: {
   recipe: Recipe;
   accountsReady: boolean;
+  recipeEmailReady?: boolean;
 }) {
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState('');
+  const [loaded, setLoaded] = useState(!accountsReady);
+  const [loadError, setLoadError] = useState('');
+  const [attempt, setAttempt] = useState(0);
+  const hydrated = useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false,
+  );
   const notify = useToast();
   useEffect(() => {
+    let active = true;
     if (accountsReady)
       api<{ recipes: Recipe[] }>('favorites')
-        .then((data) => setSaved(data.recipes.some((r) => r.id === recipe.id)))
-        .catch(() => {});
-  }, [accountsReady, recipe.id]);
+        .then((data) => {
+          if (active) setSaved(data.recipes.some((r) => r.id === recipe.id));
+        })
+        .catch(() => {
+          if (active)
+            setLoadError('Favorittstatusen kunne ikkje lastast. Logg inn eller prøv igjen.');
+        })
+        .finally(() => {
+          if (active) setLoaded(true);
+        });
+    return () => {
+      active = false;
+    };
+  }, [accountsReady, recipe.id, attempt]);
   async function act(kind: 'favorite' | 'email') {
     setBusy(kind);
     try {
@@ -52,18 +75,45 @@ export function RecipeActions({
       <button
         className="button"
         onClick={() => act('favorite')}
-        disabled={!!busy}
+        disabled={!!busy || !hydrated || !loaded || !!loadError}
         aria-pressed={saved}
       >
         <motion.span animate={{ scale: saved ? [1, 1.25, 1] : 1 }}>
           <Heart size={17} fill={saved ? 'currentColor' : 'none'} />
         </motion.span>
-        {busy === 'favorite' ? 'Lagrar …' : saved ? 'Lagra i favorittar' : 'Lagre oppskrift'}
+        {!loaded
+          ? 'Lastar favorittstatus …'
+          : busy === 'favorite'
+            ? 'Lagrar …'
+            : saved
+              ? 'Lagra i favorittar'
+              : 'Lagre oppskrift'}
       </button>
-      <button className="button secondary" onClick={() => act('email')} disabled={!!busy}>
-        <Mail size={17} />
-        {busy === 'email' ? 'Sender …' : 'Send til e-posten min'}
-      </button>
+      {recipeEmailReady && (
+        <button
+          className="button secondary"
+          onClick={() => act('email')}
+          disabled={!!busy || !hydrated}
+        >
+          <Mail size={17} />
+          {busy === 'email' ? 'Sender …' : 'Send til e-posten min'}
+        </button>
+      )}
+      {loadError && (
+        <div role="alert" className="form-message error">
+          {loadError}{' '}
+          <button
+            className="text-link"
+            onClick={() => {
+              setLoadError('');
+              setLoaded(false);
+              setAttempt((value) => value + 1);
+            }}
+          >
+            Prøv igjen
+          </button>
+        </div>
+      )}
       <span className="source-note">
         Foto og oppskrift: TheMealDB · <Link href="/logg-inn">Logg inn for å lagre</Link>
       </span>

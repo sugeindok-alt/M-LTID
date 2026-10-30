@@ -1,7 +1,7 @@
 import { AuthForm } from './auth-form';
 import { authConfigured } from '@/lib/auth';
 export function AuthPage(props: {
-  mode: 'login' | 'register' | 'forgot' | 'reset' | 'verify';
+  mode: 'login' | 'register' | 'forgot' | 'reset' | 'verify' | 'confirm';
   token?: string;
   nextPath?: string;
   queryError?: string;
@@ -26,7 +26,12 @@ export function AuthPage(props: {
       <AuthForm
         {...props}
         ready={authConfigured()}
-        localEmail={process.env.EMAIL_TRANSPORT === 'file' && process.env.NODE_ENV !== 'production'}
+        firebase={process.env.AUTH_PROVIDER === 'firebase'}
+        localEmail={
+          process.env.AUTH_PROVIDER !== 'firebase' &&
+          process.env.EMAIL_TRANSPORT === 'file' &&
+          process.env.NODE_ENV !== 'production'
+        }
       />
     </div>
   );

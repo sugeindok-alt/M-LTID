@@ -1,4 +1,5 @@
 node_modules/
+.vercel/
 .next/
 .next-production/
 .env*
@@ -10,3 +11,5 @@ playwright-report/
 *.tsbuildinfo
 next-env.d.ts
 out/
+firebase-debug.log
+firebase-debug.*.log

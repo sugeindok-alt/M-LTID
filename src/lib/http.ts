@@ -1,9 +1,13 @@
 import 'server-only';
 import { ZodError, z } from 'zod';
 import { getAuth } from './auth';
+import { getFirebaseAuth } from './firebase-auth';
 import { AppError } from './errors';
 export async function requireSession(request: Request) {
-  const session = await getAuth().api.getSession({ headers: request.headers });
+  const session =
+    process.env.AUTH_PROVIDER === 'firebase'
+      ? await getFirebaseAuth().getSession(request.headers)
+      : await getAuth().api.getSession({ headers: request.headers });
   if (!session) throw new AppError('Logg inn for å bruke denne funksjonen.', 401);
   if (!session.user.emailVerified) throw new AppError('Stadfest e-postadressa først.', 403);
   return session;

@@ -10,7 +10,7 @@ export default function Page() {
       </p>
       <h2>Dette blir lagra</h2>
       <ul>
-        <li>Namn, e-postadresse, stadfestingsstatus og eit sikkert hash av passordet.</li>
+        <li>Namn, e-postadresse og stadfestingsstatus. Firebase handterer passordet sikkert.</li>
         <li>
           Innloggingsøkter, tidspunkt og tekniske tryggleiksopplysningar som IP-adresse og
           nettlesar.
@@ -20,10 +20,11 @@ export default function Page() {
       </ul>
       <h2>Kvar opplysningane blir brukte</h2>
       <p>
-        Konto og lagra innhald ligg i prosjektet sin PostgreSQL-database hos Neon når tenesta er
-        sett opp. Better Auth handterer innlogging. Resend får e-postadressa og meldingsinnhaldet
-        ved sending. Oppskriftsførespurnader går frå serveren til TheMealDB. Produktsøk blir sende
-        til Open Food Facts; skriv difor ikkje personopplysningar i produktsøket.
+        Firebase (Google) handterer registrering, innlogging, passord og konto-e-postar. Namn,
+        e-postadresse, koplinga til kontoen og lagra innhald ligg òg i PostgreSQL-databasen hos
+        Neon. Resend blir berre brukt til oppskrifts-e-post dersom den funksjonen er aktivert.
+        Oppskriftsførespurnader går frå serveren til TheMealDB. Produktsøk blir sende til Open Food
+        Facts; skriv difor ikkje personopplysningar i produktsøket.
       </p>
       <h2>Informasjonskapslar og lokal lagring</h2>
       <p>
