@@ -43,7 +43,19 @@ Den eksisterande publiserte versjonen på https://m-ltid.vercel.app/ kjem frå c
 
 Resend-kontoen er tilgjengeleg, men det einaste eksisterande domenet hadde status Failed. Eigaren opplyser at han ikkje eig eit avsendardomene. Resend krev eit verifisert domene for å sende til vanlege brukarar. resend.dev kan berre brukast til testing mot adressa til Resend-kontoen. Produksjonsvakta avviser testdomenet.
 
-Faktisk Resend-levering, full kontoflyt på produksjonsadressa og endeleg publisering er **ikkje verifiserte**. Nettlesartest med lokale e-postfiler er ikkje dokumentasjon på faktisk e-postlevering. Eigaren har avklart ei privat testadresse; ho blir ikkje lagra i Git. Ingen andre mottakarar er godkjende.
+Full kontoflyt på produksjonsadressa og endeleg publisering er **ikkje verifiserte**. Nettlesartest med lokale e-postfiler er ikkje dokumentasjon på faktisk e-postlevering. Eigaren har avklart ei privat testadresse; ho blir ikkje lagra i Git. Ingen andre mottakarar er godkjende.
+
+### Ekte Resend-levering, 30. oktober kl. 11.40 UTC
+
+Etter uttrykkeleg godkjenning vart ein nøkkel med berre Sending access oppretta og lagra i ei privat, Git-ignorert miljøfil. Nøkkelen er testa med den faktiske Resend-transporten i prosjektet. Ingen løyndomar eller mottakaradresser er lagra i Git.
+
+- Verifisering, velkomst og passordreset: **tre ekte meldingar tekne imot av Resend og funne i den godkjende Gmail-innboksen**. Gmail hadde INBOX på alle tre; Resend viste Opened. Dette dokumenterer mottak, men ikkje at eigaren sjølv har lese meldingane.
+- Meldings-ID og accepted-status vart lagra i email_send_records i den separate Neon-utviklingsgreina.
+- Same Better Auth-kode køyrde registrering → avvist uverifisert innlogging → verifisering → innlogging → passordreset → ny innlogging. Gamal økt og gamalt passord vart avviste; brukte verifiserings- og reset-lenkjer vart avviste.
+- Denne køyringa brukte Better Auth sin HTTP-handler direkte og dei genererte lenkjene internt. Ho er ikkje ein produksjons- eller nettlesartest av klikk frå Gmail. Dei tidlegare nettlesartestane brukte lokal e-posttransport.
+- Meldingane var tydeleg merkte TEST og brukte resend.dev og lokale testlenkjer. Ingen produksjonskonto vart oppretta, og ingen produksjonsmiljøvariablar vart endra i denne testen.
+
+**Gjenståande blokkering:** Eigaren må ha eit domene med DNS-tilgang som kan verifiserast i Resend, før offentleg verifisering og passordreset kan aktiverast. Deretter må avsendar og Resend-nøkkel konfigurerast trygt i Vercel, og produksjonsflyten testast etter publisering. Sjå [Resend si forklaring av mottakaravgrensinga](https://resend.com/docs/api-reference/errors).
 
 ## Køyre testane
 

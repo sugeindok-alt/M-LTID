@@ -128,7 +128,7 @@ Ein «lagra oppskrift» og ein «favoritt» er same brukar–oppskrift-kopling, 
 npm run dev          # utvikling, webpack
 npm run typecheck
 npm run lint
-npm test             # 65 einings-/integrasjonstestar, ingen eksterne kontoar
+npm test             # 74 einings-/integrasjonstestar, ingen eksterne kontoar
 npm run test:e2e     # ekte TheMealDB i UI; OFF-feil/resultat blir mocka ved nettgrensa
 npm run build
 npm start
@@ -149,7 +149,7 @@ For å teste produksjonsbygget: køyr `npm run build`, stopp eventuell server p�
 5. Deploy. Verifiser registrering → e-post → innlogging → favoritt → refresh → utlogging/innlogging. Gjenta med to kontoar og kontroller eigarisolasjon. Test ekte Resend-levering og OFF-strekkode med di kontaktadresse.
 6. Fullfør opplysningane om behandlingsansvarleg, kontakt, lagringstider og rettar i `src/app/personvern/page.tsx` før du inviterer offentlege brukarar.
 
-Vercel Hobby, Neon Free og Resend Free har bruksgrenser og vilkår, og eignar seg ikkje nødvendigvis for kommersiell drift. Sjå eigarane sine gjeldande vilkår. Nettsida er publisert frå GitHub til Vercel Hobby. Neon/Resend er ikkje kopla til. `vercel.json` peikar Vercel til byggjemappa `.next-production`.
+Vercel Hobby, Neon Free og Resend Free har bruksgrenser og vilkår, og eignar seg ikkje nødvendigvis for kommersiell drift. Sjå eigarane sine gjeldande vilkår. Nettsida er publisert frå GitHub til Vercel Hobby. Neon er oppretta med separate produksjons- og utviklingsgreiner; produksjonsvariablane for database og Better Auth er lagra i Vercel. Ekte Resend-levering til den godkjende testinnboksen er verifisert, men offentleg e-postinnlogging ventar på verifisert avsendardomene og endeleg produksjonsoppsett. Sjå [verifikasjonsrapporten](docs/VERIFICATION.md). `vercel.json` peikar Vercel til byggjemappa `.next-production`.
 
 ## Drift og avgrensingar
 
