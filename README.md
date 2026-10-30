@@ -4,13 +4,15 @@ Ei redaksjonell matplattform med Next.js App Router, React, TypeScript, Tailwind
 
 Offentleg kjeldekode: [sugeindok-alt/M-LTID](https://github.com/sugeindok-alt/M-LTID).
 
+Publisert nettside: [MÅLTID](https://m-ltid.vercel.app/). Vercel Hobby byggjer og publiserer automatisk frå `main` i GitHub-repoet. GitHub Actions køyrer typesjekk, lint, 65 testar og produksjonsbygg.
+
 ## Status og kva som er verifisert
 
 - Lokalt implementert: oppskrifts- og ingrediensutforsking, søk/filter/sortering, detaljsider, kokesteg, favorittar, handleliste, produktoppslag/NOVA, konto, verifisering, passordbyte, profil og fem tema.
 - TheMealDB er verifisert med ekte HTTP-svar og bilete i nettlesaren.
 - Autentisering og datalagring blir testa med den faktiske Better Auth-koden og Drizzle-migreringane i PGlite (PostgreSQL i WASM). Dette er **ikkje** ein verifikasjon av ein Neon-konto eller Neon sitt nettverk.
 - E-posttestane erstattar berre leveringstransporten. Dei testar ekte verifiserings- og reset-token. Ingen ekte e-post er send under testane.
-- Neon, Resend-levering, Open Food Facts i denne installasjonen og Vercel-deploy krev oppsett frå eigaren. Ingen nøklar eller kontoar vart oppdikta.
+- Nettsida er publisert på Vercel og kontrollert utan innlogging. Neon, Resend-levering og Open Food Facts krev framleis oppsett frå eigaren. Konto, personleg lagring og e-post er difor ikkje aktiverte i produksjon. Ingen nøklar eller kontoar vart oppdikta.
 - Sjå [testoversikta](docs/VERIFICATION.md) for resultat og avgrensingar.
 
 ## Kom i gang
@@ -152,7 +154,7 @@ For å teste produksjonsbygget: køyr `npm run build`, stopp eventuell server p�
 5. Deploy. Verifiser registrering → e-post → innlogging → favoritt → refresh → utlogging/innlogging. Gjenta med to kontoar og kontroller eigarisolasjon. Test ekte Resend-levering og OFF-strekkode med di kontaktadresse.
 6. Fullfør opplysningane om behandlingsansvarleg, kontakt, lagringstider og rettar i `src/app/personvern/page.tsx` før du inviterer offentlege brukarar.
 
-Vercel Hobby, Neon Free og Resend Free har bruksgrenser og vilkår, og eignar seg ikkje nødvendigvis for kommersiell drift. Sjå eigarane sine gjeldande vilkår. Kjeldekoden er offentleg på GitHub; ei offentleg, køyrande nettside er ikkje deploya eller knytt til Neon/Resend av denne leveransen.
+Vercel Hobby, Neon Free og Resend Free har bruksgrenser og vilkår, og eignar seg ikkje nødvendigvis for kommersiell drift. Sjå eigarane sine gjeldande vilkår. Nettsida er publisert frå GitHub til Vercel Hobby. Neon/Resend er ikkje kopla til. `vercel.json` peikar Vercel til byggjemappa `.next-production`.
 
 ## Drift og avgrensingar
 

@@ -66,12 +66,20 @@ Installering og npm sin audit-kontroll rapporterte **0 kjende sårbarheiter** et
 
 Bileta kjem frå Playwright med ekte TheMealDB-data og foto. Dei er ikkje designmockupar.
 
+## Offentleg publisering
+
+- Produksjonsadresse: [m-ltid.vercel.app](https://m-ltid.vercel.app/), Vercel Hobby, publisert frå GitHub-greina `main` den 30. oktober 2026.
+- Vercel viste `Ready` for kjeldecommit `d1819ec`, etter at `vercel.json` vart sett til den faktiske byggjemappa `.next-production`.
+- Fem førespurnader utan autentisering gav HTTP 200 og venta sideinnhald: framside, oppskriftssøk etter Arrabiata, oppskrift 52771, ingrediensen Apples og innloggingssida.
+- Framsida og det faktiske hovudbiletet er kontrollerte i nettlesaren på produksjonsadressa.
+- [GitHub Actions](https://github.com/sugeindok-alt/M-LTID/actions/runs/41035049823) bestod typesjekk, lint, 65 testar og produksjonsbygg for same commit.
+- Dette dokumenterer den offentlege nettsida. Konto, privat datalagring og e-post er framleis avgrensa av oppsettet nedanfor.
+
 ## Avgrensingar som krev eksternt oppsett
 
 - Ingen Neon-tilkoplingsstreng var tilgjengeleg. Produksjonsmigrering, nettverk, pooling og to faktiske nettlesarkontoar mot Neon er ikkje live-verifiserte.
 - Ingen Resend-nøkkel eller verifisert avsendardomene var tilgjengeleg. Faktisk levering til innboks og providerlogg er ikkje verifiserte.
 - Ingen Open Food Facts-kontaktadresse var konfigurert. Live produkt- og Search-a-licious-oppslag er ikkje verifiserte i denne installasjonen; adapterane er testa med eksterne responsformat ved grensa.
-- Ingen Vercel-deploy vart brukt. GitHub-publisering gjer kjeldekoden offentleg, men publiserer ikkje ei køyrande nettside.
 
 ## Windows-miljø
 
