@@ -3,6 +3,9 @@ const config: NextConfig = {
   // Separate outputs let local preview and production compilation coexist.
   distDir: process.env.NODE_ENV === 'development' ? '.next' : '.next-production',
   experimental: { cpus: 1, webpackBuildWorker: false },
+  // Bundle the Firebase JWT dependency chain: Vercel's CommonJS loader cannot
+  // require jose's ESM entry through the otherwise external firebase-admin.
+  transpilePackages: ['firebase-admin', 'jwks-rsa', 'jose'],
   poweredByHeader: false,
   // Verification/reset URLs contain bearer tokens. Do not log request URLs in development.
   logging: { incomingRequests: false },
