@@ -8,12 +8,9 @@ import { authConfigured } from '@/lib/auth';
 import { Photo } from '@/components/photo';
 import { RecipeGrid } from '@/components/recipe-card';
 import { SectionHeading, SourceFailure } from '@/components/shared';
-import {
-  RecipeActions,
-  IngredientsPanel,
-  CookingSteps,
-  ProcessingPanel,
-} from '@/components/recipe-interactions';
+import { RecipeActions, ProcessingPanel } from '@/components/recipe-interactions';
+import { RecipeDirections } from '@/components/recipe-directions';
+import './cooking.css';
 export async function generateMetadata({
   params,
 }: {
@@ -90,30 +87,20 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
           <Link href="/om-innhaldet">Om bileta og oppskriftene</Link>
         </p>
       )}
-      <div className="detail-columns">
-        <IngredientsPanel recipe={recipe} />
-        <section className="method">
-          <p className="eyebrow">FRÅ RÅVARER TIL MÅLTID</p>
-          <h2>Slik gjer du</h2>
-          <p className="method-intro">
-            Trykk på stegtala etter kvart som du blir ferdig. Tidsbruken er rettleiande; storleik på
-            råvarene og utstyret du brukar kan påverke tida.
-          </p>
-          <CookingSteps steps={recipe.steps} recipeId={recipe.id} />
-          <div className="method-links">
-            {recipe.source && (
-              <a href={recipe.source} target="_blank" rel="noreferrer" className="text-link">
-                Originalkjelde <ArrowUpRight size={15} />
-              </a>
-            )}
-            {recipe.youtube && (
-              <a href={recipe.youtube} target="_blank" rel="noreferrer" className="text-link">
-                Sjå video hos YouTube <ArrowUpRight size={15} />
-              </a>
-            )}
-          </div>
-        </section>
-      </div>
+      <RecipeDirections key={recipe.id} recipe={recipe}>
+        <div className="method-links">
+          {recipe.source && (
+            <a href={recipe.source} target="_blank" rel="noreferrer" className="text-link">
+              Originalkjelde <ArrowUpRight size={15} />
+            </a>
+          )}
+          {recipe.youtube && (
+            <a href={recipe.youtube} target="_blank" rel="noreferrer" className="text-link">
+              Sjå video hos YouTube <ArrowUpRight size={15} />
+            </a>
+          )}
+        </div>
+      </RecipeDirections>
       <ProcessingPanel recipe={recipe} accountsReady={authConfigured()} />
       {related.length > 1 && (
         <section className="section">

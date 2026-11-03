@@ -135,8 +135,41 @@ export function RecipeActions({
     </div>
   );
 }
-export function IngredientsPanel({ recipe }: { recipe: Recipe }) {
-  const [scale, setScale] = useState(1);
+export function IngredientRows({
+  recipe,
+  scale,
+  links = false,
+}: {
+  recipe: Recipe;
+  scale: number;
+  links?: boolean;
+}) {
+  return (
+    <ul>
+      {recipe.ingredients.map((ingredient, index) => (
+        <li key={index}>
+          {links ? (
+            <Link href={`/ingrediensar/${ingredient.slug || ingredientSlug(ingredient.name)}`}>
+              {ingredient.name}
+            </Link>
+          ) : (
+            ingredient.name
+          )}
+          <span>{scaleMeasure(ingredient.measure, scale) || 'Ikkje oppgitt'}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+export function IngredientsPanel({
+  recipe,
+  scale,
+  setScale,
+}: {
+  recipe: Recipe;
+  scale: number;
+  setScale: (value: number) => void;
+}) {
   const [busy, setBusy] = useState(false);
   const [requestId, setRequestId] = useState(() => crypto.randomUUID());
   const notify = useToast();
@@ -180,16 +213,7 @@ export function IngredientsPanel({ recipe }: { recipe: Recipe }) {
           automatisk.
         </p>
       )}
-      <ul>
-        {recipe.ingredients.map((ingredient, index) => (
-          <li key={`${ingredient.name}-${index}`}>
-            <Link href={`/ingrediensar/${ingredient.slug || ingredientSlug(ingredient.name)}`}>
-              {ingredient.name}
-            </Link>
-            <span>{scaleMeasure(ingredient.measure, scale) || 'Ikkje oppgitt'}</span>
-          </li>
-        ))}
-      </ul>
+      <IngredientRows recipe={recipe} scale={scale} links />
       <button className="button" onClick={add} disabled={busy}>
         <ShoppingBag size={16} />
         {busy ? 'Legg til …' : 'Legg til i handlelista'}
@@ -205,18 +229,23 @@ export function IngredientsPanel({ recipe }: { recipe: Recipe }) {
     </aside>
   );
 }
-export function CookingSteps({ steps, recipeId }: { steps: string[]; recipeId: string }) {
-  const [done, setDone] = useState<number[]>([]);
+export function CookingSteps({
+  steps,
+  done,
+  toggle,
+}: {
+  steps: string[];
+  done: number[];
+  toggle: (index: number) => void;
+}) {
   return (
-    <ol className="step-list" key={recipeId}>
+    <ol className="step-list">
       {steps.map((step, index) => (
         <li key={index} className={`step ${done.includes(index) ? 'complete' : ''}`}>
           <button
             aria-label={`Merk steg ${index + 1} som ${done.includes(index) ? 'uferdig' : 'ferdig'}`}
             aria-pressed={done.includes(index)}
-            onClick={() =>
-              setDone(done.includes(index) ? done.filter((i) => i !== index) : [...done, index])
-            }
+            onClick={() => toggle(index)}
           >
             {done.includes(index) ? (
               <Check size={16} style={{ margin: 'auto' }} />
