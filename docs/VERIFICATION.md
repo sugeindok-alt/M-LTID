@@ -1,5 +1,12 @@
 # Verifikasjon — 30. oktober 2026
 
+## Mi veke og favorittar for gjester — 3. november 2026
+
+- Gjest på lakseoppskrifta: mobiltesten simulerte først ein tenestefeil og prøvde igjen. Reell anonym førespurnad gav deretter innloggingslenkja. Innlogging sende brukaren tilbake til laksen, der knappen viste at favoritten var lagra.
+- Same nettlesartest brukte den separate Neon-utviklingsdatabasen og lokal test-e-post. To middagar med 2 og 4 porsjonar vart lagra frå mobil, overførte til handlelista og funne att med ny innlogging i ei ny nettlesarøkt. Ingen ekte e-post vart send.
+- Database-/API-testen brukte to innlogga kontoar med ulike planar, endring og tømming av éin dag, avvising av utdatert førehandsvising og to samtidige importførespurnader. Potetene vart éi vare på 1 200 g, ikkje 2 400 g. Den andre kontoen si handleliste var tom.
+- Typekontroll, ESLint og produksjonsbygg bestod. Drizzle-migrering 0002 er brukt i utvikling og produksjon; ho legg berre til week_dinners.
+
 ## Gjeldande status: norsk katalog og Firebase
 
 Eigaren har stadfesta at gratisløysinga med Firebase skal bevarast. Resend-blokkeringane i den eldre testhistorikken nedanfor gjeld ikkje den aktive innlogginga.

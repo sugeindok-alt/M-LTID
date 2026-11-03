@@ -16,6 +16,14 @@ import { AppError } from './errors';
 import { presentSavedRecipe } from '@/data/catalog';
 export function createLibrary(db: Database) {
   return {
+    async isFavorite(userId: string, recipeId: string) {
+      const rows = await db
+        .select({ id: favorites.recipeId })
+        .from(favorites)
+        .where(and(eq(favorites.userId, userId), eq(favorites.recipeId, recipeId)))
+        .limit(1);
+      return rows.length > 0;
+    },
     async favorites(userId: string) {
       const rows = await db
         .select({ recipe: recipeCache.data })

@@ -6,5 +6,6 @@ DELETE FROM auth_rate_limits WHERE last_request < extract(epoch from now() - int
 DELETE FROM verifications WHERE expires_at < now() - interval '1 day';
 DELETE FROM sessions WHERE expires_at < now() - interval '7 days';
 -- Keep import idempotency keys long enough that delayed retries cannot add twice.
-DELETE FROM shopping_imports WHERE created_at < now() - interval '90 days';
+-- Weekly receipts remain valid while the user can still revisit that plan.
+DELETE FROM shopping_imports WHERE created_at < now() - interval '90 days' AND request_id NOT LIKE 'week:%';
 DELETE FROM email_send_records WHERE created_at < now() - interval '90 days';

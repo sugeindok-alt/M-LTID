@@ -3,7 +3,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { Heart, Mail, ShoppingBag, Check, Info, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
-import { api } from '@/lib/client-api';
+import { api, ApiError } from '@/lib/client-api';
 import { type Recipe, ingredientSlug } from '@/lib/recipes';
 import { parseMeasure, scaleMeasure } from '@/lib/quantities';
 import { useToast } from './providers';
@@ -21,6 +21,7 @@ export function RecipeActions({
   recipeEmailReady?: boolean;
 }) {
   const [saved, setSaved] = useState(false);
+  const [guest, setGuest] = useState(!accountsReady);
   const [busy, setBusy] = useState('');
   const [loaded, setLoaded] = useState(!accountsReady);
   const [loadError, setLoadError] = useState('');
@@ -34,13 +35,17 @@ export function RecipeActions({
   useEffect(() => {
     let active = true;
     if (accountsReady)
-      api<{ recipes: Recipe[] }>('favorites')
+      api<{ saved: boolean }>(`favorites?recipeId=${encodeURIComponent(recipe.id)}`)
         .then((data) => {
-          if (active) setSaved(data.recipes.some((r) => r.id === recipe.id));
+          if (active) {
+            setGuest(false);
+            setSaved(data.saved);
+          }
         })
-        .catch(() => {
-          if (active)
-            setLoadError('Favorittstatusen kunne ikkje lastast. Logg inn eller prøv igjen.');
+        .catch((error) => {
+          if (!active) return;
+          if (error instanceof ApiError && error.status === 401) setGuest(true);
+          else setLoadError('Favorittstatusen kunne ikkje lastast.');
         })
         .finally(() => {
           if (active) setLoaded(true);
@@ -65,31 +70,43 @@ export function RecipeActions({
         notify(result.message);
       }
     } catch (error) {
-      notify((error as Error).message, true);
+      if (error instanceof ApiError && error.status === 401) setGuest(true);
+      else notify((error as Error).message, true);
     } finally {
       setBusy('');
     }
   }
   return (
     <div className="detail-tools">
-      <button
-        className="button"
-        onClick={() => act('favorite')}
-        disabled={!!busy || !hydrated || !loaded || !!loadError}
-        aria-pressed={saved}
-      >
-        <motion.span animate={{ scale: saved ? [1, 1.25, 1] : 1 }}>
-          <Heart size={17} fill={saved ? 'currentColor' : 'none'} />
-        </motion.span>
-        {!loaded
-          ? 'Lastar favorittstatus …'
-          : busy === 'favorite'
-            ? 'Lagrar …'
-            : saved
-              ? 'Lagra i favorittar'
-              : 'Lagre oppskrift'}
-      </button>
-      {recipeEmailReady && (
+      {guest ? (
+        <Link
+          className="button"
+          href={`/logg-inn?next=${encodeURIComponent('/oppskrifter/' + recipe.id)}`}
+        >
+          <Heart size={17} /> Logg inn for å lagre
+        </Link>
+      ) : (
+        !loadError && (
+          <button
+            className="button"
+            onClick={() => act('favorite')}
+            disabled={!!busy || !hydrated || !loaded || !!loadError}
+            aria-pressed={saved}
+          >
+            <motion.span animate={{ scale: saved ? [1, 1.25, 1] : 1 }}>
+              <Heart size={17} fill={saved ? 'currentColor' : 'none'} />
+            </motion.span>
+            {!loaded
+              ? 'Lastar favorittstatus …'
+              : busy === 'favorite'
+                ? 'Lagrar …'
+                : saved
+                  ? 'Lagra i favorittar'
+                  : 'Lagre oppskrift'}
+          </button>
+        )
+      )}
+      {recipeEmailReady && loaded && !guest && !loadError && (
         <button
           className="button secondary"
           onClick={() => act('email')}
@@ -114,9 +131,7 @@ export function RecipeActions({
           </button>
         </div>
       )}
-      <span className="source-note">
-        Oppskrift: MÅLTID · <Link href="/logg-inn">Logg inn for å lagre</Link>
-      </span>
+      <span className="source-note">Oppskrift: MÅLTID</span>
     </div>
   );
 }

@@ -15,7 +15,9 @@ export default function Page() {
           Innloggingsøkter, tidspunkt og tekniske tryggleiksopplysningar som IP-adresse og
           nettlesar.
         </li>
-        <li>Favorittar, handleliste, produktval og profilinnstillingar.</li>
+        <li>
+          Favorittar, vekemenyar med porsjonstal, handleliste, produktval og profilinnstillingar.
+        </li>
         <li>Teknisk sendestatus for e-post og teljarar som hindrar misbruk.</li>
       </ul>
       <h2>Kvar opplysningane blir brukte</h2>
@@ -33,10 +35,10 @@ export default function Page() {
       </p>
       <h2>Tilgang og sletting</h2>
       <p>
-        Du kan sjå og fjerne favorittar og handlevarer på dine sider. Profilnamn og innstillingar
-        kan endrast i profilen. Ved sletting av ein konto frå databasen blir dei tilknytte kontodata
-        sletta gjennom databasekoplingane. Full sjølvbetent kontosletting og dataeksport er ikkje
-        del av denne versjonen.
+        Du kan sjå og fjerne middagar frå Mi veke, favorittar og handlevarer på dine sider.
+        Profilnamn og innstillingar kan endrast i profilen. Ved sletting av ein konto frå databasen
+        blir dei tilknytte kontodata sletta gjennom databasekoplingane. Full sjølvbetent
+        kontosletting og dataeksport er ikkje del av denne versjonen.
       </p>
       <div className="notice">
         <p>

@@ -10,13 +10,25 @@ import { createMailer, recipeMail } from '@/lib/email';
 import { consumeLimit } from '@/lib/rate-limit';
 import { lookupProducts } from '@/lib/product-service';
 import { barcodeSchema } from '@/lib/products';
+import { addWeek, changeDay, dayChange, importWeek, monday, readWeek } from '@/lib/week-planner';
 type Context = { params: Promise<{ resource: string }> };
 export async function GET(request: Request, context: Context) {
   return respond(async () => {
     const { user } = await requireSession(request);
     const library = createLibrary(getDb());
     const { resource } = await context.params;
-    if (resource === 'favorites') return { recipes: await library.favorites(user.id) };
+    if (resource === 'week')
+      return readWeek(
+        getDb(),
+        user.id,
+        monday.parse(new URL(request.url).searchParams.get('week')),
+      );
+    if (resource === 'favorites') {
+      const id = new URL(request.url).searchParams.get('recipeId');
+      return id === null
+        ? { recipes: await library.favorites(user.id) }
+        : { saved: await library.isFavorite(user.id, mealId.parse(id)) };
+    }
     if (resource === 'shopping') return { items: await library.shopping(user.id) };
     if (resource === 'profile')
       return { user: { name: user.name, email: user.email }, ...(await library.profile(user.id)) };
@@ -42,6 +54,8 @@ export async function POST(request: Request, context: Context) {
     const library = createLibrary(db);
     const { resource } = await context.params;
     await consumeLimit(db, `mutation:${user.id}`, 60, 60);
+    if (resource === 'week') return changeDay(db, user.id, await body(request, dayChange));
+    if (resource === 'week-shopping') return addWeek(db, user.id, await body(request, importWeek));
     if (resource === 'favorites') {
       const input = await body(request, z.object({ recipeId: mealId, saved: z.boolean() }));
       if (input.saved) {

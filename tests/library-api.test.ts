@@ -83,6 +83,52 @@ afterAll(async () => {
   await database?.client.close();
 });
 describe('real sessions through the favorites API', () => {
+  it('keeps independent weeks across login and imports the scaled preview exactly once', async () => {
+    const week = '2026-11-02';
+    const planner = cookies(await register('planner-api@example.test'));
+    const weekCtx = { params: Promise.resolve({ resource: 'week' }) };
+    const importCtx = { params: Promise.resolve({ resource: 'week-shopping' }) };
+    const snapshot = async (cookie: string) =>
+      GET(new Request(origin + '/api/library/week?week=' + week, { headers: { cookie } }), weekCtx);
+    const change = (cookie: string, day: number, recipeId: string | null, servings: number) =>
+      POST(request(cookie, { week, day, recipeId, servings }), weekCtx);
+    expect((await snapshot('')).status).toBe(401);
+    expect((await change(planner, 0, 'nn-laks', 2)).status).toBe(200);
+    const preview = await (await change(planner, 1, 'nn-torsk', 4)).json();
+    expect(
+      preview.items.find((i: { name: string }) => i.name === 'poteter').measure.replace(/\s/g, ''),
+    ).toBe('1200g');
+    expect((await (await snapshot(bob)).json()).days).toEqual([]);
+    await change(bob, 0, 'nn-taco', 3);
+    await change(bob, 1, null, 4);
+    const fresh = cookies(await login('planner-api@example.test'));
+    expect((await (await snapshot(fresh)).json()).days).toEqual(preview.days);
+    expect((await (await snapshot(bob)).json()).days[0].recipeId).toBe('nn-taco');
+    const changed = await (await change(planner, 1, 'nn-torsk', 2)).json();
+    expect(
+      (await POST(request(planner, { week, version: preview.version }), importCtx)).status,
+    ).toBe(409);
+    expect((await (await change(planner, 1, 'nn-torsk', 4)).json()).version).not.toBe(
+      changed.version,
+    );
+    const post = (cookie: string) =>
+      POST(request(cookie, { week, version: preview.version }), importCtx);
+    expect((await Promise.all([post(planner), post(fresh)])).map((r) => r.status)).toEqual([
+      200, 200,
+    ]);
+    expect((await (await snapshot(fresh)).json()).imported).toBe(true);
+    const shopping = { params: Promise.resolve({ resource: 'shopping' }) };
+    const rows = (await (await GET(request(planner), shopping)).json()).items;
+    expect(rows.filter((i: { name: string }) => i.name === 'poteter')).toMatchObject([
+      { amount: 1200, unit: 'g' },
+    ]);
+    expect((await (await GET(request(bob), shopping)).json()).items).toHaveLength(0);
+    expect((await change(planner, 0, null, 4)).status).toBe(200);
+    expect((await (await snapshot(fresh)).json()).days.map((d: { day: number }) => d.day)).toEqual([
+      1,
+    ]);
+    expect((await change(planner, 7, 'nn-laks', 2)).status).toBe(400);
+  });
   it('saves a new catalogue ID and scales Norwegian shopping quantities without cross-account access', async () => {
     const saved = await POST(request(alice, { recipeId: 'nn-laks', saved: true }), context);
     expect(saved.status).toBe(200);

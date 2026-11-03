@@ -4,6 +4,8 @@ import {
   timestamp,
   boolean,
   integer,
+  date,
+  check,
   bigint,
   jsonb,
   numeric,
@@ -11,6 +13,7 @@ import {
   index,
   primaryKey,
 } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 import type { Recipe } from '@/lib/recipes';
 const created = () => timestamp('created_at', { withTimezone: true }).defaultNow().notNull();
 const updated = () => timestamp('updated_at', { withTimezone: true }).defaultNow().notNull();
@@ -97,6 +100,27 @@ export const recipeCatalog = pgTable('recipe_catalog', {
   data: jsonb('data').$type<Recipe>().notNull(),
   updatedAt: updated(),
 });
+// A blank day has no row. Each user can choose one dinner per day of a calendar week.
+export const weekDinners = pgTable(
+  'week_dinners',
+  {
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    week: date('week_start').notNull(),
+    day: integer('day').notNull(),
+    recipeId: text('recipe_id')
+      .notNull()
+      .references(() => recipeCatalog.id),
+    servings: integer('servings').notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.week, t.day] }),
+    check('week_dinners_day_range', sql`${t.day} between 0 and 6`),
+    check('week_dinners_portions_range', sql`${t.servings} between 1 and 12`),
+    check('week_dinners_monday', sql`extract(isodow from ${t.week}) = 1`),
+  ],
+);
 // A saved recipe is a user's favourite. One association, no conflicting duplicate lists.
 export const favorites = pgTable(
   'favorites',

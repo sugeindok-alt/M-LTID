@@ -22,6 +22,7 @@ export function parseMeasure(value: string): { amount: number; unit: string } | 
   const match = value
     .trim()
     .toLowerCase()
+    .replace(/(\d)[\u00a0\u202f](?=\d)/g, '$1')
     .replace(',', '.')
     .match(/^(\d+(?:\.\d+)?|\d+\/\d+|\d+ \d+\/\d+)\s*([a-z]*)$/);
   if (!match || (match[2] && !aliases[match[2]])) return null;

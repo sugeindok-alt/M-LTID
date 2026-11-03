@@ -79,6 +79,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
         />
       </div>
       <RecipeActions
+        key={recipe.id}
         recipe={recipe}
         accountsReady={authConfigured()}
         recipeEmailReady={Boolean(process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL)}

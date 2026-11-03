@@ -33,7 +33,9 @@ Ny stadfestingslenkje krev e-post og passord. Anonyme e-postførespurnader stadf
 
 ## Database og testing
 
-Neon Free har separate production- og development-greiner. Migreringane i drizzle/ opprettar 15 tabellar; 0001 legg berre til recipe_catalog. Kontroller SQL før migrering; bygg endrar ikkje databasen automatisk. Drizzle brukar @neondatabase/serverless over WebSocket, poola tilkopling og ekte transaksjonar. Favorittar har ein unik brukar–oppskrift-nøkkel; metadata ligg i recipe_cache. Sjå [katalogrettleiinga](docs/CONTENT.md) for trygg publisering av innhald med direkte migreringstilkopling.
+Neon Free har separate production- og development-greiner. Migrering 0002 legg til week_dinners utan å endre eksisterande data. Bruk `npx tsx scripts/migrate-db.ts <privat miljøfil>` først mot utvikling, deretter mot produksjon. Bygg endrar ikkje databasen automatisk. Drizzle brukar @neondatabase/serverless over WebSocket og poola tilkopling ved vanleg drift. Sjå [katalogrettleiinga](docs/CONTENT.md) for publisering av innhald.
+
+Mi veke lagrar middag og porsjonstal per brukar, måndag og vekedag. Førehandsvisinga summerer mengder med same råvarenamn og måleeining. Importen brukar den eksisterande handlelista og ei unik kvittering per brukar, veke og innhald, slik at dobbelttrykk og nye forsøk ikkje doblar mengdene. Endrar du planen, viser sida den nye samla mengda før du eventuelt legg heile den endra veka til igjen.
 
 Vanlege kommandoar: npm run dev, npm run typecheck, npm run lint, npm test og npm run build. Ein samla Firebase-test brukar den offisielle lokale Auth-emulatoren og PGlite som separat PostgreSQL-testdatabase. Ingen ekte e-post blir send:
 
