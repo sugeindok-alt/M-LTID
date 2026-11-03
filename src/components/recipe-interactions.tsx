@@ -165,9 +165,11 @@ export function IngredientsPanel({
   recipe,
   scale,
   setScale,
+  ready,
 }: {
   recipe: Recipe;
   scale: number;
+  ready: boolean;
   setScale: (value: number) => void;
 }) {
   const [busy, setBusy] = useState(false);
@@ -196,6 +198,7 @@ export function IngredientsPanel({
           <label htmlFor="scale">Porsjonar</label>
           <select
             id="scale"
+            disabled={!ready}
             value={scale}
             onChange={(event) => {
               setScale(Number(event.target.value));
@@ -214,7 +217,7 @@ export function IngredientsPanel({
         </p>
       )}
       <IngredientRows recipe={recipe} scale={scale} links />
-      <button className="button" onClick={add} disabled={busy}>
+      <button className="button" onClick={add} disabled={!ready || busy}>
         <ShoppingBag size={16} />
         {busy ? 'Legg til …' : 'Legg til i handlelista'}
       </button>
@@ -233,9 +236,11 @@ export function CookingSteps({
   steps,
   done,
   toggle,
+  ready,
 }: {
   steps: string[];
   done: number[];
+  ready: boolean;
   toggle: (index: number) => void;
 }) {
   return (
@@ -245,6 +250,7 @@ export function CookingSteps({
           <button
             aria-label={`Merk steg ${index + 1} som ${done.includes(index) ? 'uferdig' : 'ferdig'}`}
             aria-pressed={done.includes(index)}
+            disabled={!ready}
             onClick={() => toggle(index)}
           >
             {done.includes(index) ? (

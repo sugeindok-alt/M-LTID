@@ -11,6 +11,9 @@ test('guest cooks salmon on mobile and resumes the step and real time remaining'
   await page.clock.setFixedTime(started);
   await page.goto(path);
   await page.getByRole('combobox', { name: 'Porsjonar' }).selectOption('0.5');
+  await expect(page.locator('.ingredient-panel li').filter({ hasText: 'poteter' })).toContainText(
+    '400 g',
+  );
   await page.getByRole('button', { name: 'Start matlaging', exact: true }).click();
   const mode = page.getByRole('dialog');
   await expect(mode.getByRole('heading', { name: 'Steg 1 av 4' })).toBeVisible();
@@ -26,12 +29,12 @@ test('guest cooks salmon on mobile and resumes the step and real time remaining'
   await page.reload();
   await expect(mode.getByRole('heading', { name: 'Steg 2 av 4' })).toBeVisible();
   await expect(mode.getByRole('timer')).toHaveText('18:53');
-  await page.screenshot({ path: '.local/cooking-mobile.png' });
   for (const name of ['Førre', 'Neste']) {
     const button = mode.getByRole('button', { name, exact: true });
     await expect(button).toBeInViewport({ ratio: 1 });
     expect((await button.boundingBox())!.height).toBeGreaterThanOrEqual(48);
   }
+  await page.screenshot({ path: '.local/cooking-mobile.png' });
   await mode.getByRole('button', { name: 'Neste' }).click();
   await expect(mode.getByRole('heading', { name: 'Steg 3 av 4' })).toBeVisible();
   await page.close();

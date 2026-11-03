@@ -176,6 +176,7 @@ export function RecipeDirections({ recipe, children }: { recipe: Recipe; childre
       <div className="detail-columns">
         <IngredientsPanel
           recipe={recipe}
+          ready={ready}
           scale={progress.scale}
           setScale={(scale) => update((p) => ({ ...p, scale }))}
         />
@@ -185,7 +186,7 @@ export function RecipeDirections({ recipe, children }: { recipe: Recipe; childre
           <p className="method-intro">
             Trykk på stegtala etter kvart som du blir ferdig. Tidsbruken er rettleiande.
           </p>
-          <CookingSteps steps={steps} done={progress.done} toggle={toggle} />
+          <CookingSteps steps={steps} done={progress.done} toggle={toggle} ready={ready} />
           {children}
         </section>
       </div>
