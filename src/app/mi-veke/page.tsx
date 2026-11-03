@@ -8,6 +8,8 @@ import { readWeek } from '@/lib/week-planner';
 import { thisWeek, isWeek, dateLabel, plusDays } from '@/lib/week-dates';
 import { PrivateNavigation } from '@/components/private-navigation';
 import { WeekPlanner } from '@/components/week-planner';
+import { listCookbook } from '@/lib/cookbook';
+import { privateLabel } from '@/lib/cookbook-types';
 import './week.css';
 
 export const dynamic = 'force-dynamic';
@@ -17,9 +19,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ v
   const week = veke === undefined ? thisWeek() : veke;
   if (!isWeek(week)) notFound();
   const user = await privatePage(veke ? '/mi-veke?veke=' + week : '/mi-veke');
-  const [plan, recipes] = await Promise.all([
+  const [plan, recipes, own] = await Promise.all([
     readWeek(getDb(), user.id, week),
     catalog.browse({ sort: 'az' }),
+    listCookbook(getDb(), user.id),
   ]);
   return (
     <div className="container page-shell private-layout week-page">
@@ -56,6 +59,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ v
         key={week}
         initial={plan}
         recipes={recipes.map(({ id, title }) => ({ id, title }))}
+        personal={own.map((r) => ({
+          id: r.id,
+          title: r.title + ' · ' + privateLabel(r.originalId),
+        }))}
       />
     </div>
   );

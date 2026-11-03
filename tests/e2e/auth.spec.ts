@@ -36,6 +36,77 @@ async function visitPrivateLink(page: Page, link: string) {
     throw new Error('Could not open local test link (token redacted).');
   }
 }
+test('private cookbook variant follows the user from mobile to a new login on desktop', async ({
+  browser,
+}) => {
+  const origin = 'http://127.0.0.1:3100',
+    marker = randomUUID();
+  const name = 'Kokebok ' + marker,
+    email = 'kokebok-' + marker + '@example.test';
+  const mobile = await browser.newContext({
+    baseURL: origin,
+    viewport: { width: 390, height: 844 },
+  });
+  const page = await mobile.newPage();
+  page.setDefaultTimeout(20000);
+  expect(
+    (
+      await page.request.post('/api/auth/sign-up/email', {
+        headers: { origin },
+        data: { name, email, password },
+      })
+    ).ok(),
+  ).toBe(true);
+  await visitPrivateLink(page, await mailLink(name, 'verify-email'));
+  await page.goto('/oppskrifter/nn-laks');
+  await page.getByRole('link', { name: 'Lag min variant', exact: true }).click();
+  await expect(page.getByLabel('Mengd 1', { exact: true })).toHaveValue('600 g');
+  await page.getByLabel('Namn på oppskrifta').fill('Min sitronlaks');
+  await page.getByLabel('Mengd 1', { exact: true }).fill('420 g');
+  await page.getByRole('textbox', { name: 'Steg 1', exact: true }).fill('Skjer sitronen i skiver.');
+  await page.locator('input[type=file]').setInputFiles('public/images/middagar/laks.webp');
+  await expect(page.getByRole('img', { name: 'Foto til oppskrifta' })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.getByRole('button', { name: 'Lagre varianten' }).click();
+  await expect(page).toHaveURL(/\/kokebok\/[0-9a-f-]{36}$/);
+  const path = new URL(page.url()).pathname;
+  await expect(page.getByRole('heading', { name: 'Min sitronlaks', level: 1 })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'Min sitronlaks' })).toBeVisible();
+  await page.request.post('/api/auth/sign-out', { headers: { origin }, data: {} });
+  await mobile.close();
+  const desktop = await browser.newContext({ baseURL: origin });
+  const again = await desktop.newPage();
+  again.setDefaultTimeout(20000);
+  await login(again, email);
+  await expect(again).toHaveURL(/\/profil$/);
+  await again.goto('/kokebok');
+  await again
+    .getByRole('link')
+    .filter({ has: again.getByRole('heading', { name: 'Min sitronlaks' }) })
+    .click();
+  await expect(again.getByRole('img', { name: 'Min sitronlaks' })).toBeVisible();
+  await again.getByRole('link', { name: 'Rediger oppskrifta' }).click();
+  await expect(again.getByLabel('Mengd 1', { exact: true })).toHaveValue('420 g');
+  await again.getByRole('textbox', { name: 'Steg 1', exact: true }).fill('Del sitronen i to.');
+  await again.getByRole('button', { name: 'Lagre endringar' }).click();
+  await expect(again).toHaveURL(origin + path);
+  await expect(again.locator('.step-list')).toContainText('Del sitronen i to.');
+  await again.goto('/mi-veke');
+  await again.getByRole('button', { name: 'Vel middag for måndag', exact: true }).click();
+  const dinners = again.getByRole('combobox', { name: 'Middag', exact: true });
+  await expect(dinners.locator('optgroup[label="Mi kokebok"] option')).toHaveText(
+    'Min sitronlaks · Min variant',
+  );
+  await expect(dinners.locator('option[value="nn-laks"]')).toHaveText(
+    'Omnsbakt laks med poteter og erter',
+  );
+  await again.goto('/oppskrifter/nn-laks');
+  await expect(
+    again.locator('.ingredient-panel li').filter({ hasText: 'laksefilet' }),
+  ).toContainText('600 g');
+  await expect(again.locator('.step-list')).not.toContainText('Del sitronen i to.');
+  await desktop.close();
+});
 test('guest salmon login returns to the recipe; mobile week and shopping preview persist on Neon', async ({
   browser,
 }) => {
@@ -93,8 +164,8 @@ test('guest salmon login returns to the recipe; mobile week and shopping preview
   const potatoes = page.locator('.week-basket li').filter({ hasText: 'poteter' });
   await expect(potatoes).toHaveText(/poteter1\s?200 g/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.getByRole('heading', {name:'Mi veke.'}).scrollIntoViewIfNeeded();
-  await page.screenshot({path:'.local/week-mobile.png'});
+  await page.getByRole('heading', { name: 'Mi veke.' }).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: '.local/week-mobile.png' });
   await page.getByRole('button', { name: 'Legg veka i handlelista' }).click();
   await expect(page.getByRole('button', { name: 'Veka er lagd i handlelista' })).toBeDisabled();
   await page.request.post('/api/auth/sign-out', { headers: { origin }, data: {} });

@@ -12,7 +12,10 @@ vi.mock('@/lib/auth', async (original) => ({
   ...(await original<object>()),
   getAuth: () => services.auth,
 }));
-import { GET, POST } from '@/app/api/library/[resource]/route';
+import { GET, POST, PATCH } from '@/app/api/library/[resource]/route';
+import { GET as readPhoto } from '@/app/api/kokebok/[id]/bilete/route';
+import sharp from 'sharp';
+import { eq } from 'drizzle-orm';
 const origin = 'https://m-ltid.vercel.app';
 const outbox: Mail[] = [];
 let database: Awaited<ReturnType<typeof testDatabase>>;
@@ -24,11 +27,11 @@ const cookies = (response: Response) =>
     .getSetCookie()
     .map((v) => v.split(';')[0])
     .join('; ');
-async function login(email: string) {
+async function login(email: string, testIp = '198.51.100.10') {
   return auth.handler(
     new Request(`${origin}/api/auth/sign-in/email`, {
       method: 'POST',
-      headers: { origin, 'content-type': 'application/json' },
+      headers: { origin, 'content-type': 'application/json', 'x-real-ip': testIp },
       body: JSON.stringify({ email, password: 'test-password-12345' }),
     }),
   );
@@ -83,6 +86,91 @@ afterAll(async () => {
   await database?.client.close();
 });
 describe('real sessions through the favorites API', () => {
+  it('keeps personal recipes, photos and calendar choices private, including after a fresh login', async () => {
+    const id = crypto.randomUUID(),
+      ctx = { params: Promise.resolve({ resource: 'cookbook' }) };
+    const photoCtx = { params: Promise.resolve({ id }) };
+    const get = (cookie: string, query = '') =>
+      GET(new Request(origin + '/api/library/cookbook' + query, { headers: { cookie } }), ctx);
+    const original = async () =>
+      (await database.db.select().from(recipeCatalog).where(eq(recipeCatalog.id, 'nn-laks')))[0]
+        .data;
+    const before = await original();
+    const data = {
+      id,
+      title: before.title,
+      ingredients: [{ name: 'poteter', measure: '320 g' }],
+      servings: 2,
+      steps: ['Del potetene.'],
+      originalId: before.id,
+      image:
+        'data:image/jpeg;base64,' +
+        (
+          await sharp({ create: { width: 2, height: 2, channels: 3, background: 'green' } })
+            .jpeg()
+            .toBuffer()
+        ).toString('base64'),
+    };
+    expect((await POST(request('', data), ctx)).status).toBe(401);
+    expect((await POST(request(alice, data), ctx)).status).toBe(200);
+    expect(
+      (
+        await POST(
+          request(bob, {
+            ...data,
+            id: crypto.randomUUID(),
+            originalId: null,
+            image: null,
+            title: 'Berre min gryterett',
+          }),
+          ctx,
+        )
+      ).status,
+    ).toBe(200);
+    const secondDevice = await login('alice-api@example.test', '198.51.100.20');
+    expect(secondDevice.status).toBe(200);
+    const fresh = cookies(secondDevice);
+    const row = await (await get(fresh, '?id=' + id)).json();
+    expect(row).toMatchObject({
+      originalTitle: before.title,
+      hasImage: true,
+      revision: 1,
+      servings: 2,
+    });
+    const update = {
+      id,
+      title: 'Laks med mindre poteter',
+      ingredients: row.ingredients,
+      servings: 2,
+      steps: ['Skjer potetene i båtar.'],
+      revision: 1,
+    };
+    expect((await PATCH(request(bob, update), ctx)).status).toBe(404);
+    expect((await PATCH(request(fresh, update), ctx)).status).toBe(200);
+    expect((await PATCH(request(fresh, update), ctx)).status).toBe(409);
+    expect(await (await get(fresh, '?id=' + id)).json()).toMatchObject({
+      revision: 2,
+      hasImage: true,
+      steps: update.steps,
+    });
+    expect((await get(bob, '?id=' + id)).status).toBe(404);
+    expect((await (await get(bob)).json()).recipes.map((r: { title: string }) => r.title)).toEqual([
+      'Berre min gryterett',
+    ]);
+    expect((await readPhoto(request(bob), photoCtx)).status).toBe(404);
+    expect((await readPhoto(request(''), photoCtx)).status).toBe(401);
+    const photo = await readPhoto(request(fresh), photoCtx);
+    expect(photo.headers.get('cache-control')).toBe('private, no-store');
+    expect(photo.headers.get('content-type')).toBe('image/webp');
+    expect((await sharp(Buffer.from(await photo.arrayBuffer())).metadata()).format).toBe('webp');
+    const week = { params: Promise.resolve({ resource: 'week' }) },
+      day = { week: '2026-11-16', day: 2, recipeId: id, servings: 4 };
+    expect((await POST(request(bob, day), week)).status).toBe(404);
+    const plan = await (await POST(request(fresh, day), week)).json();
+    expect(plan.days[0].title).toContain('Min variant');
+    expect(plan.items).toContainEqual({ name: 'poteter', measure: '640 g' });
+    expect(await original()).toEqual(before);
+  });
   it('keeps independent weeks across login and imports the scaled preview exactly once', async () => {
     const week = '2026-11-02';
     const planner = cookies(await register('planner-api@example.test'));

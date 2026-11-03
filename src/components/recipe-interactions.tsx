@@ -166,10 +166,12 @@ export function IngredientsPanel({
   scale,
   setScale,
   ready,
+  linkIngredients,
 }: {
   recipe: Recipe;
   scale: number;
   ready: boolean;
+  linkIngredients: boolean;
   setScale: (value: number) => void;
 }) {
   const [busy, setBusy] = useState(false);
@@ -212,11 +214,11 @@ export function IngredientsPanel({
         </div>
       ) : (
         <p className="source-note">
-          Originalmengder frå kjelda. Porsjonstal er ikkje oppgitt; mengdene blir ikkje skalerte
-          automatisk.
+          Mengdene er oppgjevne for {recipe.servings || 4} porsjonar. Nokre mengder er skrivne som
+          tekst.
         </p>
       )}
-      <IngredientRows recipe={recipe} scale={scale} links />
+      <IngredientRows recipe={recipe} scale={scale} links={linkIngredients} />
       <button className="button" onClick={add} disabled={!ready || busy}>
         <ShoppingBag size={16} />
         {busy ? 'Legg til …' : 'Legg til i handlelista'}

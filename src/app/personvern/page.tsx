@@ -16,7 +16,8 @@ export default function Page() {
           nettlesar.
         </li>
         <li>
-          Favorittar, vekemenyar med porsjonstal, handleliste, produktval og profilinnstillingar.
+          Favorittar, eigne oppskrifter og foto, vekemenyar med porsjonstal, handleliste, produktval
+          og profilinnstillingar.
         </li>
         <li>Teknisk sendestatus for e-post og teljarar som hindrar misbruk.</li>
       </ul>

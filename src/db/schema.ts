@@ -12,9 +12,11 @@ import {
   uniqueIndex,
   index,
   primaryKey,
+  foreignKey,
+  unique,
 } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
-import type { Recipe } from '@/lib/recipes';
+import type { Ingredient, Recipe } from '@/lib/recipes';
 const created = () => timestamp('created_at', { withTimezone: true }).defaultNow().notNull();
 const updated = () => timestamp('updated_at', { withTimezone: true }).defaultNow().notNull();
 export const user = pgTable('users', {
@@ -100,6 +102,27 @@ export const recipeCatalog = pgTable('recipe_catalog', {
   data: jsonb('data').$type<Recipe>().notNull(),
   updatedAt: updated(),
 });
+export const cookbookRecipes = pgTable(
+  'cookbook_recipes',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    originalId: text('original_id').references(() => recipeCatalog.id),
+    title: text('title').notNull(),
+    servings: integer('servings').notNull(),
+    ingredients: jsonb('ingredients').$type<Ingredient[]>().notNull(),
+    steps: jsonb('steps').$type<string[]>().notNull(),
+    image: text('image_webp'),
+    revision: integer('revision').notNull().default(1),
+    updatedAt: updated(),
+  },
+  (t) => [
+    unique('cookbook_owner_id').on(t.userId, t.id),
+    check('cookbook_servings', sql`${t.servings} between 1 and 24`),
+  ],
+);
 // A blank day has no row. Each user can choose one dinner per day of a calendar week.
 export const weekDinners = pgTable(
   'week_dinners',
@@ -109,13 +132,18 @@ export const weekDinners = pgTable(
       .references(() => user.id, { onDelete: 'cascade' }),
     week: date('week_start').notNull(),
     day: integer('day').notNull(),
-    recipeId: text('recipe_id')
-      .notNull()
-      .references(() => recipeCatalog.id),
+    recipeId: text('recipe_id').references(() => recipeCatalog.id),
+    cookbookId: text('cookbook_id'),
     servings: integer('servings').notNull(),
   },
   (t) => [
     primaryKey({ columns: [t.userId, t.week, t.day] }),
+    foreignKey({
+      name: 'week_dinners_cookbook_owner_fk',
+      columns: [t.userId, t.cookbookId],
+      foreignColumns: [cookbookRecipes.userId, cookbookRecipes.id],
+    }),
+    check('week_dinners_one_recipe', sql`num_nonnulls(${t.recipeId}, ${t.cookbookId}) = 1`),
     check('week_dinners_day_range', sql`${t.day} between 0 and 6`),
     check('week_dinners_portions_range', sql`${t.servings} between 1 and 12`),
     check('week_dinners_monday', sql`extract(isodow from ${t.week}) = 1`),

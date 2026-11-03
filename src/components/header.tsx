@@ -9,6 +9,7 @@ const links = [
   ['/oppskrifter', 'Middagar'],
   ['/ingrediensar', 'Ingrediensar'],
   ['/mi-veke', 'Mi veke'],
+  ['/kokebok', 'Mi kokebok'],
   ['/favorittar', 'Favorittar'],
 ];
 const subscribe = () => () => {};

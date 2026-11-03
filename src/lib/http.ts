@@ -23,11 +23,28 @@ export function assertOrigin(request: Request) {
   if (!origin || !allowed.includes(origin))
     throw new AppError('Ugyldig opphav for førespurnaden.', 403);
 }
-export async function body<T>(request: Request, schema: z.ZodType<T>): Promise<T> {
-  if (Number(request.headers.get('content-length')) > 16000)
+export async function body<T>(
+  request: Request,
+  schema: z.ZodType<T>,
+  maxBytes = 16000,
+): Promise<T> {
+  if (Number(request.headers.get('content-length')) > maxBytes)
     throw new AppError('Førespurnaden er for stor.', 413);
-  const content = await request.text();
-  if (content.length > 16000) throw new AppError('Førespurnaden er for stor.', 413);
+  const reader = request.body?.getReader();
+  if (!reader) throw new AppError('Førespurnaden manglar innhald.', 400);
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > maxBytes) {
+      await reader.cancel();
+      throw new AppError('Førespurnaden er for stor.', 413);
+    }
+    chunks.push(value);
+  }
+  const content = Buffer.concat(chunks).toString('utf8');
   try {
     return schema.parse(JSON.parse(content));
   } catch {
@@ -36,7 +53,10 @@ export async function body<T>(request: Request, schema: z.ZodType<T>): Promise<T
 }
 export async function respond(fn: () => Promise<unknown>) {
   try {
-    return Response.json(await fn(), { headers: { 'Cache-Control': 'private, no-store' } });
+    const value = await fn();
+    const response = value instanceof Response ? value : Response.json(value);
+    response.headers.set('Cache-Control', 'private, no-store');
+    return response;
   } catch (error) {
     const status = error instanceof AppError ? error.status : error instanceof ZodError ? 400 : 500;
     const message =

@@ -8,7 +8,15 @@ import { dayNames, plusDays, dateLabel } from '@/lib/week-dates';
 
 type Choice = { id: string; title: string };
 const subscribe = () => () => {};
-export function WeekPlanner({ initial, recipes }: { initial: WeekPlan; recipes: Choice[] }) {
+export function WeekPlanner({
+  initial,
+  recipes,
+  personal,
+}: {
+  initial: WeekPlan;
+  recipes: Choice[];
+  personal: Choice[];
+}) {
   const [plan, setPlan] = useState(initial);
   const hydrated = useSyncExternalStore(
     subscribe,
@@ -104,11 +112,22 @@ export function WeekPlanner({ initial, recipes }: { initial: WeekPlan; recipes: 
                       Middag
                       <select value={recipeId} onChange={(e) => setRecipeId(e.target.value)}>
                         <option value="">La dagen stå tom</option>
-                        {recipes.map((r) => (
-                          <option key={r.id} value={r.id}>
-                            {r.title}
-                          </option>
-                        ))}
+                        {personal.length > 0 && (
+                          <optgroup label="Mi kokebok">
+                            {personal.map((r) => (
+                              <option key={r.id} value={r.id}>
+                                {r.title}
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+                        <optgroup label="Originalar frå MÅLTID">
+                          {recipes.map((r) => (
+                            <option key={r.id} value={r.id}>
+                              {r.title}
+                            </option>
+                          ))}
+                        </optgroup>
                       </select>
                     </label>
                     <label>

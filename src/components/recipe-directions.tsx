@@ -76,7 +76,15 @@ function TimerChoice({ text, start }: { text: string; start: (seconds: number) =
     </div>
   );
 }
-export function RecipeDirections({ recipe, children }: { recipe: Recipe; children: ReactNode }) {
+export function RecipeDirections({
+  recipe,
+  children,
+  privateRecipe = false,
+}: {
+  recipe: Recipe;
+  children?: ReactNode;
+  privateRecipe?: boolean;
+}) {
   const steps = recipe.steps;
   const { progress, update, localOnlyInMemory } = useCookingProgress(recipe.id, steps.length);
   const ready = useSyncExternalStore(
@@ -177,6 +185,7 @@ export function RecipeDirections({ recipe, children }: { recipe: Recipe; childre
         <IngredientsPanel
           recipe={recipe}
           ready={ready}
+          linkIngredients={!privateRecipe}
           scale={progress.scale}
           setScale={(scale) => update((p) => ({ ...p, scale }))}
         />

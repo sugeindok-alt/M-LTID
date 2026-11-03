@@ -4,6 +4,7 @@ export function PrivateNavigation({ current }: { current: string }) {
     <nav className="private-tabs" aria-label="Mine sider">
       {[
         ['/mi-veke', 'Mi veke'],
+        ['/kokebok', 'Mi kokebok'],
         ['/favorittar', 'Favorittar'],
         ['/handleliste', 'Handleliste'],
         ['/profil', 'Min konto'],

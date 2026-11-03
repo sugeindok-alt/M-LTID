@@ -11,12 +11,21 @@ import { consumeLimit } from '@/lib/rate-limit';
 import { lookupProducts } from '@/lib/product-service';
 import { barcodeSchema } from '@/lib/products';
 import { addWeek, changeDay, dayChange, importWeek, monday, readWeek } from '@/lib/week-planner';
+import { createCookbook, editCookbook, dinnerId, privateId } from '@/lib/cookbook-types';
+import { listCookbook, getCookbook, saveCookbook } from '@/lib/cookbook';
 type Context = { params: Promise<{ resource: string }> };
 export async function GET(request: Request, context: Context) {
   return respond(async () => {
     const { user } = await requireSession(request);
     const library = createLibrary(getDb());
     const { resource } = await context.params;
+    if (resource === 'cookbook') {
+      const id = new URL(request.url).searchParams.get('id');
+      if (id === null) return { recipes: await listCookbook(getDb(), user.id) };
+      const entry = await getCookbook(getDb(), user.id, id);
+      if (!entry) throw new AppError('Fann ikkje oppskrifta.', 404);
+      return entry;
+    }
     if (resource === 'week')
       return readWeek(
         getDb(),
@@ -54,6 +63,8 @@ export async function POST(request: Request, context: Context) {
     const library = createLibrary(db);
     const { resource } = await context.params;
     await consumeLimit(db, `mutation:${user.id}`, 60, 60);
+    if (resource === 'cookbook')
+      return saveCookbook(db, user.id, await body(request, createCookbook, 950000));
     if (resource === 'week') return changeDay(db, user.id, await body(request, dayChange));
     if (resource === 'week-shopping') return addWeek(db, user.id, await body(request, importWeek));
     if (resource === 'favorites') {
@@ -70,14 +81,16 @@ export async function POST(request: Request, context: Context) {
         request,
         z.object({
           requestId: z.uuid(),
-          recipeId: mealId.optional(),
+          recipeId: dinnerId.optional(),
           name: z.string().trim().min(1).max(100).optional(),
           measure: z.string().trim().max(80).default(''),
           scale: z.number().min(0.25).max(4).default(1),
         }),
       );
       if (input.recipeId) {
-        const recipe = await currentRecipe(input.recipeId);
+        const recipe = privateId.safeParse(input.recipeId).success
+          ? await getCookbook(db, user.id, input.recipeId)
+          : await currentRecipe(input.recipeId);
         if (!recipe) throw new AppError('Fann ikkje oppskrifta.', 404);
         await library.addItems(
           user.id,
@@ -145,6 +158,11 @@ export async function PATCH(request: Request, context: Context) {
   return respond(async () => {
     assertOrigin(request);
     const { user } = await requireSession(request);
+    if ((await context.params).resource === 'cookbook') {
+      const db = getDb();
+      await consumeLimit(db, `mutation:${user.id}`, 60, 60);
+      return saveCookbook(db, user.id, await body(request, editCookbook, 950000));
+    }
     if ((await context.params).resource !== 'shopping') throw new AppError('Ugyldig ressurs.', 404);
     const input = await body(
       request,

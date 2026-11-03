@@ -34,7 +34,10 @@ export function parseMeasure(value: string): { amount: number; unit: string } | 
   return { amount, unit: aliases[match[2]] ?? '' };
 }
 export function formatMeasure(amount: number, unit: string) {
-  return `${Number(amount.toFixed(3)).toLocaleString('nn-NO', { maximumFractionDigits: 3 })}${unit ? ` ${unit}` : ''}`;
+  // Mobile browsers without nn-NO locale data must render the same text as the server.
+  const [whole, fraction] = String(Number(amount.toFixed(3))).split('.');
+  const digits = whole.replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
+  return `${digits}${fraction ? ',' + fraction : ''}${unit ? ` ${unit}` : ''}`;
 }
 export function scaleMeasure(value: string, factor: number) {
   const p = parseMeasure(value);

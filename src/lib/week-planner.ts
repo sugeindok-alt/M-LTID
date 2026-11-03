@@ -3,11 +3,11 @@ import { createHash } from 'node:crypto';
 import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import type { Database } from '@/db';
-import { weekDinners, shoppingImports, recipeCatalog } from '@/db/schema';
+import { weekDinners, shoppingImports, recipeCatalog, cookbookRecipes as book } from '@/db/schema';
 import { AppError } from './errors';
 import { createLibrary } from './library';
 import { formatMeasure, parseMeasure, scaleMeasure } from './quantities';
-import { mealId } from './recipes';
+import { dinnerId, privateId, privateLabel } from './cookbook-types';
 import { isWeek } from './week-dates';
 
 export const monday = z.string().refine(isWeek);
@@ -15,7 +15,7 @@ export const dayChange = z
   .object({
     week: monday,
     day: z.number().int().min(0).max(6),
-    recipeId: mealId.nullable(),
+    recipeId: dinnerId.nullable(),
     servings: z.number().int().min(1).max(12),
   })
   .strict();
@@ -48,12 +48,31 @@ function sumIngredients(items: Ingredient[]) {
 }
 
 export async function readWeek(db: Database, owner: string, week: string) {
-  const rows = await db
-    .select({ day: weekDinners.day, servings: weekDinners.servings, recipe: recipeCatalog.data })
+  const stored = await db
+    .select({
+      day: weekDinners.day,
+      servings: weekDinners.servings,
+      published: recipeCatalog.data,
+      personal: {
+        id: book.id,
+        title: book.title,
+        servings: book.servings,
+        ingredients: book.ingredients,
+        originalId: book.originalId,
+      },
+    })
     .from(weekDinners)
-    .innerJoin(recipeCatalog, eq(recipeCatalog.id, weekDinners.recipeId))
+    .leftJoin(recipeCatalog, eq(recipeCatalog.id, weekDinners.recipeId))
+    .leftJoin(book, and(eq(book.id, weekDinners.cookbookId), eq(book.userId, weekDinners.userId)))
     .where(and(eq(weekDinners.userId, owner), eq(weekDinners.week, week)))
     .orderBy(weekDinners.day);
+  const rows = stored.map(({ day, servings, published, personal }) => {
+    const recipe = personal
+      ? { ...personal, title: personal.title + ' · ' + privateLabel(personal.originalId) }
+      : published;
+    if (!recipe) throw new AppError('Fann ikkje middagen i vekeplanen.', 404);
+    return { day, servings, recipe };
+  });
   const days = rows.map(({ day, servings, recipe }) => ({
     day,
     servings,
@@ -95,18 +114,30 @@ export async function changeDay(db: Database, owner: string, input: z.infer<type
         and(eq(weekDinners.userId, owner), eq(weekDinners.week, week), eq(weekDinners.day, day)),
       );
   } else {
-    const [row] = await db
-      .select({ recipe: recipeCatalog.data })
-      .from(recipeCatalog)
-      .where(eq(recipeCatalog.id, recipeId));
-    if (!row || row.recipe.archived || row.recipe.language !== 'nn')
-      throw new AppError('Denne middagen er ikkje tilgjengeleg.', 404);
+    const personal = privateId.safeParse(recipeId).success;
+    if (personal) {
+      const [entry] = await db
+        .select({ id: book.id })
+        .from(book)
+        .where(and(eq(book.userId, owner), eq(book.id, recipeId)));
+      if (!entry) throw new AppError('Denne middagen er ikkje tilgjengeleg.', 404);
+    } else {
+      const [row] = await db
+        .select({ recipe: recipeCatalog.data })
+        .from(recipeCatalog)
+        .where(eq(recipeCatalog.id, recipeId));
+      if (!row || row.recipe.archived || row.recipe.language !== 'nn')
+        throw new AppError('Denne middagen er ikkje tilgjengeleg.', 404);
+    }
+    const refs = personal
+      ? { recipeId: null, cookbookId: recipeId }
+      : { recipeId, cookbookId: null };
     await db
       .insert(weekDinners)
-      .values({ userId: owner, week, day, servings, recipeId })
+      .values({ userId: owner, week, day, servings, ...refs })
       .onConflictDoUpdate({
         target: [weekDinners.userId, weekDinners.week, weekDinners.day],
-        set: { servings, recipeId },
+        set: { servings, ...refs },
       });
   }
   return readWeek(db, owner, week);

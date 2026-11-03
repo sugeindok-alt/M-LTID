@@ -1,0 +1,140 @@
+.book-page .private-tabs {
+  flex-wrap: wrap;
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.book-list li,
+.book-empty {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.book-list a {
+  display: block;
+  padding: 1.3rem;
+}
+.book-list h2,
+.book-empty h2,
+.book-editor h2 {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  line-height: 1.25;
+  margin: 0.4rem 0;
+}
+.book-list p,
+.book-empty p {
+  color: var(--muted);
+}
+.book-empty {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+}
+.book-tools,
+.book-preview {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.2rem 0;
+}
+.book-editor {
+  max-width: 790px;
+}
+.book-editor .page-intro {
+  margin: 1rem 0;
+}
+.book-editor fieldset {
+  min-width: 0;
+  border: 0;
+  padding: 0;
+}
+.book-editor label {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.book-editor input:not([type='file']),
+.book-editor textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  padding: 0.6rem 0.75rem;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.book-editor .book-portions {
+  max-width: 6rem;
+}
+.book-editor section {
+  margin: 1.5rem 0;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+.book-ingredient,
+.book-step {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) 44px;
+  gap: 0.5rem;
+  align-items: end;
+  margin-bottom: 0.4rem;
+}
+.book-step {
+  grid-template-columns: minmax(0, 1fr) 44px;
+}
+.book-remove {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.5rem;
+}
+.book-remove:disabled {
+  opacity: 0.35;
+}
+.book-preview img {
+  width: 160px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: var(--soft);
+}
+.book-editor .book-file {
+  display: inline-flex;
+  position: relative;
+  margin-top: 0.75rem;
+  cursor: pointer;
+}
+.book-file input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.book-file:focus-within {
+  outline: 2px solid var(--ink);
+}
+.book-submit {
+  padding: 1rem 0;
+}
+@media (max-width: 580px) {
+  .book-ingredient {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) 44px;
+    gap: 0.3rem;
+  }
+  .book-submit > .button {
+    width: 100%;
+  }
+  .book-preview {
+    align-items: flex-start;
+  }
+}

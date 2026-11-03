@@ -81,6 +81,12 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
         accountsReady={authConfigured()}
         recipeEmailReady={Boolean(process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL)}
       />
+      <Link
+        href={'/kokebok/ny?original=' + encodeURIComponent(recipe.id)}
+        className="button secondary"
+      >
+        Lag min variant
+      </Link>
       {recipe.imageCredit && (
         <p className="source-note image-credit">
           {recipe.imageCredit.note} {recipe.imageCredit.author}.{' '}
