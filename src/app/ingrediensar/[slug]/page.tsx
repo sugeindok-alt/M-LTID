@@ -58,7 +58,7 @@ export default async function IngredientDetail({ params }: { params: Promise<{ s
           <RecipeGrid recipes={recipes.slice(0, 6)} />
         ) : (
           <div className="empty-state">
-            <p>Vi har ikkje lagt til middagar med denne råvara enno.</p>
+            <p>Ingen middagar i dagens utval bruker denne råvara.</p>
           </div>
         )}
       </section>
