@@ -16,6 +16,9 @@ const config: NextConfig = {
     ];
   },
   images: {
+    // Only the permanent editorial assets may enter the long-lived image cache.
+    // Owner and shared-book photos must check access on every request.
+    localPatterns: [{ pathname: '/images/**', search: '' }],
     remotePatterns: [
       { protocol: 'https', hostname: 'www.themealdb.com', pathname: '/images/**' },
       { protocol: 'https', hostname: 'images.openfoodfacts.org', pathname: '/images/**' },

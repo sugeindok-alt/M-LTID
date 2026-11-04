@@ -63,7 +63,7 @@ export const editorialRecipes: Recipe[] = [
     [
       'Skrell potetene og kok dei møre i vatn, om lag 20–25 minutt. Skrell gulrøtene, del dei i skiver og kok dei dei siste 8–10 minutta i ei eiga gryte.',
       'Rør kjøtdeigen seig med saltet. Bland inn pepar og potetmjøl. Spe med kald mjølk, litt om gongen, til farsen held godt saman.',
-      'Form 12 kjøtkaker med våte hender. Brun dei i 1 ss smør på middels sterk varme, om lag 3 minutt på kvar side.',
+      'Form tre jamstore kjøtkaker per porsjon med våte hender. Brun dei i ein tredel av smøret på middels sterk varme, om lag 3 minutt på kvar side.',
       'Smelt resten av smøret i ei gryte. Rør inn kveitemjølet og la blandinga bli nøttebrun medan du rører. Spe gradvis med krafta og visp sausen glatt.',
       'Legg kjøtkakene i sausen og la dei trekkje i 12–15 minutt til dei er gjennomvarme og gjennomsteikte. Server med poteter og gulrøter.',
     ],
@@ -92,7 +92,7 @@ export const editorialRecipes: Recipe[] = [
       'Set skrelte poteter til koking. Dei treng om lag 20–25 minutt frå oppkok. Riv gulrøtene og vend dei med sitronsaft.',
       'Lag fiskefarsen medan potetene kokar. Kontroller at fisken er utan skinn og bein. Skjer han i bitar og køyr han kort med salt i ei matmølle.',
       'Tilset potetmjøl og pepar. Spe med kald mjølk i ein tynn stråle til du får ei jamn farse. Stopp før farsen blir varm.',
-      'Form 12 flate kaker. Steik i smør på middels varme i om lag 4–5 minutt på kvar side. Dei skal vere faste og gjennomsteikte, utan rå kjerne.',
+      'Form tre flate fiskekaker per porsjon. Steik i smør på middels varme i om lag 4–5 minutt på kvar side. Dei skal vere faste og gjennomsteikte, utan rå kjerne.',
       'Server fiskekakene med dei kokte potetene og råkosten.',
     ],
     5,
@@ -332,7 +332,7 @@ export const editorialRecipes: Recipe[] = [
       'Set over ei stor gryte med vatn til pastaen. Start på sausen medan vatnet blir varmt.',
       'Finhakk kvitlauken. Varm olivenolja i ei panne og la kvitlauken surre i eitt minutt utan å bli brun.',
       'Ha i tomatar, chiliflak, oregano og salt. La sausen småkoke i 15 minutt. Ha pastaen i det kokande vatnet medan sausen småkokar og følg tida på pakninga.',
-      'Ta vare på 1 dl kokevatn før du heller av pastaen. Vend pastaen inn i sausen og tilset litt pastavatn om sausen er for tjukk. Riv basilikumen grovt og rør han inn. Server med reven hardost laga med vegetabilsk løype.',
+      'Ta vare på litt kokevatn før du heller av pastaen. Vend pastaen inn i sausen og tilset litt pastavatn om sausen er for tjukk. Riv basilikumen grovt og rør han inn. Server med reven hardost laga med vegetabilsk løype.',
     ],
     3,
   ),
@@ -663,7 +663,7 @@ export const editorialRecipes: Recipe[] = [
     [
       'Visp begge mjølsortane og saltet saman med halvparten av mjølka til ei klumpfri røre. Visp inn resten av mjølka og egga. La røra svelle i 10 minutt.',
       'Lag fyllet medan røra svell. Hakk lauk og kvitlauk og fres i ein fjerdedel av oljen i 3–4 minutt. Skyl bønnene og la dei renne av. Vend inn bønner og spinat og varm til spinaten fell saman. Krydre med pepar.',
-      'Steik åtte tynne pannekaker på middels varme i resten av oljen, om lag 2 minutt på den første sida og 1 minutt på den andre. Hald dei varme under eit klede.',
+      'Steik to tynne pannekaker per porsjon på middels varme i resten av oljen, om lag 2 minutt på den første sida og 1 minutt på den andre. Hald dei varme under eit klede.',
       'Riv osten og varm opp fyllet om nødvendig. Fordel fyllet og osten på pannekakene. Rull dei saman og server medan osten er mjuk.',
     ],
   ),
@@ -718,7 +718,7 @@ export const editorialRecipes: Recipe[] = [
     [
       'Skrell potetene og kok dei møre, om lag 20–25 minutt frå oppkok. Skrell lauken og skjer han i tynne ringar.',
       'Steik lauken i halvparten av smøret på middels varme i 12–15 minutt. Rør av og til. Riv gulrøtene og vend dei med sitronsaft medan lauken blir mjuk og gyllen.',
-      'Tørk fisken og del han i fire jamstore stykke. Bland mjøl, salt og pepar og vend fisken lett i blandinga. Legg lauken på ein tallerken.',
+      'Tørk fisken og del han i jamstore porsjonsstykke. Bland mjøl, salt og pepar og vend fisken lett i blandinga. Legg lauken på ein tallerken.',
       'Smelt resten av smøret i panna og steik seien i om lag 3–4 minutt på kvar side, til han deler seg i flak. Varm lauken ved sida av fisken det siste minuttet. Hell vatnet av potetene og server med råkosten.',
     ],
   ),
@@ -797,7 +797,7 @@ export const editorialRecipes: Recipe[] = [
       ['0,25 ts', 'pepar'],
     ],
     [
-      'Kok risen etter rettleiinga på pakninga, og brei han tynt utover eit fat så dampen slepper ut medan du førebur grønsakene. Har du ris som vart raskt kjølt ned og lagra i kjøleskap, kan du bruke om lag 650 g kokt ris i staden for 250 g tørr.',
+      'Kok risen etter rettleiinga på pakninga, og brei han tynt utover eit fat så dampen slepper ut medan du førebur grønsakene. Har du ris som vart raskt kjølt ned og lagra i kjøleskap, kan du bruke om lag 160 g kokt ris per porsjon i staden.',
       'Skjer gulrøtene i små terningar, finsnitt kålen og hakk lauken. Visp egga saman med halvparten av saltet. Varm litt av oljen i ei stor panne og steik egga under omrøring til dei har stivna i mjuke bitar. Legg dei på ein tallerken.',
       'Ha resten av oljen i panna. Steik gulrot og lauk i 4–5 minutt. Tilset kål og karri og steik vidare i 3 minutt.',
       'Ha i ris og erter. Steik på middels sterk varme i 5–6 minutt og vend ofte, til risen er rykande varm. Vend inn egget og smak til med resten av saltet og pepar. Server med det same.',
@@ -933,7 +933,7 @@ export const editorialRecipes: Recipe[] = [
       'Set over pastavatnet. Hakk kvitlauken, skyl spinaten og la bønnene renne av. Ha pastaen i det kokande vatnet og kok etter tida på pakninga.',
       'Medan pastaen kokar, varm oljen i ei stor panne. Fres kvitlauken kort utan at han får farge. Tilset bønnene og mjølka og mos halvparten av bønnene med ein gaffel.',
       'Vend inn spinaten litt om gongen og la sausen småkoke i 3–4 minutt. Riv hardosten og rør halvparten inn i sausen. Smak til med salt og pepar.',
-      'Ta vare på 1 dl pastavatn før du heller av pastaen. Vend pastaen inn i sausen og spe med litt pastavatn til han er saftig. Strø resten av osten over.',
+      'Ta vare på litt pastavatn før du heller av pastaen. Vend pastaen inn i sausen og spe med litt pastavatn til han er saftig. Strø resten av osten over.',
     ],
   ),
   recipe(
@@ -959,7 +959,7 @@ export const editorialRecipes: Recipe[] = [
     [
       'Hakk lauk og paprika. Fres dei i olje i ei vid steikepanne i 4–5 minutt. Rør inn paprikapulveret.',
       'Skyl bønnene og la dei renne av. Ha bønner, tomatar, salt og pepar i panna. La sausen småkoke i 6 minutt.',
-      'Lag fire groper i sausen med ei skei og knekk eitt egg i kvar grop. Legg på lok og la panna stå på svak varme i 6–9 minutt, til eggekvitane har stivna.',
+      'Lag ei grop i sausen for kvart egg. Knekk eitt egg i kvar grop. Legg på lok og la panna stå på svak varme i 6–9 minutt, til eggekvitane har stivna.',
       'Rist grovbrødet i brødristar eller tørr panne medan egga trekkjer. Server med ein gong, med brød til å få opp sausen.',
     ],
   ),
@@ -984,7 +984,7 @@ export const editorialRecipes: Recipe[] = [
     ],
     [
       'Skrell potetene og set dei til koking. Rekn med 20–25 minutt frå oppkok. Skjer lauken i tynne skiver og steik han i halvparten av smøret i 12–15 minutt på middels varme. Rør av og til.',
-      'Medan lauken steikjer, rør kjøtdeigen kort saman med salt, pepar, potetmjøl og vatn. Form åtte flate karbonadar, om lag 1,5 cm tjukke.',
+      'Medan lauken steikjer, rør kjøtdeigen kort saman med salt, pepar, potetmjøl og vatn. Form to flate karbonadar per porsjon, om lag 1,5 cm tjukke.',
       'Legg lauken til side. Steik karbonadane i resten av smøret i to omgangar, om lag 3–4 minutt på kvar side, til dei er gjennomsteikte. Hald den første omgangen varm under lok.',
       'Kok ertene i 2–3 minutt mot slutten av steiketida. Varm lauken i panna, hell vatnet av poteter og erter og server alt saman.',
     ],

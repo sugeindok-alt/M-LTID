@@ -117,6 +117,8 @@ test('A publishes only reviewed copies, B and a guest can read, and withdrawal c
   await page.getByRole('button', { name: 'Publiser denne utgåva' }).click();
   await expect(page.getByRole('link', { name: 'Opne den offentlege kokeboka' })).toBeVisible();
   const reader = await guest.newPage();
+  const proxy = '/_next/image?url=' + encodeURIComponent(image) + '&w=640&q=75';
+  expect((await guest.request.get(proxy)).status()).toBe(400);
   await reader.goto('/boker/' + id);
   await expect(reader.getByRole('heading', { name: 'Kvardagsboka' })).toBeVisible();
   await expect(reader.getByRole('heading', { name: 'Potetbåtar for to' })).toBeVisible();
