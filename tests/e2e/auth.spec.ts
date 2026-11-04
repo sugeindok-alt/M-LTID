@@ -101,9 +101,19 @@ test('ready-made dinner week on mobile: sign up, keep Monday, replace Wednesday,
     await page.getByRole('button', { name: 'Legg veka i handlelista' }).click({ clickCount: 2 });
     await expect(page.getByRole('button', { name: 'Veka er lagd i handlelista' })).toBeDisabled();
     await page.getByRole('link', { name: 'Opne handlelista' }).click();
-    await expect(page.getByRole('textbox', { name: 'Mengd for poteter' })).toHaveValue(
-      /^1\s?400 g$/,
-    );
+    await expect(page.getByRole('textbox', { name: 'Mengd for poteter' })).toHaveValue('1,4 kg');
+    // Keep this page mounted: the old editor kept 600 g after the server merged the next 800 g.
+    const addForm = page.locator('.shopping-form');
+    const merged = page.getByRole('textbox', { name: 'Mengd for småpoteter', exact: true });
+    for (const [measure, expected] of [
+      ['600 g', '600 g'],
+      ['800 g', '1,4 kg'],
+    ]) {
+      await addForm.getByLabel('Legg til ei vare').fill('småpoteter');
+      await addForm.getByLabel('Mengd', { exact: true }).fill(measure);
+      await addForm.getByRole('button', { name: 'Legg til', exact: true }).click();
+      await expect(merged).toHaveValue(expected);
+    }
     await page
       .getByRole('navigation', { name: 'Mine sider' })
       .getByRole('link', { name: 'Mi veke', exact: true })
@@ -141,6 +151,7 @@ test('private cookbook variant follows the user from mobile to a new login on de
   await expect(page.getByLabel('Mengd 1', { exact: true })).toHaveValue('600 g');
   await page.getByLabel('Namn på oppskrifta').fill('Min sitronlaks');
   await page.getByLabel('Mengd 1', { exact: true }).fill('420 g');
+  await page.getByLabel('Mengd 2', { exact: true }).fill('etter smak');
   await page.getByRole('textbox', { name: 'Steg 1', exact: true }).fill('Skjer sitronen i skiver.');
   await page.locator('input[type=file]').setInputFiles('public/images/middagar/laks.webp');
   await expect(page.getByRole('img', { name: 'Foto til oppskrifta' })).toBeVisible();
@@ -155,6 +166,7 @@ test('private cookbook variant follows the user from mobile to a new login on de
   const desktop = await browser.newContext({ baseURL: origin });
   const again = await desktop.newPage();
   again.setDefaultTimeout(20000);
+  again.setDefaultNavigationTimeout(60000);
   await login(again, email);
   await expect(again).toHaveURL(/\/profil$/);
   await again.goto('/kokebok');
@@ -169,7 +181,7 @@ test('private cookbook variant follows the user from mobile to a new login on de
   await again.getByRole('button', { name: 'Lagre endringar' }).click();
   await expect(again).toHaveURL(origin + path);
   await expect(again.locator('.step-list')).toContainText('Del sitronen i to.');
-  await again.goto('/mi-veke');
+  await again.goto('/mi-veke', { waitUntil: 'domcontentloaded' });
   await again.getByRole('button', { name: 'Vel middag for måndag', exact: true }).click();
   const dinners = again.getByRole('combobox', { name: 'Middag', exact: true });
   await expect(dinners.locator('optgroup[label="Mi kokebok"] option')).toHaveText(
@@ -178,6 +190,28 @@ test('private cookbook variant follows the user from mobile to a new login on de
   await expect(dinners.locator('option[value="nn-laks"]')).toHaveText(
     'Omnsbakt laks med poteter og erter',
   );
+  await dinners.selectOption(path.split('/').at(-1)!);
+  await again.getByRole('combobox', { name: 'Porsjonar', exact: true }).selectOption('3');
+  await again.getByRole('button', { name: 'Lagre dagen' }).click();
+  await again.getByRole('link', { name: 'Opne oppskrifta for måndag' }).click();
+  await expect(again).toHaveURL(origin + path + '?porsjonar=3');
+  await again.reload();
+  await expect(
+    again.getByRole('link', { name: 'Endre porsjonstal, no 3', exact: true }),
+  ).toBeVisible();
+  await expect(
+    again.getByRole('combobox', { name: 'Porsjonar' }).locator('option:checked'),
+  ).toHaveText('3 porsjonar');
+  await expect(
+    again.locator('.ingredient-panel li').filter({ hasText: 'laksefilet' }),
+  ).toContainText('315 g');
+  await expect(again.locator('.ingredient-panel')).toContainText('etter smak');
+  await again.getByRole('button', { name: 'Start matlaging' }).click();
+  await again.getByRole('button', { name: 'Vis ingredienslista' }).click();
+  await expect(again.locator('#cook-ingredients')).toContainText('TIL 3 PORSJONAR');
+  await expect(
+    again.locator('#cook-ingredients li').filter({ hasText: 'laksefilet' }),
+  ).toContainText('315 g');
   await again.goto('/oppskrifter/nn-laks');
   await expect(
     again.locator('.ingredient-panel li').filter({ hasText: 'laksefilet' }),

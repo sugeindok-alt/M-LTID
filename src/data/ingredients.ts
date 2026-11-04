@@ -2,6 +2,22 @@ import { editorialRecipes } from './recipes';
 import { ingredientSlug } from '@/lib/recipes';
 import { rawImage } from './raw-images';
 const descriptions: Record<string, [string, string, string[]?]> = {
+  byggmjøl: [
+    'Basisvarer',
+    'Byggmjøl er mølt av bygg og gir ein mild kornsmak. Rør det inn litt om gongen for å unngå klumpar.',
+  ],
+  bacon: [
+    'Fisk og kjøt',
+    'Bacon er salta svinekjøt. Skjer det i bitar om du vil strø det over retten, og steik bitane gylne i panna.',
+  ],
+  grautris: [
+    'Basisvarer',
+    'Grautris har korte, runde korn som gir ein fyldig graut. La risen småkoke og rør langs botnen når du tilset mjølka.',
+  ],
+  sjampinjong: [
+    'Grønsaker',
+    'Børst av soppen og skjer han i skiver. Steik i ei romsleg panne til skivene har fått farge.',
+  ],
   middagspølse: [
     'Fisk og kjøt',
     'Skjer pølsa i skiver eller terningar. Følg tilrådinga på pakninga når du varmar henne.',

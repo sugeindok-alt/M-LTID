@@ -84,7 +84,11 @@ export async function POST(request: Request, context: Context) {
           recipeId: dinnerId.optional(),
           name: z.string().trim().min(1).max(100).optional(),
           measure: z.string().trim().max(80).default(''),
-          scale: z.number().min(0.25).max(4).default(1),
+          scale: z
+            .number()
+            .min(1 / 24)
+            .max(12)
+            .default(1),
         }),
       );
       if (input.recipeId) {

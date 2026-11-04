@@ -12,9 +12,22 @@ const index = z.number().int().nonnegative();
 const storedProgress = z.object({
   step: index.nullable(),
   done: z.array(index),
-  scale: z.union([z.literal(0.5), z.literal(1), z.literal(2)]),
+  scale: z
+    .number()
+    .min(1 / 24)
+    .max(12),
   timer: z.object({ step: index, end: z.number().int().positive() }).nullable(),
 });
+export function linkedServings(value: unknown) {
+  if (typeof value !== 'string' || !/^\d{1,2}(?:\.5)?$/.test(value)) return null;
+  const count = Number(value);
+  return count >= 0.5 && count <= 48 ? count : null;
+}
+export function portionChoices(base: number) {
+  return [
+    ...new Set([...Array.from({ length: 12 }, (_, i) => i + 1), base / 2, base, base * 2]),
+  ].sort((a, b) => a - b);
+}
 export function readCooking(raw: string | null, count: number): CookingProgress {
   if (!raw) return initialCooking();
   try {

@@ -1,5 +1,41 @@
 import { test, expect } from '@playwright/test';
 
+test('a linked dinner keeps its serving count in the heading, ingredients and cooking mode', async ({
+  page,
+}) => {
+  const path = '/oppskrifter/nn-torsk?porsjonar=3';
+  await page.goto(path);
+  const headingLink = page.getByRole('link', { name: 'Endre porsjonstal, no 3', exact: true });
+  await expect(headingLink).toContainText('3 porsjonar');
+  await headingLink.click();
+  const selector = page.getByRole('combobox', { name: 'Porsjonar' });
+  await expect(selector).toBeInViewport();
+  await expect(selector.locator('option:checked')).toHaveText('3 porsjonar');
+  await expect(page.locator('.ingredient-panel li').filter({ hasText: 'poteter' })).toContainText(
+    '600 g',
+  );
+  await page.getByRole('button', { name: 'Start matlaging' }).click();
+  await page.getByRole('button', { name: 'Vis ingredienslista' }).click();
+  await expect(page.locator('#cook-ingredients')).toContainText('TIL 3 PORSJONAR');
+  await expect(
+    page.locator('#cook-ingredients li').filter({ hasText: 'torskefilet' }),
+  ).toContainText('450 g');
+  await page.getByRole('button', { name: 'Tilbake til oppskrifta' }).click();
+  await selector.selectOption({ label: '5 porsjonar' });
+  await page.reload();
+  await expect(
+    page.getByRole('link', { name: 'Endre porsjonstal, no 5', exact: true }),
+  ).toBeVisible();
+  await expect(selector.locator('option:checked')).toHaveText('5 porsjonar');
+  await expect(
+    page.locator('.ingredient-panel li').filter({ hasText: 'torskefilet' }),
+  ).toContainText('750 g');
+  // Opening a different day's link must take precedence over the remembered five.
+  await page.goto(path);
+  await expect(headingLink).toBeVisible();
+  await expect(selector.locator('option:checked')).toHaveText('3 porsjonar');
+});
+
 test('guest cooks salmon on mobile and resumes the step and real time remaining', async ({
   page,
   context,
@@ -50,6 +86,7 @@ test('guest cooks salmon on mobile and resumes the step and real time remaining'
   await resumed.getByRole('button', { name: 'Stopp nedteljinga' }).click();
   const select = resumed.getByRole('combobox', { name: 'Vel tid' });
   await expect(select.locator('option')).toHaveText([
+    '9 minutt',
     '12 minutt',
     '13 minutt',
     '14 minutt',

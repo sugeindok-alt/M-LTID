@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ingredients } from '@/data/ingredients';
 export const metadata = {
   title: 'Om innhaldet',
   description: 'Slik lagar og vedlikeheld MÅLTID oppskrifter og matillustrasjonar.',
@@ -35,9 +36,9 @@ export default function Page() {
       </p>
       <h2>Bilete av råvarene</h2>
       <p>
-        Råvareguiden viser 70 KI-genererte illustrasjonar. Kvart motiv er laga for den namngjevne
-        råvara og kontrollert saman med namnet. Det same biletet følgjer råvara frå søk til
-        detaljside.
+        Råvareguiden viser {ingredients.filter((item) => item.image).length} KI-genererte
+        illustrasjonar. Kvart motiv er laga for den namngjevne råvara og kontrollert saman med
+        namnet. Det same biletet følgjer råvara frå søk til detaljside.
       </p>
       <h2>Råvarer og prosessering</h2>
       <p>

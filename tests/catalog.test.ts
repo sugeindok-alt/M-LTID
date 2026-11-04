@@ -25,8 +25,9 @@ describe('Norwegian editorial catalogue', () => {
   });
   it('publishes complete Nynorsk recipes with real local image files and valid ingredient links', () => {
     const published = filterRecipes(catalogSnapshot);
-    expect(published).toHaveLength(36);
+    expect(published).toHaveLength(56);
     expect(new Set(published.map((r) => r.id)).size).toBe(published.length);
+    expect(new Set(published.map((r) => r.title)).size).toBe(published.length);
     expect(new Set(published.map((r) => r.image)).size).toBe(published.length);
     for (const recipe of catalogSnapshot) {
       expect(mealId.safeParse(recipe.id).success).toBe(true);
@@ -38,10 +39,12 @@ describe('Norwegian editorial catalogue', () => {
       for (const ingredient of recipe.ingredients) {
         expect(ingredients.some((i) => i.slug === ingredient.slug)).toBe(true);
         expect(parseMeasure(ingredient.measure)).not.toBeNull();
-        expect(parseMeasure(scaleMeasure(ingredient.measure, 0.5))?.amount).toBeCloseTo(
-          parseMeasure(ingredient.measure)!.amount / 2,
-          3,
-        );
+        for (const factor of [0.5, 1, 2]) {
+          const scaled = parseMeasure(scaleMeasure(ingredient.measure, factor));
+          const base = parseMeasure(ingredient.measure)!;
+          expect(scaled?.amount).toBeCloseTo(base.amount * factor, 3);
+          expect(scaled?.unit).toBe(base.unit);
+        }
       }
     }
   });

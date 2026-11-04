@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useSyncExternalStore, type FormEvent } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { OwnerBook, Preview } from '@/lib/book-sharing';
 
@@ -289,62 +290,37 @@ export function BookManager({ initial, recipes }: { initial: OwnerBook; recipes:
               className="button secondary"
               disabled={!selected.length || dirty}
               onClick={() =>
-                run(async () =>
+                run(async () => {
+                  setPreview(null);
                   setPreview(
                     await bookRequest<Preview>({
                       action: 'preview',
                       id: book.id,
                       selections: selected,
                     }),
-                  ),
-                )
+                  );
+                })
               }
             >
               Førehandsvis delinga
             </button>
             {preview && (
-              <div className="share-preview">
-                <h2>Dette blir offentleg</h2>
-                <h3>{preview.title}</h3>
-                <p>{preview.description}</p>
-                {preview.recipes.map((r) => (
-                  <details key={r.id}>
-                    <summary>
-                      {r.title} · {r.photo ? 'med foto' : 'utan foto'}
-                    </summary>
-                    <p>{r.servings} porsjonar</p>
-                    <ul>
-                      {r.ingredients.map((i, n) => (
-                        <li key={n}>
-                          {i.measure} {i.name}
-                        </li>
-                      ))}
-                    </ul>
-                    <ol>
-                      {r.steps.map((s, n) => (
-                        <li key={n}>{s}</li>
-                      ))}
-                    </ol>
-                  </details>
-                ))}
-                <button
-                  className="button"
-                  onClick={() =>
-                    run(async () => {
-                      await bookRequest({
-                        action: 'publish',
-                        id: book.id,
-                        selections: selected,
-                        approval: preview.approval,
-                      });
-                      await refresh();
-                      setStatus('Den viste utgåva er publisert.');
-                    })
-                  }
-                >
-                  Publiser denne utgåva
-                </button>
-              </div>
+              <SharePreview
+                key={preview.approval}
+                preview={preview}
+                publish={() =>
+                  run(async () => {
+                    await bookRequest({
+                      action: 'publish',
+                      id: book.id,
+                      selections: selected,
+                      approval: preview.approval,
+                    });
+                    await refresh();
+                    setStatus('Den viste utgåva er publisert.');
+                  })
+                }
+              />
             )}
           </>
         )}
@@ -359,9 +335,15 @@ export function BookManager({ initial, recipes }: { initial: OwnerBook; recipes:
             className="button secondary"
             onClick={() =>
               run(async () => {
-                await navigator.clipboard.writeText(
-                  new URL(sharePath, window.location.origin).href,
-                );
+                try {
+                  await navigator.clipboard.writeText(
+                    new URL(sharePath, window.location.origin).href,
+                  );
+                } catch {
+                  throw new Error(
+                    'Klarte ikkje å kopiere lenkja. Opne den offentlege kokeboka og kopier adressa frå nettlesaren.',
+                  );
+                }
                 setStatus('Delingslenkja er kopiert.');
               })
             }
@@ -376,6 +358,63 @@ export function BookManager({ initial, recipes }: { initial: OwnerBook; recipes:
           {error}
         </p>
       )}
+    </div>
+  );
+}
+
+function SharePreview({ preview, publish }: { preview: Preview; publish: () => void }) {
+  const [photos, setPhotos] = useState<Record<string, 'loaded' | 'error'>>({});
+  const waiting = preview.recipes.some((r) => r.photo && photos[r.id] !== 'loaded');
+  return (
+    <div className="share-preview">
+      <h2>Dette blir offentleg</h2>
+      <h3>{preview.title}</h3>
+      <p>{preview.description}</p>
+      {preview.recipes.map((r) => (
+        <section key={r.id}>
+          {r.photo && (
+            <figure>
+              <Image
+                unoptimized
+                loading="eager"
+                src={'/api/kokebok/' + r.id + '/bilete?v=' + r.revision}
+                width={256}
+                height={192}
+                alt={'Foto som blir delt: ' + r.title}
+                onLoad={() => setPhotos((p) => ({ ...p, [r.id]: 'loaded' }))}
+                onError={() => setPhotos((p) => ({ ...p, [r.id]: 'error' }))}
+              />
+              <figcaption>{r.title} · dette fotoet blir delt</figcaption>
+              {photos[r.id] === 'error' && (
+                <p role="alert">
+                  Fekk ikkje vist fotoet. Prøv førehandsvisinga på nytt, eller ta bort fotovalet.
+                </p>
+              )}
+            </figure>
+          )}
+          <details>
+            <summary>
+              {r.title} · {r.photo ? 'med foto' : 'utan foto'}
+            </summary>
+            <p>{r.servings} porsjonar</p>
+            <ul>
+              {r.ingredients.map((i, n) => (
+                <li key={n}>
+                  {i.measure} {i.name}
+                </li>
+              ))}
+            </ul>
+            <ol>
+              {r.steps.map((s, n) => (
+                <li key={n}>{s}</li>
+              ))}
+            </ol>
+          </details>
+        </section>
+      ))}
+      <button className="button" disabled={waiting} onClick={publish}>
+        Publiser denne utgåva
+      </button>
     </div>
   );
 }

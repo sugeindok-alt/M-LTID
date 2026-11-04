@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useSyncExternalStore } from 'react';
+import { useRef, useState, useSyncExternalStore } from 'react';
 import { Menu, X, ArrowUpRight, ShoppingBag, UserRound } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 const links = [
@@ -16,20 +16,37 @@ const subscribe = () => () => {};
 export function Header({ accountsReady }: { accountsReady: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const toggle = useRef<HTMLButtonElement>(null);
+  function current(href: string) {
+    if (pathname === href) return 'page';
+    if (href !== '/' && pathname.startsWith(href + '/')) return 'location';
+  }
   const hydrated = useSyncExternalStore(
     subscribe,
     () => true,
     () => false,
   );
   return (
-    <header className="header">
+    <header
+      className="header"
+      onKeyDown={(event) => {
+        if (open && event.key === 'Escape') {
+          event.preventDefault();
+          setOpen(false);
+          toggle.current?.focus();
+        }
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+      }}
+    >
       <div className="container header-inner">
         <Link href="/" className="wordmark" aria-label="MÅLTID – heim">
           MÅLTID<span>.</span>
         </Link>
         <nav className="desktop-nav" aria-label="Hovudmeny">
           {links.map(([href, label]) => (
-            <Link key={href} href={href} aria-current={pathname === href ? 'page' : undefined}>
+            <Link key={href} href={href} aria-current={current(href)}>
               {label}
             </Link>
           ))}
@@ -46,6 +63,7 @@ export function Header({ accountsReady }: { accountsReady: boolean }) {
             </Link>
           )}
           <button
+            ref={toggle}
             className="icon-button mobile-toggle"
             disabled={!hydrated}
             aria-label={open ? 'Lukk meny' : 'Opne meny'}
@@ -61,7 +79,12 @@ export function Header({ accountsReady }: { accountsReady: boolean }) {
         <nav id="mobile-nav" className="mobile-nav" aria-label="Mobilmeny">
           {[...links, ['/profil', 'Min konto'], ['/handleliste', 'Handleliste']].map(
             ([href, label]) => (
-              <Link href={href} key={href} onClick={() => setOpen(false)}>
+              <Link
+                href={href}
+                key={href}
+                aria-current={current(href)}
+                onClick={() => setOpen(false)}
+              >
                 {label}
                 <ArrowUpRight size={18} />
               </Link>

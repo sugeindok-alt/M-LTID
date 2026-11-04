@@ -238,5 +238,125 @@
     "atlas": 5,
     "panel": "bottom right",
     "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "raspeballar",
+    "subject": "West Norwegian raspeballar: three grey-beige round rustic grated potato and barley dumplings with slightly rough texture, with pan-fried brown Norwegian sausage slices and orange mashed swede and carrots. No gravy.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "kalrulettar",
+    "subject": "Norwegian cabbage rolls filled with beef mince and cooked rice, soft pale green cabbage leaves wrapped tightly into short oblong parcels, one cut open to reveal filling, alongside peeled boiled potatoes and light brown braising broth.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "fleskepannekake",
+    "subject": "Norwegian fleskepannekake, thick oven-baked golden sheet pancake with visible crisp bacon pieces on top, a rectangular slice and a small heap of grated raw carrot and red apple beside it. No syrup.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "polse-med-stappe",
+    "subject": "Browned plump Norwegian dinner sausage pieces beside creamy mashed potatoes with a little pale green leek and golden fried onion rings. No gravy or mustard.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "risgraut",
+    "subject": "Norwegian white rice porridge, soft plump individual short grains in thick milk, with a single melting butter pat. A few thin red apple slices in a small side bowl. No cinnamon, berries or sugar.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "torsk-med-eggesmor",
+    "subject": "Flaked white poached cod, Norwegian egg butter with small chopped boiled egg and parsley on top; boiled potatoes and sliced orange carrots alongside.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "lakseburger",
+    "subject": "Pan-fried homemade salmon burger of chopped pink salmon with herb dill, golden outside, open sandwich on one slice of dark Norwegian wholemeal bread, with lettuce, cucumber slices and sour cream. No hamburger buns or chips.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "fisketaco",
+    "subject": "Two warm soft wheat tacos filled with chunky pan-fried white saithe, thinly shredded pale cabbage, red apple matchsticks and sour cream. No avocado, corn or cheese.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "fiskeform-med-purre",
+    "subject": "Home-baked casserole of pieces of white saithe in a creamy milk and leek sauce, pale rings of leek, thin sliced parboiled potatoes and golden melted cheese. Cream ceramic gratin dish with a spoonful taken showing distinct layers.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "torsk-med-ertemos",
+    "subject": "Pan-fried cod fillet on a mound of coarse vivid green pea mash, with peeled boiled potatoes and fresh lemon wedge. Crisp golden top to white flaky cod.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "kyllingfrikasse",
+    "subject": "Traditional Norwegian chicken fricassee, pale silky white sauce with chunks of cooked chicken, carrots, green leek and small broccoli florets in a shallow bowl; peeled boiled potatoes on the side. No orange curry.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "kyllingspyd",
+    "subject": "Norwegian weeknight oven-grilled skewers with browned chunks of paprika-seasoned chicken and red peppers, white rice and a cucumber and sour cream salad. No pita or tomatoes.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "kyllingsuppe-med-ris",
+    "subject": "Clear Norwegian chicken soup with pieces of chicken breast, rice grains, sliced carrots and thin leek rings, sprinkled with parsley, in a deep rustic bowl.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "fylte-paprikaer",
+    "subject": "Oven-baked halved red bell peppers, generously filled with rice, cooked white beans and chopped tomato, topped with melted cheese. One slightly split pepper reveals white beans and rice.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "potetlompewrap",
+    "subject": "Thin handmade Norwegian soft potato flatbreads (lomper), browned speckles, rolled around shredded light cabbage, grated carrot, cooked brown dinner sausage and sour cream. A roll is sliced to show the filling. No plastic packaged tortillas.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "bonnekaker",
+    "subject": "Three crisp pan-fried white bean patties with small grated carrot flecks; a coarsely grated raw carrot and apple salad beside them and a spoonful of sour cream. No meat, bread or dipping sauce.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "brokkolisuppe",
+    "subject": "Vivid light green smoothly blended broccoli soup in a deep cream bowl, a few small cooked broccoli florets and finely grated vegetarian cheese on the soup. A slice of dark wholemeal bread alongside.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "soppbyggotto",
+    "subject": "Pearl barley risotto, creamy whole barley grains clearly visible with sauteed slices of brown button mushrooms, parsley and a little grated vegetarian hard cheese in a shallow bowl. No rice, no chicken.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "potetvaflar",
+    "subject": "Norwegian savoury heart-pattern potato waffles showing golden heart cells, with greenish cream of peas and sour cream and grated carrot. No berries or syrup.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "makaroniform-med-linser",
+    "subject": "Vegetarian baked macaroni casserole with elbow pasta in red tomato and lentil sauce, carrot flecks, topped with melted golden cheese, spoonful revealing the small pasta shapes and orange lentils. No meat or lasagne sheets.",
+    "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
+    "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
   }
 ]

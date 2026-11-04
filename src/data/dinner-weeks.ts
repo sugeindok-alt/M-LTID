@@ -6,14 +6,14 @@ export const dinnerWeeks: DinnerWeek[] = [
     title: 'Raske kvardagar',
     description: 'Fem middagar på høgst ein halvtime, med førebuing rekna med.',
     days: [
-      { recipeId: 'nn-tomatsuppe', note: 'Suppe med egg og grovbrød gir ein lun start på veka.' },
+      { recipeId: 'nn-brokkolisuppe', note: 'Start veka med ei varm brokkolisuppe.' },
       { recipeId: 'nn-laksepasta', note: 'Pasta, erter og laks blir klare medan du lagar sausen.' },
       {
         recipeId: 'nn-kyllingwrap',
         note: 'Set fram fyllet i små skåler og la kvar og ein fylle si eiga lefse.',
       },
       { recipeId: 'nn-bonner-og-egg', note: 'Bønner og egg gjer den varme tomatpanna mettande.' },
-      { recipeId: 'nn-taco', note: 'Avslutt veka med fredagstaco og heimelaga krydder.' },
+      { recipeId: 'nn-fisketaco', note: 'Set fisk og grønsaker på bordet til fredagstacoen.' },
     ],
   },
   {
@@ -28,18 +28,18 @@ export const dinnerWeeks: DinnerWeek[] = [
       },
       { recipeId: 'nn-plukkfisk', note: 'Torsk og poteter møtest i mild saus med purre.' },
       {
-        recipeId: 'nn-grove-pannekaker',
-        note: 'Grove middagspannekaker gir eit avbrekk frå potetmiddagane.',
+        recipeId: 'nn-fleskepannekake',
+        note: 'Fleskepannekake gir eit avbrekk frå potetmiddagane.',
       },
       { recipeId: 'nn-fiskekaker', note: 'Lag fiskekakene frå grunnen og server med sprø råkost.' },
-      { recipeId: 'nn-kjottkaker', note: 'Brun saus og kokte grønsaker rundar av klassikarveka.' },
+      { recipeId: 'nn-raspeballar', note: 'Set av god tid til raspeballar på fredag.' },
     ],
   },
   {
     slug: 'meir-fisk-pa-bordet',
     title: 'Meir fisk på bordet',
     description:
-      'Laks, sei og kvit fisk som omnsrett, suppe, pannemiddag, grateng og sprø fiskepinnar.',
+      'Laks, sei og torsk som omnsrett, suppe, pannemiddag og grateng, med ulike grønsaker til.',
     days: [
       { recipeId: 'nn-laks', note: 'Omnsbakte poteter får eit forsprang før laksen går inn.' },
       { recipeId: 'nn-fiskesuppe', note: 'Poteter og purre gir fylde i suppa med sei.' },
@@ -48,18 +48,18 @@ export const dinnerWeeks: DinnerWeek[] = [
         note: 'Lauk og steikt sei gir ein enkel pannemiddag midt i veka.',
       },
       { recipeId: 'nn-fiskegrateng', note: 'I dag blir fisken grateng med makaroni og sprø topp.' },
-      { recipeId: 'nn-fiskepinnar', note: 'Avslutt med heimelaga fiskepinnar og frisk råkost.' },
+      { recipeId: 'nn-torsk-med-ertemos', note: 'Torsk med grøn ertemos rundar av fiskeveka.' },
     ],
   },
   {
     slug: 'bruk-opp-ravarene',
     title: 'Bruk opp råvarene',
     description:
-      'Eit kålhovud, ein pose gulrøter og ei pakke lefser får fleire oppgåver. Mengdene i handlelista er totalforbruket for veka.',
+      'Til fire porsjonar kvar dag brukar veka til saman 1,6 kg hovudkål, seks gulrøter og 16 lefser. Sjekk kva du har før du handlar.',
     days: [
       {
-        recipeId: 'nn-kalpanne',
-        note: 'Skjer av berre kålen du treng til panna. Legg resten kjølig til wraps og råkost.',
+        recipeId: 'nn-kalrulettar',
+        note: 'Bruk store kålblad til kålrulettane. Legg resten av kålhovudet kjølig til wraps og råkost.',
       },
       {
         recipeId: 'nn-kyllingwrap',

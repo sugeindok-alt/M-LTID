@@ -113,6 +113,21 @@ test('A publishes only reviewed copies, B and a guest can read, and withdrawal c
   await page.getByRole('button', { name: 'Førehandsvis delinga' }).click();
   await expect(page.locator('.share-preview')).toContainText('Potetbåtar for to');
   await expect(page.locator('.share-preview')).not.toContainText('Berre til familien');
+  const privatePhoto = page.locator('.share-preview img');
+  await expect(privatePhoto).toBeVisible();
+  expect(
+    await privatePhoto.evaluate(async (img: HTMLImageElement) => {
+      await img.decode();
+      return img.naturalWidth;
+    }),
+  ).toBe(3);
+  await page.getByLabel('Del også fotoet til «Potetbåtar for to»', { exact: true }).uncheck();
+  await page.getByRole('button', { name: 'Førehandsvis delinga' }).click();
+  await expect(page.locator('.share-preview')).toContainText('utan foto');
+  await expect(privatePhoto).toHaveCount(0);
+  await page.getByLabel('Del også fotoet til «Potetbåtar for to»', { exact: true }).check();
+  await page.getByRole('button', { name: 'Førehandsvis delinga' }).click();
+  await expect(privatePhoto).toBeVisible();
   expect((await guest.request.get(path)).status()).toBe(404);
   await page.getByRole('button', { name: 'Publiser denne utgåva' }).click();
   await expect(page.getByRole('link', { name: 'Opne den offentlege kokeboka' })).toBeVisible();

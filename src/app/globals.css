@@ -6,7 +6,7 @@
   --surface: #c6d1bc;
   --accent: #de926c;
   --paper: #fffdf7;
-  --muted: #667368;
+  --muted: #58665a;
   --line: #24433325;
   --soft: #eeeee3;
   --on-primary: #fffdf7;
@@ -337,7 +337,7 @@ main {
   position: relative;
   padding: 10px 0;
 }
-.desktop-nav a[aria-current='page']:after {
+.desktop-nav a[aria-current]:after {
   content: '';
   position: absolute;
   bottom: 1px;
@@ -1521,6 +1521,8 @@ main {
     display: grid;
     padding: 10px 20px 22px;
     border-top: 1px solid var(--line);
+    max-height: calc(100dvh - 76px);
+    overflow-y: auto;
   }
   .mobile-nav a {
     display: flex;
@@ -1528,6 +1530,25 @@ main {
     padding: 13px 0;
     font-size: 14px;
     border-bottom: 1px solid var(--line);
+  }
+  .mobile-nav a[aria-current] {
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .breadcrumb a,
+  .ingredient-panel li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .ingredient-panel li:has(a) {
+    align-items: center;
+    padding-block: 0;
+  }
+  .ingredient-panel li a {
+    flex: 1;
   }
   .hero {
     grid-template-columns: 1fr;

@@ -17,6 +17,7 @@ export const dinnerCategories = [
   'Vegetar',
 ];
 export const mainIngredients = [
+  'Korn',
   'Storfe',
   'Lam',
   'Fisk',

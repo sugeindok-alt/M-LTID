@@ -1,14 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Pencil } from 'lucide-react';
-import { RecipeDirections } from '@/components/recipe-directions';
+import { RecipeDirections, RecipePortionLink } from '@/components/recipe-directions';
+import { linkedServings } from '@/lib/cooking';
 import { asRecipe } from '@/lib/cookbook';
 import { privateLabel } from '@/lib/cookbook-types';
 import { loadEntry } from './load';
 import '../../oppskrifter/[id]/cooking.css';
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+export default async function Page({ params, searchParams }: PageProps<'/kokebok/[id]'>) {
   const { id } = await params;
-  const entry = await loadEntry(id),
+  const initialServings = linkedServings((await searchParams).porsjonar);
+  const entry = await loadEntry(id, false, initialServings),
     recipe = asRecipe(entry);
   return (
     <div className="container page-shell book-page">
@@ -19,7 +21,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         <p className="eyebrow">{privateLabel(entry.originalId)} · Privat</p>
         <h1>{entry.title}</h1>
         <div className="recipe-meta">
-          {entry.servings} {entry.servings === 1 ? 'porsjon' : 'porsjonar'}
+          <RecipePortionLink
+            id={id}
+            steps={recipe.steps.length}
+            base={entry.servings}
+            initial={initialServings}
+          />
         </div>
         {entry.originalId && (
           <p>
@@ -51,7 +58,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           Planlegg i Mi veke →
         </Link>
       </div>
-      <RecipeDirections key={recipe.id} recipe={recipe} privateRecipe />
+      <RecipeDirections
+        key={recipe.id}
+        recipe={recipe}
+        privateRecipe
+        initialServings={initialServings}
+      />
     </div>
   );
 }

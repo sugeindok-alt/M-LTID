@@ -2,7 +2,7 @@
 import { useState, type FormEvent } from 'react';
 import { Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { api } from '@/lib/client-api';
-import { formatMeasure } from '@/lib/quantities';
+import { shoppingMeasure } from '@/lib/quantities';
 import { useToast } from './providers';
 export type ShoppingItem = {
   id: string;
@@ -121,20 +121,22 @@ function QuantityEditor({
   disabled: boolean;
   onSave: (measure: string) => Promise<boolean>;
 }) {
-  const current = item.amount !== null ? formatMeasure(item.amount, item.unit || '') : item.measure;
-  const [value, setValue] = useState(current);
+  const current =
+    item.amount !== null ? shoppingMeasure(item.amount, item.unit || '') : item.measure;
+  const [draft, setDraft] = useState<{ base: string; text: string } | null>(null);
+  const value = draft?.base === current ? draft.text : current;
   return (
     <form
       className="quantity-edit"
       onSubmit={async (event) => {
         event.preventDefault();
-        await onSave(value);
+        if (await onSave(value)) setDraft(null);
       }}
     >
       <input
         aria-label={`Mengd for ${item.name}`}
         value={value}
-        onChange={(event) => setValue(event.target.value)}
+        onChange={(event) => setDraft({ base: current, text: event.target.value })}
         maxLength={80}
       />
       <button disabled={disabled || value === current} type="submit">

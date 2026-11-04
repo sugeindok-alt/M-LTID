@@ -9,7 +9,8 @@ import {
   timerChoices,
   type CookingProgress,
 } from '@/lib/cooking';
-import { useCookingProgress } from './use-cooking-progress';
+import { useRecipePortions } from './use-cooking-progress';
+import { formatMeasure } from '@/lib/quantities';
 import { CookingSteps, IngredientRows, IngredientsPanel } from './recipe-interactions';
 
 const cookingHash = '#matlaging';
@@ -76,17 +77,46 @@ function TimerChoice({ text, start }: { text: string; start: (seconds: number) =
     </div>
   );
 }
+export function RecipePortionLink({
+  id,
+  steps,
+  base,
+  initial,
+}: {
+  id: string;
+  steps: number;
+  base: number;
+  initial: number | null;
+}) {
+  const { servings } = useRecipePortions(id, steps, base, initial);
+  return (
+    <a
+      className="recipe-portion-link"
+      href="#scale"
+      aria-label={'Endre porsjonstal, no ' + formatMeasure(servings, '')}
+    >
+      {formatMeasure(servings, '')} {servings === 1 ? 'porsjon' : 'porsjonar'} · Endre
+    </a>
+  );
+}
 export function RecipeDirections({
   recipe,
   children,
   privateRecipe = false,
+  initialServings,
 }: {
   recipe: Recipe;
   children?: ReactNode;
   privateRecipe?: boolean;
+  initialServings: number | null;
 }) {
   const steps = recipe.steps;
-  const { progress, update, localOnlyInMemory } = useCookingProgress(recipe.id, steps.length);
+  const { progress, update, localOnlyInMemory, scale, servings, setScale } = useRecipePortions(
+    recipe.id,
+    steps.length,
+    recipe.servings || 4,
+    initialServings,
+  );
   const ready = useSyncExternalStore(
     subscribeHydration,
     () => true,
@@ -186,8 +216,9 @@ export function RecipeDirections({
           recipe={recipe}
           ready={ready}
           linkIngredients={!privateRecipe}
-          scale={progress.scale}
-          setScale={(scale) => update((p) => ({ ...p, scale }))}
+          scale={scale}
+          setScale={setScale}
+          initialServings={initialServings}
         />
         <section className="method">
           <p className="eyebrow">FRÅ RÅVARER TIL MÅLTID</p>
@@ -256,8 +287,10 @@ export function RecipeDirections({
             {ingredientsOpen ? 'Skjul ingredienslista' : 'Vis ingredienslista'}
           </button>
           <div id="cook-ingredients" hidden={!ingredientsOpen}>
-            <p className="eyebrow">TIL {(recipe.servings || 4) * progress.scale} PORSJONAR</p>
-            <IngredientRows recipe={recipe} scale={progress.scale} />
+            <p className="eyebrow">
+              TIL {formatMeasure(servings, '')} {servings === 1 ? 'PORSJON' : 'PORSJONAR'}
+            </p>
+            <IngredientRows recipe={recipe} scale={scale} />
           </div>
         </div>
         <div className="cook-nav">

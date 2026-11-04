@@ -207,7 +207,10 @@ export function WeekPlanner({
                     href={
                       (privateId.safeParse(dinner.recipeId).success
                         ? '/kokebok/'
-                        : '/oppskrifter/') + dinner.recipeId
+                        : '/oppskrifter/') +
+                      dinner.recipeId +
+                      '?porsjonar=' +
+                      dinner.servings
                     }
                     aria-label={'Opne oppskrifta for ' + name.toLowerCase()}
                   >

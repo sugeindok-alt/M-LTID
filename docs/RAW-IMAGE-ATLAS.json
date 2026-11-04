@@ -458,5 +458,53 @@
         "description": "whole white cauliflower head with two green leaves"
       }
     ]
+  },
+  {
+    "sheet": 9,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "byggmjøl",
+        "description": "a low unadorned cream ceramic bowl filled with finely milled light gray-beige barley flour, a pair of authentic golden BARLEY ears with very long bristly awns next to the bowl to distinguish this from wheat flour. Flour is the hero, no whole wheat ears."
+      }
+    ]
+  },
+  {
+    "sheet": 10,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "bacon",
+        "description": "a short stack of three loose, uncooked, streaky bacon rashers, clearly visible marbling and alternating pink cured pork and white fat stripes; no cooked or crisp brown areas."
+      }
+    ]
+  },
+  {
+    "sheet": 11,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "grautris",
+        "description": "uncooked white short-grain pudding rice, distinct plump rounded almost oval opaque white grains in a small low off-white ceramic bowl. A few grains beside the bowl show their short length. Dry raw rice only, not porridge or cooked rice; no long-grain rice."
+      }
+    ]
+  },
+  {
+    "sheet": 12,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "sjampinjong",
+        "description": "three fresh white button mushrooms (Agaricus bisporus) with stout short stems; one whole cap facing up, another turned to expose its pinkish-brown gills and a clean cut half. Lifelike size proportions, no wild species."
+      }
+    ]
   }
 ]

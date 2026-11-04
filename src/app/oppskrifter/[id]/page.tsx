@@ -9,7 +9,8 @@ import { Photo } from '@/components/photo';
 import { RecipeGrid } from '@/components/recipe-card';
 import { SectionHeading, SourceFailure } from '@/components/shared';
 import { RecipeActions, ProcessingPanel } from '@/components/recipe-interactions';
-import { RecipeDirections } from '@/components/recipe-directions';
+import { RecipeDirections, RecipePortionLink } from '@/components/recipe-directions';
+import { linkedServings } from '@/lib/cooking';
 import './cooking.css';
 export async function generateMetadata({
   params,
@@ -24,8 +25,9 @@ export async function generateMetadata({
     description: recipe ? recipe.description : undefined,
   };
 }
-export default async function RecipePage({ params }: { params: Promise<{ id: string }> }) {
+export default async function RecipePage({ params, searchParams }: PageProps<'/oppskrifter/[id]'>) {
   const { id } = await params;
+  const initialServings = linkedServings((await searchParams).porsjonar);
   if (!mealId.safeParse(id).success) notFound();
   const result = await catalog
     .detail(id)
@@ -57,7 +59,12 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
           <span className="meta-dot" />
           <span>Om lag {recipe.minutes} min</span>
           <span className="meta-dot" />
-          <span>{recipe.servings} porsjonar</span>
+          <RecipePortionLink
+            id={id}
+            steps={recipe.steps.length}
+            base={recipe.servings || 4}
+            initial={initialServings}
+          />
           {recipe.vegetarian && (
             <>
               <span className="meta-dot" />
@@ -76,9 +83,10 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
         />
       </div>
       <RecipeActions
-        key={recipe.id}
+        key={'actions-' + recipe.id}
         recipe={recipe}
         accountsReady={authConfigured()}
+        initialServings={initialServings}
         recipeEmailReady={Boolean(process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL)}
       />
       <Link
@@ -93,7 +101,11 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
           <Link href="/om-innhaldet">Om bileta og oppskriftene</Link>
         </p>
       )}
-      <RecipeDirections key={recipe.id} recipe={recipe}>
+      <RecipeDirections
+        key={'directions-' + recipe.id}
+        recipe={recipe}
+        initialServings={initialServings}
+      >
         <div className="method-links">
           {recipe.source && (
             <a href={recipe.source} target="_blank" rel="noreferrer" className="text-link">

@@ -7,7 +7,9 @@ import { api, ApiError } from '@/lib/client-api';
 import { authClient } from '@/lib/auth-client';
 import { withReturnPath } from '@/lib/auth-return';
 import { type Recipe, ingredientSlug } from '@/lib/recipes';
-import { parseMeasure, scaleMeasure } from '@/lib/quantities';
+import { formatMeasure, parseMeasure, scaleMeasure } from '@/lib/quantities';
+import { portionChoices } from '@/lib/cooking';
+import { useLinkedServings } from './use-cooking-progress';
 import { useToast } from './providers';
 import { ProductSearch } from './product-search';
 import { NovaBadge } from './shared';
@@ -17,11 +19,15 @@ export function RecipeActions({
   recipe,
   accountsReady,
   recipeEmailReady = false,
+  initialServings,
 }: {
   recipe: Recipe;
   accountsReady: boolean;
   recipeEmailReady?: boolean;
+  initialServings: number | null;
 }) {
+  const linked = useLinkedServings(initialServings);
+  const recipePath = '/oppskrifter/' + recipe.id + (linked === null ? '' : '?porsjonar=' + linked);
   const [saved, setSaved] = useState(false);
   const [guest, setGuest] = useState(!accountsReady);
   const [busy, setBusy] = useState('');
@@ -81,10 +87,7 @@ export function RecipeActions({
   return (
     <div className="detail-tools">
       {guest ? (
-        <Link
-          className="button"
-          href={`/logg-inn?next=${encodeURIComponent('/oppskrifter/' + recipe.id)}`}
-        >
+        <Link className="button" href={withReturnPath('/logg-inn', recipePath)}>
           <Heart size={17} /> Logg inn for å lagre
         </Link>
       ) : (
@@ -169,24 +172,29 @@ export function IngredientsPanel({
   setScale,
   ready,
   linkIngredients,
+  initialServings,
 }: {
   recipe: Recipe;
   scale: number;
   ready: boolean;
   linkIngredients: boolean;
   setScale: (value: number) => void;
+  initialServings: number | null;
 }) {
   const [busy, setBusy] = useState(false);
   const [requestId, setRequestId] = useState(() => crypto.randomUUID());
   const session = authClient.useSession();
   const [expired, setExpired] = useState(false);
+  const linked = useLinkedServings(initialServings);
   const login = withReturnPath(
     '/logg-inn',
-    (linkIngredients ? '/oppskrifter/' : '/kokebok/') + recipe.id,
+    (linkIngredients ? '/oppskrifter/' : '/kokebok/') +
+      recipe.id +
+      (linked === null ? '' : '?porsjonar=' + linked),
   );
   const notify = useToast();
-  const scalable =
-    recipe.ingredients.length > 0 && recipe.ingredients.every((i) => parseMeasure(i.measure));
+  const base = recipe.servings || 4;
+  const hasTextMeasures = recipe.ingredients.some((i) => !parseMeasure(i.measure));
   async function add() {
     setBusy(true);
     try {
@@ -204,27 +212,27 @@ export function IngredientsPanel({
     <aside className="ingredient-panel">
       <p className="eyebrow">DETTE TRENG DU</p>
       <h2>Ingrediensar</h2>
-      {scalable ? (
-        <div className="scale-control">
-          <label htmlFor="scale">Porsjonar</label>
-          <select
-            id="scale"
-            disabled={!ready}
-            value={scale}
-            onChange={(event) => {
-              setScale(Number(event.target.value));
-              setRequestId(crypto.randomUUID());
-            }}
-          >
-            <option value={0.5}>{(recipe.servings || 4) / 2} porsjonar</option>
-            <option value={1}>{recipe.servings || 4} porsjonar</option>
-            <option value={2}>{(recipe.servings || 4) * 2} porsjonar</option>
-          </select>
-        </div>
-      ) : (
+      <div className="scale-control">
+        <label htmlFor="scale">Porsjonar</label>
+        <select
+          id="scale"
+          disabled={!ready}
+          value={scale}
+          onChange={(event) => {
+            setScale(Number(event.target.value));
+            setRequestId(crypto.randomUUID());
+          }}
+        >
+          {portionChoices(base).map((count) => (
+            <option key={count} value={count / base}>
+              {formatMeasure(count, '')} {count === 1 ? 'porsjon' : 'porsjonar'}
+            </option>
+          ))}
+        </select>
+      </div>
+      {hasTextMeasures && (
         <p className="source-note">
-          Mengdene er oppgjevne for {recipe.servings || 4} porsjonar. Nokre mengder er skrivne som
-          tekst.
+          Berre talfesta mengder blir rekna om. Tekstmengder står som i originalen.
         </p>
       )}
       <IngredientRows recipe={recipe} scale={scale} links={linkIngredients} />
@@ -239,7 +247,7 @@ export function IngredientsPanel({
           {busy ? 'Legg til …' : 'Legg til i handlelista'}
         </button>
       )}
-      {scalable && scale !== 1 && (
+      {scale !== 1 && (
         <p className="source-note">
           Handlelista får mengdene for dei valde porsjonane. Smak til salt og krydder undervegs.
         </p>

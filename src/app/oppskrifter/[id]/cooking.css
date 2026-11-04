@@ -1,3 +1,13 @@
+.recipe-portion-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+#scale {
+  scroll-margin-top: 6rem;
+}
 .cook-launch {
   display: flex;
   align-items: center;

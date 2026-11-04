@@ -21,7 +21,7 @@ const all = unstable_cache(
       throw new SourceError('MÅLTID-katalogen');
     }
   },
-  ['maltid-editorial-catalog-v3'],
+  ['maltid-editorial-catalog-v4'],
   { revalidate: 300 },
 );
 export const catalog = {

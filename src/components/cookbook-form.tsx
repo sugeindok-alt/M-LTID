@@ -2,7 +2,6 @@
 import { useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { Plus, Trash2 } from 'lucide-react';
 import { api, ApiError } from '@/lib/client-api';
 import { type CookbookFields, recipeFields } from '@/lib/cookbook-types';
@@ -47,7 +46,6 @@ type Props = {
   original: { id: string; title: string } | null;
 };
 export function CookbookForm({ initial, edit, original }: Props) {
-  const router = useRouter();
   const ready = useSyncExternalStore(
     subscribe,
     () => true,
@@ -105,8 +103,8 @@ export function CookbookForm({ initial, edit, original }: Props) {
         },
         edit ? 'PATCH' : 'POST',
       );
-      router.replace('/kokebok/' + result.id);
-      router.refresh();
+      // Fetch the saved revision directly, including when this detail page was visited before.
+      window.location.replace('/kokebok/' + result.id);
     } catch (err) {
       setError(
         err instanceof ApiError

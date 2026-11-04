@@ -18,7 +18,7 @@ export default async function Ingredients({
   const result = ingredients;
   const filtered = result
     .filter((i) => fold(i.name).includes(fold(query)) && (!group || i.group === group))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => a.name.localeCompare(b.name, 'nn'));
   const page = Math.max(
     1,
     Math.min(Math.ceil(filtered.length / 24) || 1, parseInt(params.page || '1') || 1),

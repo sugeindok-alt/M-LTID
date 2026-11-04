@@ -43,3 +43,11 @@ export function scaleMeasure(value: string, factor: number) {
   const p = parseMeasure(value);
   return p ? formatMeasure(p.amount * factor, p.unit) : value;
 }
+
+// Keep the stored unit and import receipt unchanged. Whole grams can be
+// displayed as kilograms without losing precision in the editable quantity.
+export function shoppingMeasure(amount: number, unit: string) {
+  return unit === 'g' && amount >= 1000 && Number.isInteger(amount)
+    ? formatMeasure(amount / 1000, 'kg')
+    : formatMeasure(amount, unit);
+}
