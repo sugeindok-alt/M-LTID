@@ -4,7 +4,7 @@ MÅLTID har laga råvareillustrasjonane med OpenAI sitt innebygde biletverktøy 
 
 [Biletregisteret](RAW-IMAGE-ATLAS.json) inneheld råvarenamnet, den engelske motivskildringa og plasseringa i kjeldebiletet. Dei første 70 motiva kjem frå åtte genererte bildeflater med tre rader og tre kolonnar. Kvar celle har eitt sentrert motiv på varm, lys bakgrunn og studiolys frå øvre venstre side. Berre registrerte celler er med på nettsida.
 
-Byggmjøl, bacon, grautris, sjampinjong, spagetti og hamburgerbrød fekk kvar si kvadratiske illustrasjon frå det same innebygde verktøyet. Dei har kjeldenummer 9–14 og er merkte `single` i registeret. Den felles delen av instruksjonen står nedanfor. Motivskildringa under `description` i registeret fullfører instruksjonen for kvar råvare.
+Dei nyare råvarene fekk kvar si kvadratiske illustrasjon frå det same innebygde verktøyet. Byggmjøl, bacon, grautris, sjampinjong, spagetti og hamburgerbrød har kjeldenummer 9–14. Tortillachips, ketchup, kyllingvengjer, BBQ-saus og kebabkjøt i skiver har nummer 16–20. Alle er merkte `single` i registeret. Den felles delen av instruksjonen står nedanfor. Motivskildringa under `description` i registeret fullfører instruksjonen for kvar råvare.
 
 > Use case: product-mockup. A square studio food photograph-style illustration for a Norwegian raw ingredient dictionary. One clear ingredient subject on a smooth plain warm ivory beige tabletop, filling 76% of frame with generous margins on every edge. Slightly elevated three-quarter view, gentle daylight from upper left, realistic subtle shadows. Clean natural colors, accurate anatomy and textures, understandable at 90px. No text, no labels, no logos, no packaging, no watermark, no hands or background objects. Subject:
 

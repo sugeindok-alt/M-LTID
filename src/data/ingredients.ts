@@ -2,6 +2,26 @@ import { editorialRecipes } from './recipes';
 import { ingredientSlug } from '@/lib/recipes';
 import { rawImage } from './raw-images';
 const descriptions: Record<string, [string, string, string[]?]> = {
+  'kebabkjøt i skiver': [
+    'Fisk og kjøt',
+    'Kjøtet er skore i tynne skiver frå eit krydra kebabspyd. Til kebabrullen brukar du ferdigsteikte skiver som du varmar i panna etter rettleiinga på pakninga.',
+  ],
+  tortillachips: [
+    'Basisvarer',
+    'Tortillachips er sprø maisflak. Sprei dei i eit jamt lag når du lagar nachos, så får kvart flak litt fyll.',
+  ],
+  ketchup: [
+    'Basisvarer',
+    'Ketchup er ein tjukk tomatsaus med sødme og syre. Server han ved sida av pommes frites eller bruk eit tynt lag i hamburgaren.',
+  ],
+  kyllingvengjer: [
+    'Fisk og kjøt',
+    'Kyllingvengjer har bein og skinn. Tørk av overflata før steiking, og steik vengjene heilt gjennom før servering.',
+  ],
+  'BBQ-saus': [
+    'Basisvarer',
+    'BBQ-saus er ein kraftig grillsaus, ofte med sødme og røyksmak. Pensle han på mot slutten av steikinga, så svir han seg mindre lett.',
+  ],
   spagetti: [
     'Basisvarer',
     'Spagetti er lang, tynn pasta. Legg han i kokande vatn, rør dei første minutta og smak på ein tråd mot slutten av koketida.',

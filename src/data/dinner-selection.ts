@@ -20,6 +20,13 @@ export const dinnerSelection = [
   'nn-kylling',
   'nn-taco',
   'nn-pizza',
+  'nn-kebabrull',
+  'nn-spro-kyllingspyd',
+  'nn-dobbel-smashburger',
+  'nn-nachos',
+  'nn-pommes-frites-med-ost-og-bacon',
+  'nn-bbq-kyllingvengjer',
+  'nn-quesadilla',
   'nn-hamburger',
   'nn-gronsakslasagne',
 ];

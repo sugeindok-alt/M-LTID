@@ -628,5 +628,82 @@
       "licenseUrl": "https://openai.com/policies/terms-of-use/",
       "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
     }
+  },
+  "nn-spro-kyllingspyd": {
+    "image": "/images/middagar/spro-kyllingspyd.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    },
+    "imageAlt": "Gylne, panerte kyllingspyd med pommes frites og ein skål kvit rømmedipp."
+  },
+  "nn-dobbel-smashburger": {
+    "image": "/images/middagar/dobbel-smashburger.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    },
+    "imageAlt": "To tynne burgerar med brun steikjeskorpe og eitt lag smelta ost på kvar, med lauk og burgerdressing i brød."
+  },
+  "nn-nachos": {
+    "image": "/images/middagar/nachos.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    },
+    "imageAlt": "Tortillachips med krydra kjøtdeig og smelta ost, med tomatsalsa i ei lita skål."
+  },
+  "nn-pommes-frites-med-ost-og-bacon": {
+    "image": "/images/middagar/pommes-frites-med-ost-og-bacon.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    },
+    "imageAlt": "Gylne potetstavar med smelta ost og sprø baconbitar."
+  },
+  "nn-bbq-kyllingvengjer": {
+    "image": "/images/middagar/bbq-kyllingvengjer.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    },
+    "imageAlt": "Glaserte kyllingvengjer med mørk BBQ-saus, omnsbakte potetbåtar og råkost."
+  },
+  "nn-quesadilla": {
+    "image": "/images/middagar/quesadilla.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    },
+    "imageAlt": "Trekantar av rista tortillalefser med kylling, smelta ost og raud paprika."
+  },
+  "nn-kebabrull": {
+    "image": "/images/middagar/kebabrull.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    },
+    "imageAlt": "Rikleg med skore kebabkjøt, sprø salat og kvitlaukdressing i ei lefse med matpapir rundt botnen."
   }
 }

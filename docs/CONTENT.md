@@ -1,6 +1,10 @@
 # Norsk middagskatalog
 
-Det offentlege utvalet har no 22 middagar. Femten eksisterande oppskrifter er vidareførte, og sju nye fyller hola i ønskjelista. Dei 41 rettane som gjekk ut av utvalet, har framleis full tekst, bilete og same ID. Oppskrifter som er lagra i favorittar, kokebøker eller veker, kan framleis opnast direkte. Sjå [utvalet, arkivet og prøvene](KVARDAGSMIDDAGAR.md).
+Det offentlege utvalet har 29 middagar. «Gatekjøkken heime» samlar sju nye rettar og den eksisterande hamburgaren med omnsbakte poteter. Kvar ny rett har eit eige KI-generert serveringsforslag. Dei tre øvste rettane i kategorien er kebabrull, sprø kyllingspyd og dobbel smashburger.
+
+Kebabrullen brukar skore, krydra kebabkjøt. Biletet er ei ny KI-generert illustrasjon. Eit innsendt referansebilete vart brukt for korleis rullen ligg i papir, og det ferdige motivet viser ei raus fylling med synleg kvitlaukdressing.
+
+Ved førre omlegging fekk MÅLTID 22 kvardagsmiddagar. Femten eksisterande oppskrifter er vidareførte, og sju nye fyller hola i ønskjelista. Dei 41 rettane som gjekk ut av utvalet, har framleis full tekst, bilete og same ID. Oppskrifter som er lagra i favorittar, kokebøker eller veker, kan framleis opnast direkte. Sjå [utvalet, arkivet og prøvene](KVARDAGSMIDDAGAR.md).
 
 Sju nye rettar og den oppdaterte tomatsuppa fekk eigne KI-genererte serveringsbilete i 4:3. Motiv og opphav er registrerte i IMAGE-PROMPTS.json. Råvareguiden har òg bilete av tørr spagetti og hamburgerbrød.
 

@@ -27,8 +27,9 @@ export default function Page() {
         rett. Pynt og utsjånad kan variere frå det du lagar heime.
       </p>
       <p>
-        Bileta er laga frå eigne tekstskildringar utan innlånte referansefoto. Bruksretten til det
-        genererte innhaldet følgjer{' '}
+        Bileta er laga frå eigne skildringar av rettane. Til kebabrullen brukte vi òg eit innsendt
+        bilete som referanse for korleis lefsa ligg i papiret. Serveringsillustrasjonen er laga for
+        MÅLTID. Bruksretten til det genererte innhaldet følgjer{' '}
         <a href="https://openai.com/policies/terms-of-use/" target="_blank" rel="noreferrer">
           OpenAI sine vilkår
         </a>

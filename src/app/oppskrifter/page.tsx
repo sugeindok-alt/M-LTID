@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Search, ArrowRight } from 'lucide-react';
 import { catalog } from '@/lib/catalog';
-import { dinnerCategories, filterRecipes } from '@/lib/catalog-filter';
+import { dinnerCategories, filterRecipes, streetFoodCategory } from '@/lib/catalog-filter';
 import { RecipeGrid } from '@/components/recipe-card';
 import { SourceFailure } from '@/components/shared';
 export const metadata: Metadata = {
@@ -26,6 +26,7 @@ export default async function Recipes({
     sort: val('sort'),
   };
   const selection = await catalog.browse().catch(() => null);
+  const streetFood = query.category === streetFoodCategory;
   const recipes = selection && filterRecipes(selection, query);
   const mainIngredients = [
     ...new Set(selection?.map((r) => r.mainIngredient).filter((name): name is string => !!name)),
@@ -34,10 +35,11 @@ export default async function Recipes({
     <div className="container page-shell">
       <div className="page-intro">
         <p className="eyebrow">GOD MAT TIL VANLEGE DAGAR</p>
-        <h1>Kva blir det til middag?</h1>
+        <h1>{streetFood ? streetFoodCategory : 'Kva blir det til middag?'}</h1>
         <p>
-          Norske klassikarar og nye kvardagsfavorittar. Finn ein middag som passar tida og råvarene
-          du har.
+          {streetFood
+            ? 'Kebabrull i varm lefse, sprø kyllingspyd og smashburger rett frå steikjepanna. Finn fredagsmiddagen du vil lage heime.'
+            : 'Norske klassikarar og nye kvardagsfavorittar. Finn ein middag som passar tida og råvarene du har.'}
         </p>
       </div>
       <form action="/oppskrifter" className="discovery-form">

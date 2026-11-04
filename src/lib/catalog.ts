@@ -21,7 +21,7 @@ const all = unstable_cache(
       throw new SourceError('MÅLTID-katalogen');
     }
   },
-  ['maltid-kvardagsmiddagar-v1'],
+  ['maltid-kvardagsmiddagar-v2'],
   { revalidate: 300 },
 );
 export const catalog = {

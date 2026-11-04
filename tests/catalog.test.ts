@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { catalogSnapshot, presentSavedRecipe } from '@/data/catalog';
 import { dinnerSelection } from '@/data/dinner-selection';
 import { ingredients, findIngredient } from '@/data/ingredients';
-import { filterRecipes } from '@/lib/catalog-filter';
+import { filterRecipes, streetFoodCategory } from '@/lib/catalog-filter';
 import { mealId, normalizeRecipe } from '@/lib/recipes';
 import { parseMeasure, scaleMeasure } from '@/lib/quantities';
 import { normalizeProduct } from '@/lib/products';
@@ -27,7 +27,7 @@ describe('Norwegian editorial catalogue', () => {
   it('publishes complete Nynorsk recipes with real local image files and valid ingredient links', () => {
     const published = filterRecipes(catalogSnapshot);
     expect(published.map((r) => r.id)).toEqual(dinnerSelection);
-    expect(published).toHaveLength(22);
+    expect(published).toHaveLength(29);
     expect(new Set(published.map((r) => r.id)).size).toBe(published.length);
     expect(new Set(published.map((r) => r.title)).size).toBe(published.length);
     expect(new Set(published.map((r) => r.image)).size).toBe(published.length);
@@ -61,6 +61,34 @@ describe('Norwegian editorial catalogue', () => {
     expect(
       normalizeProduct({ code: '12345678', product_name: { en: 'English only' } }).name,
     ).toContain('norsk namn manglar');
+  });
+  it('lists the three featured takeaway recipes first and reuses the existing hamburger', () => {
+    const category = streetFoodCategory;
+    const results = filterRecipes(catalogSnapshot, { category });
+    expect(results.map((r) => r.id)).toEqual([
+      'nn-kebabrull',
+      'nn-spro-kyllingspyd',
+      'nn-dobbel-smashburger',
+      'nn-nachos',
+      'nn-pommes-frites-med-ost-og-bacon',
+      'nn-bbq-kyllingvengjer',
+      'nn-quesadilla',
+      'nn-hamburger',
+    ]);
+    expect(filterRecipes(catalogSnapshot, { category, q: 'smashburger' }).map((r) => r.id)).toEqual(
+      ['nn-dobbel-smashburger'],
+    );
+    expect(filterRecipes(catalogSnapshot, { category: 'Helgemat' }).map((r) => r.id)).toContain(
+      'nn-hamburger',
+    );
+    const roll = results[0];
+    expect(roll.ingredients).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: 'kebabkjøt i skiver', measure: '600 g' }),
+        expect.objectContaining({ name: 'tortillalefser', measure: '4' }),
+      ]),
+    );
+    expect(roll.ingredients.some((i) => ['kjøtdeig', 'pitabrød'].includes(i.name))).toBe(false);
   });
   it('keeps withdrawn dinners available by ID while searches use the new selection', () => {
     for (const [q, id] of [

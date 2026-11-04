@@ -50,7 +50,7 @@ test('responsive navigation opens and navigates with accessible labels', async (
 });
 test('recipe search, category filtering, sorting and empty results', async ({ page }) => {
   await page.goto('/oppskrifter');
-  await expect(page.locator('main article')).toHaveCount(22);
+  await expect(page.locator('main article')).toHaveCount(29);
   const search = page.getByRole('textbox', { name: 'Søk etter oppskrift' });
   await search.fill('spagetti med kjøttsaus');
   await page.getByRole('button', { name: 'Søk', exact: true }).click();
@@ -71,6 +71,19 @@ test('recipe search, category filtering, sorting and empty results', async ({ pa
   await search.fill('zzznorecipemaltidzzz');
   await page.getByRole('button', { name: 'Søk', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Ingen middagar passar søket.' })).toBeVisible();
+});
+test('Gatekjøkken heime on the homepage opens the eight matching dinners', async ({ page }) => {
+  await page.goto('/');
+  const category = page.getByRole('link', { name: 'Gatekjøkken heime', exact: true });
+  await expect(category).toBeInViewport({ ratio: 1 });
+  await category.click();
+  const cards = page.locator('main article');
+  await expect(cards).toHaveCount(8);
+  await expect(cards.locator('h3 a[href="/oppskrifter/nn-hamburger"]')).toBeVisible();
+  await cards.locator('h3 a[href="/oppskrifter/nn-dobbel-smashburger"]').click();
+  await expect(page).toHaveURL(/\/oppskrifter\/nn-dobbel-smashburger$/);
+  await expect(page.getByRole('heading', { name: 'Ingrediensar', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Slik gjer du', exact: true })).toBeVisible();
 });
 test('recipe details retain source content and checkable steps', async ({ page }, info) => {
   await page.goto('/oppskrifter/nn-spagetti-med-kjotsaus');
@@ -107,7 +120,7 @@ test('saved recipe links still open outside the current dinner selection', async
     ['nn-torsk', 'Torsk i tomatform'],
   ];
   await page.goto('/oppskrifter');
-  await expect(page.locator('main article')).toHaveCount(22);
+  await expect(page.locator('main article')).toHaveCount(29);
   for (const [id] of archived) {
     await expect(page.locator(`article a[href="/oppskrifter/${id}"]`)).toHaveCount(0);
   }

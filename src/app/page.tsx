@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowUpRight, Leaf, Search, Sprout, Utensils } from 'lucide-react';
 import { catalog } from '@/lib/catalog';
+import { filterRecipes, streetFoodCategory } from '@/lib/catalog-filter';
 import { Photo } from '@/components/photo';
 import { RecipeGrid } from '@/components/recipe-card';
 import { SectionHeading, SourceFailure, NovaEducation } from '@/components/shared';
@@ -8,6 +9,8 @@ export const revalidate = 300;
 export default async function Home() {
   const recipes = await catalog.browse().catch(() => null);
   const hero = recipes?.find((r) => r.id === 'nn-laks-med-ris');
+  const streetFood = recipes && filterRecipes(recipes, { category: streetFoodCategory });
+  const streetFoodHref = '/oppskrifter?category=' + encodeURIComponent(streetFoodCategory);
   return (
     <>
       <section className="container hero">
@@ -49,6 +52,7 @@ export default async function Home() {
             <button className="button">Søk</button>
           </form>
           <div className="quick-links" aria-label="Finn middag">
+            <Link href={streetFoodHref}>{streetFoodCategory}</Link>
             <Link href="/oppskrifter?maxTime=30">30 min eller mindre</Link>
             <Link href="/oppskrifter?vegetarian=1">Vegetar</Link>
             <Link href="/oppskrifter?category=Tradisjonsmat">Norske klassikarar</Link>
@@ -115,6 +119,17 @@ export default async function Home() {
           førebuing.
         </p>
       </section>
+      {streetFood && streetFood.length > 0 && (
+        <section className="container section">
+          <SectionHeading
+            kicker="NÅR DET ER FREDAG"
+            title={streetFoodCategory}
+            href={streetFoodHref}
+            link="Sjå heile utvalet"
+          />
+          <RecipeGrid recipes={streetFood.slice(0, 3)} />
+        </section>
+      )}
       <section className="ingredient-band">
         <div className="container">
           <SectionHeading kicker="KVA PASSAR I DAG?" title="Finn din type middag." />

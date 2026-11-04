@@ -1,6 +1,6 @@
 # MÅLTID
 
-Matnettside med Next.js, React, TypeScript, Firebase Authentication, Neon PostgreSQL og Drizzle. [GitHub](https://github.com/sugeindok-alt/M-LTID) publiserer automatisk frå main til [Vercel](https://m-ltid.vercel.app/). Eit eige utval med 22 norske middagar, nynorske råvaresider, kombinerte filter og porsjonsval. Det eksisterande designet og personlege data er bevarte.
+Matnettside med Next.js, React, TypeScript, Firebase Authentication, Neon PostgreSQL og Drizzle. [GitHub](https://github.com/sugeindok-alt/M-LTID) publiserer automatisk frå main til [Vercel](https://m-ltid.vercel.app/). Eit eige utval med 29 middagar for norske hushald, nynorske råvaresider, kombinerte filter og porsjonsval. Det eksisterande designet og personlege data er bevarte.
 
 ## Innlogging utan kjøpt domene
 

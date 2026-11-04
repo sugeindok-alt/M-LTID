@@ -37,6 +37,89 @@ async function visitPrivateLink(page: Page, link: string) {
     throw new Error('Could not open local test link (token redacted).');
   }
 }
+test('Gatekjøkken heime on mobile: log in from a scaled smashburger and shop for a planned dinner', async ({
+  browser,
+  request,
+}) => {
+  const origin = 'http://127.0.0.1:3100';
+  const recipeId = 'nn-dobbel-smashburger';
+  const path = '/oppskrifter/' + recipeId;
+  const marker = randomUUID();
+  const name = 'Gatekjøkken ' + marker;
+  const email = 'gate-' + marker + '@example.test';
+  // Verify the fixture in a separate request session so the phone starts as a guest.
+  const signup = await request.post('/api/auth/sign-up/email', {
+    headers: { origin },
+    data: { name, email, password },
+  });
+  expect(signup.ok()).toBe(true);
+  const verification = await mailLink(name, 'verify-email');
+  try {
+    const result = await request.get(verification, { maxRedirects: 0 });
+    expect(result.status()).toBeLessThan(400);
+  } catch {
+    throw new Error('Kunne ikkje stadfeste den lokale testkontoen.');
+  }
+  const phone = await browser.newContext({
+    baseURL: origin,
+    viewport: { width: 360, height: 780 },
+    isMobile: true,
+    hasTouch: true,
+  });
+  try {
+    const page = await phone.newPage();
+    await page.goto('/');
+    await page.getByRole('link', { name: 'Gatekjøkken heime', exact: true }).click();
+    await page.locator(`article h3 a[href="${path}"]`).click();
+    const portions = page.getByRole('combobox', { name: 'Porsjonar', exact: true });
+    await portions.selectOption({ label: '2 porsjonar' });
+    await expect(
+      page.locator('.ingredient-panel li').filter({ hasText: 'kjøtdeig' }),
+    ).toContainText('300 g');
+    await page.getByRole('link', { name: 'Logg inn for å bruke handlelista' }).click();
+    await expect(page).toHaveURL(/\/logg-inn\?next=/);
+    expect(new URL(page.url()).searchParams.get('next')).toBe(path);
+    await page.getByLabel('E-postadresse', { exact: true }).fill(email);
+    await page.getByLabel('Passord', { exact: true }).fill(password);
+    await page.getByRole('button', { name: 'Logg inn', exact: true }).click();
+    await expect(page).toHaveURL(origin + path);
+    await expect(portions.locator('option:checked')).toHaveText('2 porsjonar');
+    await page.getByRole('button', { name: 'Legg til i handlelista', exact: true }).click();
+    await expect(
+      page.getByRole('status').filter({ hasText: 'Ingrediensane er lagra' }),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Opne meny' }).click();
+    await page
+      .getByRole('navigation', { name: 'Mobilmeny' })
+      .getByRole('link', { name: 'Handleliste' })
+      .click();
+    const meat = page.getByRole('textbox', { name: 'Mengd for kjøtdeig', exact: true });
+    const buns = page.getByRole('textbox', { name: 'Mengd for hamburgerbrød', exact: true });
+    await expect(meat).toHaveValue('300 g');
+    await expect(buns).toHaveValue('2');
+    await page
+      .getByRole('navigation', { name: 'Mine sider' })
+      .getByRole('link', { name: 'Mi veke' })
+      .click();
+    await page.getByRole('button', { name: 'Vel middag for onsdag' }).click();
+    await page.getByRole('combobox', { name: 'Middag', exact: true }).selectOption(recipeId);
+    await portions.selectOption('3');
+    await page.getByRole('button', { name: 'Lagre dagen' }).click();
+    await expect(page.getByRole('button', { name: 'Endre middag for onsdag' })).toContainText(
+      '3 porsjonar',
+    );
+    await expect(page.locator('.week-basket li').filter({ hasText: 'kjøtdeig' })).toContainText(
+      '450 g',
+    );
+    await page.getByRole('button', { name: 'Legg veka i handlelista' }).click();
+    await expect(page.getByRole('button', { name: 'Veka er lagd i handlelista' })).toBeDisabled();
+    await page.getByRole('link', { name: 'Opne handlelista' }).click();
+    await expect(meat).toHaveValue('750 g');
+    await expect(buns).toHaveValue('5');
+  } finally {
+    await phone.close();
+  }
+});
 test('ready-made dinner week on mobile: sign up, keep Monday, replace Wednesday, shop once and open the recipe', async ({
   browser,
 }) => {

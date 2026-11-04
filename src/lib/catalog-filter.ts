@@ -7,6 +7,7 @@ export type RecipeQuery = {
   vegetarian?: string;
   sort?: string;
 };
+export const streetFoodCategory = 'Gatekjøkken heime';
 export const dinnerCategories = [
   'Tradisjonsmat',
   'Fisk',
@@ -14,6 +15,7 @@ export const dinnerCategories = [
   'Pasta',
   'Supper og gryter',
   'Helgemat',
+  streetFoodCategory,
   'Vegetar',
 ];
 export const fold = (text: string) =>
@@ -48,6 +50,7 @@ export function filterRecipes(recipes: Recipe[], query: RecipeQuery = {}) {
       (r) =>
         !query.category ||
         r.category === query.category ||
+        (query.category === streetFoodCategory && r.tags.includes(streetFoodCategory)) ||
         (query.category === 'Vegetar' && r.vegetarian),
     )
     .filter(

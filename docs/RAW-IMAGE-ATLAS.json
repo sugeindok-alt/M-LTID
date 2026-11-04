@@ -530,5 +530,65 @@
         "description": "one soft, round golden burger bun with a domed top cut horizontally in half. The domed top has a few sesame seeds and sits next to the bottom half with the fluffy cut face upward. Entire plain empty bread bun visible with no burger patty, greens, filling, condiments or packaging."
       }
     ]
+  },
+  {
+    "sheet": 16,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "tortillachips",
+        "description": "a small overlapping fan of five golden triangular corn tortilla chips, visible triangular silhouettes, fine salt and speckled slightly blistered corn surface. Intact crunchy dry chips, no cheese, nacho toppings, guacamole, salsa, dip, bowl or tortilla wrap."
+      }
+    ]
+  },
+  {
+    "sheet": 17,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "ketchup",
+        "description": "thick smooth bright tomato-red ketchup piped in a small spiral with a visible pointed peak in a plain round ivory dipping dish. A single small ripe red tomato rests beside the dish as an ingredient clue. Clearly ketchup, vividly red and thick, never brown. No bottle, labels, fries, seeds, herbs or chunky sauce."
+      }
+    ]
+  },
+  {
+    "sheet": 18,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "kyllingvengjer",
+        "description": "two raw uncooked bone-in chicken wings, skin intact, pale pink ivory uncooked flesh. One whole angular chicken wing folded into its distinctive three-jointed wing shape, with flat middle and pointed tip clearly visible; one uncooked flat wing segment alongside. No seasoning, no browned or cooked surfaces, no sauce, no breading, no chicken drumsticks."
+      }
+    ]
+  },
+  {
+    "sheet": 19,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "BBQ-saus",
+        "description": "a single ivory ceramic ramekin filled with thick dark mahogany-brown barbecue sauce with a gentle glossy swirl, and a small clean wooden basting brush lying beside it, bristle tips dipped in the dark brown sauce. Sauce is distinctly deep dark brown, not bright red, not soy-thin or tomato ketchup. No meat, no flames, no bottle or branding."
+      }
+    ]
+  },
+  {
+    "sheet": 20,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "kebabkjøt i skiver",
+        "description": "thin irregular shaved doner kebab meat slices freshly cut from a cooked seasoned rotisserie, as a separate ready-to-heat ingredient. A small loose pile of overlapping long curved individual ribbons and uneven flakes of meat on a shallow plain ivory plate. Each slice has a deeply browned caramelized outer edge, a lighter brown interior and distinct meat fibers. Convey the telltale shaved layers rather than a mince pile, diced meat, flat uniform deli slices, or crumbs. No minced-meat clumps, bread, wraps, vegetables, dressing, cheese, sauce, garnish, skewer, tools or other ingredients."
+      }
+    ]
   }
 ]
