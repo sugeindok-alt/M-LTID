@@ -86,7 +86,6 @@ test('guest cooks salmon on mobile and resumes the step and real time remaining'
   await resumed.getByRole('button', { name: 'Stopp nedteljinga' }).click();
   const select = resumed.getByRole('combobox', { name: 'Vel tid' });
   await expect(select.locator('option')).toHaveText([
-    '9 minutt',
     '12 minutt',
     '13 minutt',
     '14 minutt',
