@@ -38,7 +38,7 @@ export default async function Home() {
             <button className="button">Søk</button>
           </form>
           <div className="quick-links" aria-label="Finn middag">
-            <Link href="/oppskrifter?maxTime=30">Under 30 min</Link>
+            <Link href="/oppskrifter?maxTime=30">30 min eller mindre</Link>
             <Link href="/oppskrifter?vegetarian=1">Vegetar</Link>
             <Link href="/oppskrifter?category=Tradisjonsmat">Norske klassikarar</Link>
           </div>
