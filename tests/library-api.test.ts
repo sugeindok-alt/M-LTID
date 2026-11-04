@@ -181,8 +181,8 @@ describe('real sessions through the favorites API', () => {
     const change = (cookie: string, day: number, recipeId: string | null, servings: number) =>
       POST(request(cookie, { week, day, recipeId, servings }), weekCtx);
     expect((await snapshot('')).status).toBe(401);
-    expect((await change(planner, 0, 'nn-laks', 2)).status).toBe(200);
-    const preview = await (await change(planner, 1, 'nn-torsk', 4)).json();
+    expect((await change(planner, 0, 'nn-fiskekaker', 2)).status).toBe(200);
+    const preview = await (await change(planner, 1, 'nn-torsk-med-eggesmor', 4)).json();
     expect(
       preview.items.find((i: { name: string }) => i.name === 'poteter').measure.replace(/\s/g, ''),
     ).toBe('1200g');
@@ -192,11 +192,11 @@ describe('real sessions through the favorites API', () => {
     const fresh = cookies(await login('planner-api@example.test'));
     expect((await (await snapshot(fresh)).json()).days).toEqual(preview.days);
     expect((await (await snapshot(bob)).json()).days[0].recipeId).toBe('nn-taco');
-    const changed = await (await change(planner, 1, 'nn-torsk', 2)).json();
+    const changed = await (await change(planner, 1, 'nn-torsk-med-eggesmor', 2)).json();
     expect(
       (await POST(request(planner, { week, version: preview.version }), importCtx)).status,
     ).toBe(409);
-    expect((await (await change(planner, 1, 'nn-torsk', 4)).json()).version).not.toBe(
+    expect((await (await change(planner, 1, 'nn-torsk-med-eggesmor', 4)).json()).version).not.toBe(
       changed.version,
     );
     const post = (cookie: string) =>

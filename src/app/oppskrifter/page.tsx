@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Search, ArrowRight } from 'lucide-react';
 import { catalog } from '@/lib/catalog';
-import { dinnerCategories, mainIngredients } from '@/lib/catalog-filter';
+import { dinnerCategories, filterRecipes } from '@/lib/catalog-filter';
 import { RecipeGrid } from '@/components/recipe-card';
 import { SourceFailure } from '@/components/shared';
 export const metadata: Metadata = {
@@ -25,7 +25,11 @@ export default async function Recipes({
     vegetarian: val('vegetarian'),
     sort: val('sort'),
   };
-  const recipes = await catalog.browse(query).catch(() => null);
+  const selection = await catalog.browse().catch(() => null);
+  const recipes = selection && filterRecipes(selection, query);
+  const mainIngredients = [
+    ...new Set(selection?.map((r) => r.mainIngredient).filter((name): name is string => !!name)),
+  ].sort((a, b) => a.localeCompare(b, 'nn'));
   return (
     <div className="container page-shell">
       <div className="page-intro">

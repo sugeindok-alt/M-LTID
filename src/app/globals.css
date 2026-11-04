@@ -404,6 +404,24 @@ main {
   margin-top: 30px;
   flex-wrap: wrap;
 }
+.tonight-links {
+  display: grid;
+  justify-items: start;
+  margin-top: 18px;
+}
+.tonight-links strong {
+  font-size: 0.9rem;
+  margin-bottom: 3px;
+}
+.tonight-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .hero-footnote {
   display: flex;
   gap: 10px;

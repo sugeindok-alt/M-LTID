@@ -7,7 +7,7 @@ import { SectionHeading, SourceFailure, NovaEducation } from '@/components/share
 export const revalidate = 300;
 export default async function Home() {
   const recipes = await catalog.browse().catch(() => null);
-  const hero = recipes?.find((r) => r.id === 'nn-laks');
+  const hero = recipes?.find((r) => r.id === 'nn-laks-med-ris');
   return (
     <>
       <section className="container hero">
@@ -24,6 +24,17 @@ export default async function Home() {
             Frå kjøtkaker til fredagstaco. Finn middagar som passar kvardagen, med råvarer frå
             butikken rundt hjørnet.
           </p>
+          {recipes && (
+            <nav className="tonight-links" aria-label="Tre forslag til middag">
+              <strong>Kva skal vi ha til middag?</strong>
+              {recipes.slice(0, 3).map((r) => (
+                <Link key={r.id} href={'/oppskrifter/' + r.id}>
+                  {r.title}
+                  <ArrowUpRight size={15} aria-hidden />
+                </Link>
+              ))}
+            </nav>
+          )}
           <form action="/oppskrifter" className="search-field home-search">
             <Search size={20} />
             <label className="sr-only" htmlFor="home-search">
@@ -100,7 +111,7 @@ export default async function Home() {
         />
         {recipes ? <RecipeGrid recipes={recipes.slice(0, 6)} /> : <SourceFailure href="/" />}
         <p className="source-note">
-          Valt av MÅLTID: fisk, grønt og kjende favorittar. Tidene er rettleiande og inkluderer
+          Seks middagar med råvarer du finn i butikken. Tidene er rettleiande og inkluderer
           førebuing.
         </p>
       </section>
@@ -117,7 +128,7 @@ export default async function Home() {
             <Link href="/oppskrifter?vegetarian=1">
               <span className="eyebrow">GRØNT OG GODT</span>
               <h3>Meir vegetar</h3>
-              <p>Linser, bønner og grønsaker i hovudrolla.</p>
+              <p>Tomatsuppe med makaroni og egg, grønsakslasagne og heimelaga pizza.</p>
               <ArrowUpRight />
             </Link>
             <Link href="/oppskrifter?category=Tradisjonsmat">

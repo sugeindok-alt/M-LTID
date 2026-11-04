@@ -223,6 +223,11 @@ export function WeekPlanner({
                       Middag
                       <select value={recipeId} onChange={(e) => setRecipeId(e.target.value)}>
                         <option value="">La dagen stå tom</option>
+                        {dinner &&
+                          !personal.some((r) => r.id === dinner.recipeId) &&
+                          !recipes.some((r) => r.id === dinner.recipeId) && (
+                            <option value={dinner.recipeId}>{dinner.title} · frå arkivet</option>
+                          )}
                         {personal.length > 0 && (
                           <optgroup label="Mi kokebok">
                             {personal.map((r) => (

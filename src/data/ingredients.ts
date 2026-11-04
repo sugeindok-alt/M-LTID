@@ -2,6 +2,16 @@ import { editorialRecipes } from './recipes';
 import { ingredientSlug } from '@/lib/recipes';
 import { rawImage } from './raw-images';
 const descriptions: Record<string, [string, string, string[]?]> = {
+  spagetti: [
+    'Basisvarer',
+    'Spagetti er lang, tynn pasta. Legg han i kokande vatn, rør dei første minutta og smak på ein tråd mot slutten av koketida.',
+    ['spaghetti'],
+  ],
+  hamburgerbrød: [
+    'Basisvarer',
+    'Del hamburgerbrødet vassrett og rist snittflatene raskt i ei tørr panne. Då toler brødet betre safta frå burgaren.',
+    ['burgerbuns', 'burger-buns'],
+  ],
   byggmjøl: [
     'Basisvarer',
     'Byggmjøl er mølt av bygg og gir ein mild kornsmak. Rør det inn litt om gongen for å unngå klumpar.',

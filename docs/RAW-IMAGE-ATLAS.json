@@ -506,5 +506,29 @@
         "description": "three fresh white button mushrooms (Agaricus bisporus) with stout short stems; one whole cap facing up, another turned to expose its pinkish-brown gills and a clean cut half. Lifelike size proportions, no wild species."
       }
     ]
+  },
+  {
+    "sheet": 13,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "spagetti",
+        "description": "a loose diagonal fan of long, thin, straight, golden-yellow dried spaghetti strands. Uncooked hard pasta rods of uniform round cross-section, visibly thin, both ends in frame. No curves, nests, sauce, plate, herbs, flour or other shapes of pasta."
+      }
+    ]
+  },
+  {
+    "sheet": 14,
+    "layout": "single",
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "hamburgerbrød",
+        "description": "one soft, round golden burger bun with a domed top cut horizontally in half. The domed top has a few sesame seeds and sits next to the bottom half with the fluffy cut face upward. Entire plain empty bread bun visible with no burger patty, greens, filling, condiments or packaging."
+      }
+    ]
   }
 ]

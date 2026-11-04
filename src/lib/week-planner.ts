@@ -184,8 +184,25 @@ export async function changeDay(db: Database, owner: string, input: z.infer<type
         .select({ recipe: recipeCatalog.data })
         .from(recipeCatalog)
         .where(eq(recipeCatalog.id, recipeId));
-      if (!row || row.recipe.archived || row.recipe.language !== 'nn')
+      if (!row || row.recipe.language !== 'nn')
         throw new AppError('Denne middagen er ikkje tilgjengeleg.', 404);
+      if (row.recipe.archived) {
+        // An existing dinner can still be resized, but an archive entry cannot fill a new day.
+        const [existing] = await db
+          .update(weekDinners)
+          .set({ servings })
+          .where(
+            and(
+              eq(weekDinners.userId, owner),
+              eq(weekDinners.week, week),
+              eq(weekDinners.day, day),
+              eq(weekDinners.recipeId, recipeId),
+            ),
+          )
+          .returning({ day: weekDinners.day });
+        if (!existing) throw new AppError('Denne middagen er ikkje lenger i utvalet.', 404);
+        return readWeek(db, owner, week);
+      }
     }
     const refs = personal
       ? { recipeId: null, cookbookId: recipeId }

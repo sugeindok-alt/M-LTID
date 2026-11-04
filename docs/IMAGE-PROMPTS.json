@@ -358,5 +358,53 @@
     "subject": "Vegetarian baked macaroni casserole with elbow pasta in red tomato and lentil sauce, carrot flecks, topped with melted golden cheese, spoonful revealing the small pasta shapes and orange lentils. No meat or lasagne sheets.",
     "style": "Use case: photorealistic-natural. Original serving illustration for a Norwegian family cookbook. Landscape 4:3, realistic home-cooked dinner, a single main dish centrally framed on simple cream ceramics or in a baking dish, light Nordic kitchen table, soft window daylight. Clearly visible defining ingredients, closely framed but plate not clipped. No people, packaging, lettering, collage, logos or watermarks. No unmentioned sides or garnishes.",
     "origin": "Original MÅLTID serving illustration, built-in OpenAI imagegen, 2026-11-04. Generated individually from text without a reference photo."
+  },
+  {
+    "id": "spagetti-med-kjotsaus",
+    "subject": "long spaghetti strands and a rustic ground beef, tomato, onion and finely grated carrot sauce on top. Not meatballs; no parmesan, no basil garnish.",
+    "style": "Original MÅLTID editorial food illustration, photorealistic Norwegian family home cooking, warm daylight on an oak kitchen table, cream ceramic dish, appealing but practical serving, three-quarter angle. Landscape 4:3, the entire meal centered with generous margin. Precisely match this dish and its sides. No text, watermark, logo, props or other foods.",
+    "origin": "OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration."
+  },
+  {
+    "id": "lasagne",
+    "subject": "A square serving of familiar Norwegian family beef lasagne: pasta sheets, tomato and mince sauce, a little carrot, white sauce and golden melted cheese on top. No spinach or side salad.",
+    "style": "Original MÅLTID editorial food illustration, photorealistic Norwegian family home cooking, warm daylight on an oak kitchen table, cream ceramic dish, appealing but practical serving, three-quarter angle. Landscape 4:3, the entire meal centered with generous margin. Precisely match this dish and its sides. No text, watermark, logo, props or other foods.",
+    "origin": "OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration."
+  },
+  {
+    "id": "pannekaker-med-bacon",
+    "subject": "Two soft thin large Norwegian dinner pancakes folded loosely, with small crisp fried bacon pieces on and between the folds. No syrup, berries, eggs on top or American stacked pancakes.",
+    "style": "Original MÅLTID editorial food illustration, photorealistic Norwegian family home cooking, warm daylight on an oak kitchen table, cream ceramic dish, appealing but practical serving, three-quarter angle. Landscape 4:3, the entire meal centered with generous margin. Precisely match this dish and its sides. No text, watermark, logo, props or other foods.",
+    "origin": "OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration."
+  },
+  {
+    "id": "fiskepinnar-med-potetmos",
+    "subject": "Original photorealistic food illustration for a Norwegian recipe website. Three distinctly SEPARATE portions on a large cream round dinner plate. LEFT third: three golden crispy rectangular breaded cod fish fingers, one cut showing white fish. TOP RIGHT third: one neat mound of completely plain ivory-white smooth mashed potato with fork ridges. BOTTOM RIGHT third: a large, unmistakable loose pile of bright vivid ORANGE, finely shredded RAW CARROT with long visible carrot strands. The orange carrot salad must be a separate heap NEXT TO the potato, not mixed into it. All three portions equally visible and spaced apart; no herbs, cabbage, potatoes in chunks, sauces or additional dishes. Warm daylight, clean Norwegian oak table; 4:3 landscape, from above at a slight angle, plate centred. No text, no watermark.",
+    "style": "Original MÅLTID editorial food illustration, photorealistic Norwegian family home cooking, warm daylight on an oak kitchen table, cream ceramic dish, appealing but practical serving, three-quarter angle. Landscape 4:3, the entire meal centered with generous margin. Precisely match this dish and its sides. No text, watermark, logo, props or other foods.",
+    "origin": "OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration."
+  },
+  {
+    "id": "laks-med-ris",
+    "subject": "One plain oven-baked pink salmon fillet, a portion of fluffy white rice clearly showing grains, a few bright green steamed broccoli florets and one wedge of lemon. No potatoes, peas, sauces or garnish.",
+    "style": "Original MÅLTID editorial food illustration, photorealistic Norwegian family home cooking, warm daylight on an oak kitchen table, cream ceramic dish, appealing but practical serving, three-quarter angle. Landscape 4:3, the entire meal centered with generous margin. Precisely match this dish and its sides. No text, watermark, logo, props or other foods.",
+    "origin": "OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration."
+  },
+  {
+    "id": "kjotpudding",
+    "subject": "Two thick slices cut from a baked Norwegian ground beef meatloaf, with homestyle brown gravy, peeled boiled potatoes and cooked carrot slices. Not meatballs or roast beef. No fancy garnish.",
+    "style": "Original MÅLTID editorial food illustration, photorealistic Norwegian family home cooking, warm daylight on an oak kitchen table, cream ceramic dish, appealing but practical serving, three-quarter angle. Landscape 4:3, the entire meal centered with generous margin. Precisely match this dish and its sides. No text, watermark, logo, props or other foods.",
+    "origin": "OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration."
+  },
+  {
+    "id": "hamburger",
+    "subject": "A modest beef hamburger on a plain soft round hamburger bun with lettuce and tomato. Beside it a clearly visible portion of golden oven-roasted skin-on potato wedges. No cheese, fries, sauces, seeds or sides.",
+    "style": "Original MÅLTID editorial food illustration, photorealistic Norwegian family home cooking, warm daylight on an oak kitchen table, cream ceramic dish, appealing but practical serving, three-quarter angle. Landscape 4:3, the entire meal centered with generous margin. Precisely match this dish and its sides. No text, watermark, logo, props or other foods.",
+    "origin": "OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration."
+  },
+  {
+    "id": "tomatsuppe-makaroni",
+    "subject": "Smooth red tomato soup in a bowl, small curved elbow macaroni clearly visible in the tomato soup and a boiled egg cut in half showing the yellow yolk. A slice of plain wholegrain bread beside the bowl. No herb garnish, cream swirls or croutons.",
+    "style": "Original MÅLTID editorial food illustration, photorealistic Norwegian family home cooking, warm daylight on an oak kitchen table, cream ceramic dish, appealing but practical serving, three-quarter angle. Landscape 4:3, the entire meal centered with generous margin. Precisely match this dish and its sides. No text, watermark, logo, props or other foods.",
+    "origin": "OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration."
   }
 ]

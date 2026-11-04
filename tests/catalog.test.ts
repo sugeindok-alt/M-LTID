@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { existsSync } from 'node:fs';
 import { catalogSnapshot, presentSavedRecipe } from '@/data/catalog';
+import { dinnerSelection } from '@/data/dinner-selection';
 import { ingredients, findIngredient } from '@/data/ingredients';
 import { filterRecipes } from '@/lib/catalog-filter';
 import { mealId, normalizeRecipe } from '@/lib/recipes';
@@ -12,11 +13,11 @@ describe('Norwegian editorial catalogue', () => {
     expect(
       filterRecipes(catalogSnapshot, {
         q: 'tomat',
-        ingredient: 'Pasta',
+        ingredient: 'Grønsaker',
         maxTime: '30',
         vegetarian: '1',
       }).map((r) => r.id),
-    ).toEqual(['nn-pasta-tomat']);
+    ).toEqual(['nn-tomatsuppe']);
     expect(filterRecipes(catalogSnapshot, { q: 'laks', vegetarian: '1' })).toEqual([]);
     expect(filterRecipes(catalogSnapshot, { q: 'fårikål', maxTime: '30' })).toEqual([]);
     expect(filterRecipes(catalogSnapshot, { q: 'fårikål' }).map((r) => r.id)).toEqual([
@@ -25,7 +26,8 @@ describe('Norwegian editorial catalogue', () => {
   });
   it('publishes complete Nynorsk recipes with real local image files and valid ingredient links', () => {
     const published = filterRecipes(catalogSnapshot);
-    expect(published).toHaveLength(56);
+    expect(published.map((r) => r.id)).toEqual(dinnerSelection);
+    expect(published).toHaveLength(22);
     expect(new Set(published.map((r) => r.id)).size).toBe(published.length);
     expect(new Set(published.map((r) => r.title)).size).toBe(published.length);
     expect(new Set(published.map((r) => r.image)).size).toBe(published.length);
@@ -59,6 +61,21 @@ describe('Norwegian editorial catalogue', () => {
     expect(
       normalizeProduct({ code: '12345678', product_name: { en: 'English only' } }).name,
     ).toContain('norsk namn manglar');
+  });
+  it('keeps withdrawn dinners available by ID while searches use the new selection', () => {
+    for (const [q, id] of [
+      ['spagetti med kjøttsaus', 'nn-spagetti-med-kjotsaus'],
+      ['fiskepinnar med potetmos', 'nn-fiskepinnar-med-potetmos'],
+      ['pølse og potetstappe', 'nn-polse-med-stappe'],
+      ['ovnsbakt laks med ris', 'nn-laks-med-ris'],
+    ]) {
+      expect(filterRecipes(catalogSnapshot, { q })[0]?.id).toBe(id);
+    }
+    expect(filterRecipes(catalogSnapshot, { q: 'fisketaco' })).toHaveLength(0);
+    const old = catalogSnapshot.find((r) => r.id === 'nn-fisketaco')!;
+    expect(old.archived).toBe(true);
+    expect(presentSavedRecipe(old).steps).toEqual(old.steps);
+    expect(old.steps.length).toBeGreaterThan(0);
   });
   it('scales Norwegian quantities with decimal commas for portions and shopping', () => {
     expect(scaleMeasure('1,5 dl', 2)).toBe('3 dl');

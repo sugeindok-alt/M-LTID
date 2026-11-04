@@ -1,8 +1,12 @@
 # Norsk middagskatalog
 
+Det offentlege utvalet har no 22 middagar. Femten eksisterande oppskrifter er vidareførte, og sju nye fyller hola i ønskjelista. Dei 41 rettane som gjekk ut av utvalet, har framleis full tekst, bilete og same ID. Oppskrifter som er lagra i favorittar, kokebøker eller veker, kan framleis opnast direkte. Sjå [utvalet, arkivet og prøvene](KVARDAGSMIDDAGAR.md).
+
+Sju nye rettar og den oppdaterte tomatsuppa fekk eigne KI-genererte serveringsbilete i 4:3. Motiv og opphav er registrerte i IMAGE-PROMPTS.json. Råvareguiden har òg bilete av tørr spagetti og hamburgerbrød.
+
 Kjeldevurdering 30. oktober 2026: Matprat sine retningslinjer krev løyve for bruk av tekst/bilete i ei eiga oppskriftsplattform (https://www.matprat.no/retningslinjer-for-bruk-av-innhold/). ReceptAPI tilbyr svensk innhald med avgrensa gratiskvote og vilkår for replikering (https://receptapi.se/docs). Ingen av dei vart importerte. TheMealDB er ikkje lenger ei aktiv kjelde i nettsida.
 
-Ved starten av denne gjennomgangen viste produksjonssida 36 unike middagar ved versjon 6da0c09. Den eldre favoritten 52771 fanst òg som arkivoppføring. Den oppdaterte katalogen inneheld 56 aktive rettar og den same arkivoppføringa. Dei 20 nye rettane er nyskrivne på nynorsk med KI-hjelp. Mengder, rekkjefølgje og tidsbruk er gjennomgått på papiret. Tidene føreset fire porsjonar og omfattar førebuing. Ingen av rettane er fysisk prøvelaga av MÅLTID.
+Ved starten av denne gjennomgangen viste produksjonssida 36 unike middagar ved versjon 6da0c09. Den eldre favoritten 52771 fanst òg som arkivoppføring. Etter den førre gjennomgangen hadde katalogen 56 aktive rettar og den same arkivoppføringa. Dei 20 nye rettane er nyskrivne på nynorsk med KI-hjelp. Mengder, rekkjefølgje og tidsbruk er gjennomgått på papiret. Tidene føreset fire porsjonar og omfattar førebuing. Ingen av rettane er fysisk prøvelaga av MÅLTID.
 
 Dei tre nye middagane på høgst ein halvtime er fisketaco (25 minutt), torsk med ertemos (30 minutt) og brokkolisuppe (30 minutt). Fisketacoen treng om lag 10 minutt til råkost og oppdeling, 7 minutt til steiking og nokre minutt til servering. Lefser og fisk blir varma parallelt. Til torsken blir potetene skorne i små terningar og sette på først. Fisk og erter blir ferdige i løpet av dei siste 8 minutta. Til brokkolisuppa deler ein potetene i terningar på 1 cm og varmar krafta medan grønsakene blir skorne. Slik får ein plass til oppkoking, 12–13 minutt småkoking og miksing innanfor halvtimen.
 
@@ -10,7 +14,7 @@ For steikt ris er innkjøpsmengda tørr ris. Steget seier kor mykje ferdig kokt 
 
 ## Bilete og rettar
 
-Kvar av dei 56 aktive rettane har eit eige KI-generert serveringsbilete i 4:3-format under public/images/middagar. Dei første 16 vart genererte kvar for seg. Dei neste 20 vart skorne ut frå fem ark med fire rettsspesifikke bilete per ark. Dei siste 20 er genererte enkeltvis med det innebygde biletverktøyet til OpenAI, frå eigne skildringar av ingrediensar, tilbehøyr og servering. Det vart ikkje brukt referansefoto. Tekstgrunnlag og opphav ligg i IMAGE-PROMPTS.json. Krediteringa er i src/data/image-credits.json og synleg på oppskriftssida.
+Kvar av dei 56 rettane frå den førre versjonen har eit eige KI-generert serveringsbilete i 4:3-format under public/images/middagar. Dei første 16 vart genererte kvar for seg. Dei neste 20 vart skorne ut frå fem ark med fire rettsspesifikke bilete per ark. Dei siste 20 er genererte enkeltvis med det innebygde biletverktøyet til OpenAI, frå eigne skildringar av ingrediensar, tilbehøyr og servering. Det vart ikkje brukt referansefoto. Tekstgrunnlag og opphav ligg i IMAGE-PROMPTS.json. Krediteringa er i src/data/image-credits.json og synleg på oppskriftssida.
 
 Bruk av generert innhald følgjer OpenAI sine vilkår (https://openai.com/policies/terms-of-use/, kontrollert 30. oktober 2026). Det blir ikkje hevda at motiva er unike eller fotografi av kjøkkentesta resultat. Ingen Wikimedia-, Matprat- eller TheMealDB-foto er tekne inn i den nye katalogen. Open Food Facts-produktfoto beheld eigne kjelde-/lisensopplysningar.
 

@@ -4,78 +4,85 @@ export const dinnerWeeks: DinnerWeek[] = [
   {
     slug: 'raske-kvardagar',
     title: 'Raske kvardagar',
-    description: 'Fem middagar på høgst ein halvtime, med førebuing rekna med.',
+    description: 'Fem kjende middagar på høgst ein halvtime til fire, førebuinga medrekna.',
     days: [
-      { recipeId: 'nn-brokkolisuppe', note: 'Start veka med ei varm brokkolisuppe.' },
-      { recipeId: 'nn-laksepasta', note: 'Pasta, erter og laks blir klare medan du lagar sausen.' },
       {
-        recipeId: 'nn-kyllingwrap',
-        note: 'Set fram fyllet i små skåler og la kvar og ein fylle si eiga lefse.',
+        recipeId: 'nn-polse-med-stappe',
+        note: 'Del potetene små til mosen og steik pølsa medan dei kokar.',
       },
-      { recipeId: 'nn-bonner-og-egg', note: 'Bønner og egg gjer den varme tomatpanna mettande.' },
-      { recipeId: 'nn-fisketaco', note: 'Set fisk og grønsaker på bordet til fredagstacoen.' },
+      { recipeId: 'nn-spagetti-med-kjotsaus', note: 'Kok spagettien medan kjøtsausen småputrar.' },
+      { recipeId: 'nn-laks-med-ris', note: 'Set på risen først og bak laksen medan han kokar.' },
+      { recipeId: 'nn-tomatsuppe', note: 'Kok egg og makaroni medan tomatsuppa blir klar.' },
+      { recipeId: 'nn-taco', note: 'Set fram varmt tacokjøt, lefser og grønsaker til fredag.' },
     ],
   },
   {
     slug: 'norske-klassikarar',
     title: 'Norske klassikarar',
-    description:
-      'Frå steikjepanna til sausgryta, med poteter, fisk, grønsaker og kjøt i ulike roller.',
+    description: 'Frå pytt i panne til fårikål, med både fisk, kjøt og poteter gjennom veka.',
     days: [
       {
         recipeId: 'nn-pytt-i-panne',
-        note: 'Små bitar av potet og gulrot blir middagen i steikjepanna.',
+        note: 'Steik pølse, potetterningar og gulrot i panna og topp med egg.',
       },
-      { recipeId: 'nn-plukkfisk', note: 'Torsk og poteter møtest i mild saus med purre.' },
       {
-        recipeId: 'nn-fleskepannekake',
-        note: 'Fleskepannekake gir eit avbrekk frå potetmiddagane.',
+        recipeId: 'nn-torsk-med-eggesmor',
+        note: 'La torsken trekkje medan poteter og gulrøter blir møre.',
       },
-      { recipeId: 'nn-fiskekaker', note: 'Lag fiskekakene frå grunnen og server med sprø råkost.' },
-      { recipeId: 'nn-raspeballar', note: 'Set av god tid til raspeballar på fredag.' },
+      { recipeId: 'nn-pannekaker-med-bacon', note: 'Steik tynne pannekaker og server dei med sprøtt bacon.' },
+      { recipeId: 'nn-kjottkaker', note: 'La kjøtkakene trekkje ferdig i brun saus.' },
+      {
+        recipeId: 'nn-farikal',
+        note: 'Set av god tid fredag, så kjøtet får småkoke mørt saman med kålen.',
+      },
     ],
   },
   {
     slug: 'meir-fisk-pa-bordet',
     title: 'Meir fisk på bordet',
-    description:
-      'Laks, sei og torsk som omnsrett, suppe, pannemiddag og grateng, med ulike grønsaker til.',
+    description: 'Fem ulike fiskemiddagar med ris, poteter, makaroni og grønsaker.',
     days: [
-      { recipeId: 'nn-laks', note: 'Omnsbakte poteter får eit forsprang før laksen går inn.' },
-      { recipeId: 'nn-fiskesuppe', note: 'Poteter og purre gir fylde i suppa med sei.' },
+      { recipeId: 'nn-laks-med-ris', note: 'Start veka med omnsbakt laks, ris og brokkoli.' },
+      { recipeId: 'nn-fiskekaker', note: 'Server fiskekakene med kokte poteter og riven gulrot.' },
       {
-        recipeId: 'nn-sei-med-lauk',
-        note: 'Lauk og steikt sei gir ein enkel pannemiddag midt i veka.',
+        recipeId: 'nn-fiskegrateng',
+        note: 'Bland makaroni og fisk i gratengen og steik til toppen er sprø.',
       },
-      { recipeId: 'nn-fiskegrateng', note: 'I dag blir fisken grateng med makaroni og sprø topp.' },
-      { recipeId: 'nn-torsk-med-ertemos', note: 'Torsk med grøn ertemos rundar av fiskeveka.' },
+      {
+        recipeId: 'nn-torsk-med-eggesmor',
+        note: 'Server torsken med poteter, gulrøter og eggesmør.',
+      },
+      {
+        recipeId: 'nn-fiskepinnar-med-potetmos',
+        note: 'Legg fiskepinnane ved sida av potetmosen og den rivne gulrota.',
+      },
     ],
   },
   {
     slug: 'bruk-opp-ravarene',
     title: 'Bruk opp råvarene',
     description:
-      'Til fire porsjonar kvar dag brukar veka til saman 1,6 kg hovudkål, seks gulrøter og 16 lefser. Sjekk kva du har før du handlar.',
+      'Bruk potetene og gulrøtene frå same pose fleire dagar. Lasagne og pizza deler både tomatar og ost.',
     days: [
       {
-        recipeId: 'nn-kalrulettar',
-        note: 'Bruk store kålblad til kålrulettane. Legg resten av kålhovudet kjølig til wraps og råkost.',
+        recipeId: 'nn-torsk-med-eggesmor',
+        note: 'Mål gjerne opp og kok potetene til tysdag samstundes. Avkjøl tysdagsporsjonen raskt og set han i kjøleskapet.',
       },
       {
-        recipeId: 'nn-kyllingwrap',
-        note: 'Strimle kål og gulrot til kyllingwraps. Pakk resten av lefsene godt inn til torsdag.',
+        recipeId: 'nn-pytt-i-panne',
+        note: 'Har du kokte poteter frå måndag, skjer du dei i terningar og steikjer dei direkte. Bruk meir av gulrøtene frå same pose.',
       },
       {
-        recipeId: 'nn-fiskepinnar',
-        note: 'Riv gulrot frå same pose og snitt litt meir av kålhovudet til råkost ved sida av fisken.',
+        recipeId: 'nn-lasagne',
+        note: 'Riv gulrot frå same pose til kjøtsausen. Ta vare på resten av osten til fredag.',
       },
       {
-        recipeId: 'nn-bonnetaco',
-        note: 'Bruk lefsene frå tysdag og strimlar av kålen som grønt til bønnetacoen.',
+        recipeId: 'nn-kylling',
+        note: 'Bruk poteter, gulrøter og lauk frå vekeshandelen i kyllingforma.',
       },
       {
-        recipeId: 'nn-steikt-ris',
-        note: 'Skjer av det du treng av kålen og gulrøtene til steikt ris. Følg oppskrifta for tilberedning av risen.',
+        recipeId: 'nn-pizza',
+        note: 'Bruk resten av osten frå lasagnen. Har du opna tomatar, bruk dei til pizzasausen.',
       },
     ],
   },

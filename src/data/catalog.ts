@@ -1,11 +1,15 @@
 import { editorialRecipes } from './recipes';
+import { dinnerSelection } from './dinner-selection';
 import credits from './image-credits.json';
 import type { Recipe } from '@/lib/recipes';
 const images = credits as Record<
   string,
   { image: string; imageCredit: NonNullable<Recipe['imageCredit']> }
 >;
-export const catalogSnapshot: Recipe[] = editorialRecipes.map((r) => ({ ...r, ...images[r.id] }));
+export const catalogSnapshot: Recipe[] = editorialRecipes.map((r) => {
+  const position = dinnerSelection.indexOf(r.id);
+  return { ...r, ...images[r.id], archived: position < 0, featured: position + 1 };
+});
 // Preserve the only saved legacy recipe under its original ID. Its original cache
 // and favourite association remain untouched; the presentation is now Nynorsk.
 const pasta = catalogSnapshot.find((r) => r.id === 'nn-pasta-tomat')!;

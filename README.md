@@ -1,6 +1,6 @@
 # MÅLTID
 
-Matnettside med Next.js, React, TypeScript, Firebase Authentication, Neon PostgreSQL og Drizzle. [GitHub](https://github.com/sugeindok-alt/M-LTID) publiserer automatisk frå main til [Vercel](https://m-ltid.vercel.app/). Eit eige utval med 56 norske middagar, nynorske råvaresider, kombinerte filter og porsjonsval. Det eksisterande designet og personlege data er bevarte.
+Matnettside med Next.js, React, TypeScript, Firebase Authentication, Neon PostgreSQL og Drizzle. [GitHub](https://github.com/sugeindok-alt/M-LTID) publiserer automatisk frå main til [Vercel](https://m-ltid.vercel.app/). Eit eige utval med 22 norske middagar, nynorske råvaresider, kombinerte filter og porsjonsval. Det eksisterande designet og personlege data er bevarte.
 
 ## Innlogging utan kjøpt domene
 
@@ -50,7 +50,7 @@ Testen dekkjer verifisering, to isolerte kontoar, favorittar etter ny økt, utlo
 
 ## Innhald og andre tenester
 
-MÅLTID sin redaksjonelle Neon-katalog er hovudkjelde. Oppskriftstekstane er nyskrivne med KI-hjelp, med rettleiande tidsestimat; dei er ikkje kjøkkentesta. Alle 56 matillustrasjonane er genererte spesielt for rettane og blir merkte synleg. Sjå [innhald, biletrettar og vedlikehald](docs/CONTENT.md). TheMealDB-adapteren er berre att for eldre testar og er ikkje brukt av nettsida. Den tidlegare lagra pastaoppskrifta held på ID og favorittkopling, med norsk presentasjon.
+MÅLTID sin redaksjonelle Neon-katalog er hovudkjelde. Oppskriftstekstane er nyskrivne med KI-hjelp, med rettleiande tidsestimat; dei er ikkje kjøkkentesta. Matillustrasjonane er genererte spesielt for rettane og blir merkte synleg. Sjå [innhald, biletrettar og vedlikehald](docs/CONTENT.md). TheMealDB-adapteren er berre att for eldre testar og er ikkje brukt av nettsida. Den tidlegare lagra pastaoppskrifta held på ID og favorittkopling, med norsk presentasjon.
 
 Open Food Facts leverer konkrete produktdata med kjelde/lisens og NOVA når grunnlaget finst. Ukjent skal ikkje tolkast som NOVA 1. Manglande norsk produktnamn gir norsk reservevising. OPENFOODFACTS_CONTACT_EMAIL kan vere ei reell kontaktadresse; elles identifiserer User-Agent tenesta med den offentlege repo-adressa. OPENFOODFACTS_ENV=staging brukar produkt-staging; standard er produksjon. Namnesøk går til offentleg Search-a-licious. Søk skjer ved innsending, med timeout, cache og førespurnadsgrenser.
 

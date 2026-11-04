@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, it, expect } from 'vitest';
 import { testDatabase } from './database';
 import { catalogSnapshot } from '@/data/catalog';
 import { dinnerWeeks } from '@/data/dinner-weeks';
-import { user, recipeCatalog } from '@/db/schema';
+import { user, recipeCatalog, weekDinners } from '@/db/schema';
 import { fillWeek, changeDay, addWeek, readWeek } from '@/lib/week-planner';
 import { createLibrary } from '@/lib/library';
 import { safeReturnPath, withReturnPath } from '@/lib/auth-return';
@@ -38,16 +38,14 @@ describe('week template and shopping imports', () => {
   const week = '2026-11-02';
   beforeAll(async () => {
     fixture = await testDatabase();
-    await fixture.db
-      .insert(user)
-      .values(
-        ['a', 'b'].map((id) => ({
-          id,
-          name: 'Test ' + id,
-          email: id + '@example.test',
-          emailVerified: true,
-        })),
-      );
+    await fixture.db.insert(user).values(
+      ['a', 'b'].map((id) => ({
+        id,
+        name: 'Test ' + id,
+        email: id + '@example.test',
+        emailVerified: true,
+      })),
+    );
     await fixture.db
       .insert(recipeCatalog)
       .values(catalogSnapshot.map((data) => ({ id: data.id, data })));
@@ -55,15 +53,32 @@ describe('week template and shopping imports', () => {
   afterAll(async () => {
     await fixture?.client.close();
   });
+  it('keeps a withdrawn dinner in its original calendar slot without offering it to other users or new days', async () => {
+    const db = fixture.db;
+    const slot = { week: '2026-11-09', day: 2, servings: 3, recipeId: 'nn-fisketaco' };
+    await db.insert(weekDinners).values({ ...slot, userId: 'a' });
+    expect((await changeDay(db, 'a', { ...slot, servings: 2 })).days[0]).toMatchObject({
+      day: 2,
+      servings: 2,
+      recipeId: 'nn-fisketaco',
+    });
+    await expect(changeDay(db, 'b', slot)).rejects.toThrow('ikkje lenger i utvalet');
+    await expect(changeDay(db, 'a', { ...slot, day: 3 })).rejects.toThrow('ikkje lenger i utvalet');
+  });
   it('preserves existing choices and weekends, retries safely and aggregates exactly 1.4 kg for one owner', async () => {
     const db = fixture.db;
     await changeDay(db, 'a', { week, day: 0, recipeId: 'nn-pytt-i-panne', servings: 4 });
     await changeDay(db, 'a', { week, day: 6, recipeId: 'nn-tomatsuppe', servings: 2 });
-    await changeDay(db, 'b', { week, day: 1, recipeId: 'nn-laks', servings: 3 });
+    await changeDay(db, 'b', { week, day: 1, recipeId: 'nn-laks-med-ris', servings: 3 });
     const fill = { slug: 'raske-kvardagar', week, days: [0, 1, 2, 3, 4], servings: 2 };
     const [one, two] = await Promise.all([fillWeek(db, 'a', fill), fillWeek(db, 'a', fill)]);
     expect(one.count + two.count).toBe(4);
-    const updated = await changeDay(db, 'a', { week, day: 2, recipeId: 'nn-torsk', servings: 4 });
+    const updated = await changeDay(db, 'a', {
+      week,
+      day: 2,
+      recipeId: 'nn-torsk-med-eggesmor',
+      servings: 4,
+    });
     expect(updated.days).toHaveLength(6);
     expect(updated.days[0]).toMatchObject({ recipeId: 'nn-pytt-i-panne', servings: 4 });
     expect(updated.days.at(-1)).toMatchObject({ day: 6, recipeId: 'nn-tomatsuppe' });
@@ -78,7 +93,7 @@ describe('week template and shopping imports', () => {
     ).toMatchObject([{ amount: 1400, unit: 'g' }]);
     expect(await createLibrary(db).shopping('b')).toHaveLength(0);
     expect((await readWeek(db, 'b', week)).days).toMatchObject([
-      { day: 1, recipeId: 'nn-laks', servings: 3 },
+      { day: 1, recipeId: 'nn-laks-med-ris', servings: 3 },
     ]);
   });
 });

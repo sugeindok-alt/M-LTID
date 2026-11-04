@@ -90,7 +90,7 @@
     }
   },
   "nn-tomatsuppe": {
-    "image": "/images/middagar/tomatsuppe.webp",
+    "image": "/images/middagar/tomatsuppe-makaroni.webp",
     "imageCredit": {
       "author": "MÅLTID · OpenAI",
       "license": "KI-generert for MÅLTID",
@@ -551,6 +551,76 @@
   },
   "nn-makaroniform-med-linser": {
     "image": "/images/middagar/makaroniform-med-linser.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    }
+  },
+  "nn-spagetti-med-kjotsaus": {
+    "image": "/images/middagar/spagetti-med-kjotsaus.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    }
+  },
+  "nn-lasagne": {
+    "image": "/images/middagar/lasagne.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    }
+  },
+  "nn-pannekaker-med-bacon": {
+    "image": "/images/middagar/pannekaker-med-bacon.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    }
+  },
+  "nn-fiskepinnar-med-potetmos": {
+    "image": "/images/middagar/fiskepinnar-med-potetmos.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    }
+  },
+  "nn-laks-med-ris": {
+    "image": "/images/middagar/laks-med-ris.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    }
+  },
+  "nn-kjotpudding": {
+    "image": "/images/middagar/kjotpudding.webp",
+    "imageCredit": {
+      "author": "MÅLTID · OpenAI",
+      "license": "KI-generert for MÅLTID",
+      "url": "/om-innhaldet",
+      "licenseUrl": "https://openai.com/policies/terms-of-use/",
+      "note": "KI-generert serveringsforslag. Retten kan sjå annleis ut."
+    }
+  },
+  "nn-hamburger": {
+    "image": "/images/middagar/hamburger.webp",
     "imageCredit": {
       "author": "MÅLTID · OpenAI",
       "license": "KI-generert for MÅLTID",

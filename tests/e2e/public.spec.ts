@@ -6,6 +6,15 @@ test('editorial homepage renders real images and works without horizontal overfl
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
   await expect(page.getByRole('heading', { name: /God middag.*Heile veka\./ })).toBeVisible();
+  const dinnerLinks = page
+    .getByRole('navigation', { name: 'Tre forslag til middag' })
+    .getByRole('link');
+  await expect(dinnerLinks).toHaveText([
+    'Spagetti med kjøtsaus',
+    'Fiskekaker med poteter og gulrøter',
+    'Kjøtkaker i brun saus',
+  ]);
+  for (const link of await dinnerLinks.all()) await expect(link).toBeInViewport();
   const hero = page.locator('.hero-visual img');
   await expect(hero).toBeVisible();
   await expect
@@ -41,25 +50,32 @@ test('responsive navigation opens and navigates with accessible labels', async (
 });
 test('recipe search, category filtering, sorting and empty results', async ({ page }) => {
   await page.goto('/oppskrifter');
-  await page.getByRole('textbox', { name: 'Søk etter oppskrift' }).fill('pasta');
+  await expect(page.locator('main article')).toHaveCount(22);
+  const search = page.getByRole('textbox', { name: 'Søk etter oppskrift' });
+  await search.fill('spagetti med kjøttsaus');
   await page.getByRole('button', { name: 'Søk', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Pasta med tomat og basilikum' })).toBeVisible();
-  await page.getByRole('combobox', { name: 'Kategori', exact: true }).selectOption('Pasta');
+  await expect(page.locator('article h3')).toHaveText(['Spagetti med kjøtsaus']);
+  await search.fill('');
+  await page
+    .getByRole('combobox', { name: 'Kategori', exact: true })
+    .selectOption('Supper og gryter');
   await page.getByRole('combobox', { name: 'Sorter', exact: true }).selectOption('za');
   await page.getByRole('combobox', { name: 'Tidsbruk', exact: true }).selectOption('30');
-  await page.getByRole('combobox', { name: 'Hovudingrediens', exact: true }).selectOption('Pasta');
+  await page
+    .getByRole('combobox', { name: 'Hovudingrediens', exact: true })
+    .selectOption('Grønsaker');
   await page.getByRole('checkbox', { name: 'Berre vegetar' }).check();
   await page.getByRole('button', { name: 'Bruk filter' }).click();
-  await expect(page).toHaveURL(/category=Pasta/);
-  await expect(page.getByRole('heading', { name: 'Pasta med tomat og basilikum' })).toBeVisible();
-  await page.getByRole('textbox', { name: 'Søk etter oppskrift' }).fill('zzznorecipemaltidzzz');
+  await expect(page).toHaveURL(/sort=za/);
+  await expect(page.locator('article h3')).toHaveText(['Tomatsuppe med makaroni og egg']);
+  await search.fill('zzznorecipemaltidzzz');
   await page.getByRole('button', { name: 'Søk', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Ingen middagar passar søket.' })).toBeVisible();
 });
 test('recipe details retain source content and checkable steps', async ({ page }, info) => {
-  await page.goto('/oppskrifter/nn-pasta-tomat');
+  await page.goto('/oppskrifter/nn-spagetti-med-kjotsaus');
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Pasta med tomat og basilikum' }),
+    page.getByRole('heading', { level: 1, name: 'Spagetti med kjøtsaus' }),
   ).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Ingrediensar', exact: true })).toBeVisible();
   const step = page.getByRole('button', { name: 'Merk steg 1 som ferdig', exact: true });
@@ -73,7 +89,9 @@ test('recipe details retain source content and checkable steps', async ({ page }
   ).toBeVisible();
   await expect(page.getByRole('combobox', { name: 'Porsjonar' })).toHaveValue('1');
   await page.getByRole('combobox', { name: 'Porsjonar' }).selectOption('0.5');
-  await expect(page.locator('.ingredient-panel').getByText('200 g', { exact: true })).toBeVisible();
+  await expect(page.locator('.ingredient-panel li').filter({ hasText: 'spagetti' })).toContainText(
+    '175 g',
+  );
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
@@ -81,6 +99,26 @@ test('recipe details retain source content and checkable steps', async ({ page }
     path: `docs/screenshots/${info.project.name}-recipe.png`,
     fullPage: true,
   });
+});
+test('saved recipe links still open outside the current dinner selection', async ({ page }) => {
+  const archived = [
+    ['nn-pasta-tomat', 'Pasta med tomat og basilikum'],
+    ['nn-laks', 'Omnsbakt laks med poteter og erter'],
+    ['nn-torsk', 'Torsk i tomatform'],
+  ];
+  await page.goto('/oppskrifter');
+  await expect(page.locator('main article')).toHaveCount(22);
+  for (const [id] of archived) {
+    await expect(page.locator(`article a[href="/oppskrifter/${id}"]`)).toHaveCount(0);
+  }
+  for (const [id, title] of archived) {
+    await page.goto('/oppskrifter/' + id);
+    await expect(page.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible();
+    await expect(
+      page.getByText(/Frå arkivet\. Du kan framleis bruke denne oppskrifta/),
+    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Ingrediensar', exact: true })).toBeVisible();
+  }
 });
 test('ingredient discovery searches and opens actual ingredient details', async ({ page }) => {
   await page.goto('/ingrediensar');

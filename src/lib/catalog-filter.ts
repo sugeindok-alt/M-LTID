@@ -16,17 +16,6 @@ export const dinnerCategories = [
   'Helgemat',
   'Vegetar',
 ];
-export const mainIngredients = [
-  'Korn',
-  'Storfe',
-  'Lam',
-  'Fisk',
-  'Kylling',
-  'Grønsaker',
-  'Belgfrukter',
-  'Egg',
-  'Pasta',
-];
 export const fold = (text: string) =>
   text
     .toLocaleLowerCase('nn-NO')
@@ -35,11 +24,16 @@ export const fold = (text: string) =>
     .replaceAll('ø', 'o')
     .replaceAll('æ', 'ae')
     .replaceAll('kjott', 'kjot')
+    .replaceAll('spaghetti', 'spagetti')
+    .replaceAll('ovnsbakt', 'omnsbakt')
+    .replaceAll('potetstappe', 'potetmos')
+    .replaceAll('gulrotter', 'gulroter')
+    .replaceAll('hjemmelaget', 'heimelaga')
     .trim();
 export function filterRecipes(recipes: Recipe[], query: RecipeQuery = {}) {
   const words = fold(query.q || '')
     .split(/\s+/)
-    .filter(Boolean);
+    .filter((word) => word && !['med', 'og', 'i'].includes(word));
   const minutes = Number(query.maxTime);
   return recipes
     .filter((r) => !r.archived && r.language === 'nn')
@@ -50,7 +44,12 @@ export function filterRecipes(recipes: Recipe[], query: RecipeQuery = {}) {
         ).includes(word),
       ),
     )
-    .filter((r) => !query.category || r.category === query.category)
+    .filter(
+      (r) =>
+        !query.category ||
+        r.category === query.category ||
+        (query.category === 'Vegetar' && r.vegetarian),
+    )
     .filter(
       (r) =>
         !query.ingredient ||

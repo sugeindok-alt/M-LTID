@@ -54,6 +54,11 @@ export default async function RecipePage({ params, searchParams }: PageProps<'/o
       <div className="detail-heading">
         <p className="eyebrow">FRÅ OPPSKRIFTSBOKA</p>
         <h1>{recipe.title}</h1>
+        {recipe.archived && (
+          <p className="source-note">
+            Frå arkivet. Du kan framleis bruke denne oppskrifta frå ei lagra lenkje.
+          </p>
+        )}
         <div className="recipe-meta">
           <span>{categoryLabels[recipe.category] || recipe.category}</span>
           <span className="meta-dot" />

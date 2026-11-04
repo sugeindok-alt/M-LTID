@@ -88,8 +88,19 @@ test('ready-made dinner week on mobile: sign up, keep Monday, replace Wednesday,
     await expect(page.getByRole('button', { name: 'Endre middag for tysdag' })).toContainText(
       '2 porsjonar',
     );
+    await expect(page.getByRole('button', { name: 'Endre middag for måndag' })).toContainText(
+      'Pytt i panne',
+    );
+    await expect(page.getByRole('button', { name: 'Endre middag for tysdag' })).toContainText(
+      'Spagetti med kjøtsaus',
+    );
+    await expect(page.getByRole('button', { name: 'Endre middag for onsdag' })).toContainText(
+      'Omnsbakt laks med ris',
+    );
     await page.getByRole('button', { name: 'Endre middag for onsdag' }).click();
-    await page.getByRole('combobox', { name: 'Middag', exact: true }).selectOption('nn-torsk');
+    await page
+      .getByRole('combobox', { name: 'Middag', exact: true })
+      .selectOption('nn-torsk-med-eggesmor');
     await page.getByRole('combobox', { name: 'Porsjonar', exact: true }).selectOption('4');
     await page.getByRole('button', { name: 'Lagre dagen' }).click();
     await expect(page.locator('.week-basket li').filter({ hasText: 'poteter' })).toContainText(
@@ -119,7 +130,9 @@ test('ready-made dinner week on mobile: sign up, keep Monday, replace Wednesday,
       .getByRole('link', { name: 'Mi veke', exact: true })
       .click();
     await page.getByRole('link', { name: 'Opne oppskrifta for onsdag' }).click();
-    await expect(page.getByRole('heading', { level: 1, name: 'Torsk i tomatform' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Kokt torsk med poteter og eggesmør' }),
+    ).toBeVisible();
   } finally {
     await ctx.close();
   }
@@ -187,8 +200,9 @@ test('private cookbook variant follows the user from mobile to a new login on de
   await expect(dinners.locator('optgroup[label="Mi kokebok"] option')).toHaveText(
     'Min sitronlaks · Min variant',
   );
-  await expect(dinners.locator('option[value="nn-laks"]')).toHaveText(
-    'Omnsbakt laks med poteter og erter',
+  await expect(dinners.locator('option[value="nn-laks"]')).toHaveCount(0);
+  await expect(dinners.locator('option[value="nn-laks-med-ris"]')).toHaveText(
+    'Omnsbakt laks med ris',
   );
   await dinners.selectOption(path.split('/').at(-1)!);
   await again.getByRole('combobox', { name: 'Porsjonar', exact: true }).selectOption('3');
@@ -262,8 +276,8 @@ test('guest salmon login returns to the recipe; mobile week and shopping preview
   );
   await page.goto(weekPath);
   for (const [day, id, count] of [
-    ['måndag', 'nn-laks', '2'],
-    ['tysdag', 'nn-torsk', '4'],
+    ['måndag', 'nn-fiskekaker', '2'],
+    ['tysdag', 'nn-torsk-med-eggesmor', '4'],
   ]) {
     await page.getByRole('button', { name: 'Vel middag for ' + day, exact: true }).click();
     await page.getByRole('combobox', { name: 'Middag', exact: true }).selectOption(id);
@@ -291,7 +305,7 @@ test('guest salmon login returns to the recipe; mobile week and shopping preview
   await again.getByRole('button', { name: 'Logg inn', exact: true }).click();
   await expect(again).toHaveURL(origin + weekPath);
   await expect(again.getByRole('button', { name: 'Endre middag for måndag' })).toContainText(
-    'Omnsbakt laks',
+    'Fiskekaker med poteter og gulrøter',
   );
   await expect(again.getByRole('button', { name: 'Veka er lagd i handlelista' })).toBeDisabled();
   await fresh.close();
