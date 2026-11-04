@@ -1,6 +1,35 @@
 import { editorialRecipes } from './recipes';
 import { ingredientSlug } from '@/lib/recipes';
+import { rawImage } from './raw-images';
 const descriptions: Record<string, [string, string, string[]?]> = {
+  middagspølse: [
+    'Fisk og kjøt',
+    'Skjer pølsa i skiver eller terningar. Følg tilrådinga på pakninga når du varmar henne.',
+  ],
+  kyllingfilet: [
+    'Fisk og kjøt',
+    'Skjer fileten i jamne bitar, eller steik han heil. Kyllingen skal vere gjennomsteikt.',
+  ],
+  lasagneplater: [
+    'Basisvarer',
+    'Legg platene lagvis med saus. Dekk kvar plate godt, så pastaen blir mjuk i omnen.',
+  ],
+  'sammalen kveite': [
+    'Basisvarer',
+    'Sammale kveitemjøl inneheld heile kornet. Det passar i grove pannekaker, brød og rundstykke.',
+  ],
+  brokkoli: [
+    'Grønsaker',
+    'Del brokkolien i små bukettar. Stilken kan skrellast og skjerast i tynne skiver.',
+  ],
+  matbygg: [
+    'Basisvarer',
+    'Matbygg er byggkorn til middagsbruk. Kok etter rettleiinga på pakninga.',
+  ],
+  blomkål: [
+    'Grønsaker',
+    'Del hovudet i bukettar og bruk òg den møre delen av stilken. Kok kort eller bak i omnen.',
+  ],
   poteter: [
     'Grønsaker',
     'Poteter kan kokast, mosast eller bakast i omnen. Skjer dei i jamne bitar for jamn koketid.',
@@ -100,7 +129,7 @@ const descriptions: Record<string, [string, string, string[]?]> = {
     'Kjøtdeig kan brukast til kjøttkaker og taco. Steik han heilt gjennom, og vask hender og utstyr etter kontakt med rått kjøt.',
     ['minced-beef', 'beef-mince'],
   ],
-  'høgrygg': [
+  høgrygg: [
     'Fisk og kjøt',
     'Høgrygg treng lang tid på låg varme for å bli mør. Han passar godt til lapskaus og gryter.',
     ['beef'],
@@ -223,7 +252,7 @@ export const ingredients = [
       entry?.[1] ||
       `${name.charAt(0).toUpperCase() + name.slice(1)} blir brukt i oppskriftene nedanfor. Følg mengda i oppskrifta og kontroller innhald og allergen på pakninga.`,
     aliases: entry?.[2] || [],
-    image: '',
+    image: rawImage(name),
   };
 });
 export function findIngredient(slug: string) {

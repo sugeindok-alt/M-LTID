@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { Heart, Mail, ShoppingBag, Check, Info, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { api, ApiError } from '@/lib/client-api';
+import { authClient } from '@/lib/auth-client';
+import { withReturnPath } from '@/lib/auth-return';
 import { type Recipe, ingredientSlug } from '@/lib/recipes';
 import { parseMeasure, scaleMeasure } from '@/lib/quantities';
 import { useToast } from './providers';
@@ -176,6 +178,12 @@ export function IngredientsPanel({
 }) {
   const [busy, setBusy] = useState(false);
   const [requestId, setRequestId] = useState(() => crypto.randomUUID());
+  const session = authClient.useSession();
+  const [expired, setExpired] = useState(false);
+  const login = withReturnPath(
+    '/logg-inn',
+    (linkIngredients ? '/oppskrifter/' : '/kokebok/') + recipe.id,
+  );
   const notify = useToast();
   const scalable =
     recipe.ingredients.length > 0 && recipe.ingredients.every((i) => parseMeasure(i.measure));
@@ -186,6 +194,7 @@ export function IngredientsPanel({
       notify('Ingrediensane er lagra i handlelista.');
       setRequestId(crypto.randomUUID());
     } catch (error) {
+      if (error instanceof ApiError && error.status === 401) setExpired(true);
       notify((error as Error).message, true);
     } finally {
       setBusy(false);
@@ -219,10 +228,17 @@ export function IngredientsPanel({
         </p>
       )}
       <IngredientRows recipe={recipe} scale={scale} links={linkIngredients} />
-      <button className="button" onClick={add} disabled={!ready || busy}>
-        <ShoppingBag size={16} />
-        {busy ? 'Legg til …' : 'Legg til i handlelista'}
-      </button>
+      {ready && !session.isPending && (expired || !session.data?.user) ? (
+        <Link className="button" href={login}>
+          <ShoppingBag size={16} />
+          Logg inn for å bruke handlelista
+        </Link>
+      ) : (
+        <button className="button" onClick={add} disabled={!ready || session.isPending || busy}>
+          <ShoppingBag size={16} />
+          {busy ? 'Legg til …' : 'Legg til i handlelista'}
+        </button>
+      )}
       {scalable && scale !== 1 && (
         <p className="source-note">
           Handlelista får mengdene for dei valde porsjonane. Smak til salt og krydder undervegs.

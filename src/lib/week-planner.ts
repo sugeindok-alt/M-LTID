@@ -1,6 +1,6 @@
 import 'server-only';
 import { createHash } from 'node:crypto';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { z } from 'zod';
 import type { Database } from '@/db';
 import { weekDinners, shoppingImports, recipeCatalog, cookbookRecipes as book } from '@/db/schema';
@@ -9,6 +9,7 @@ import { createLibrary } from './library';
 import { formatMeasure, parseMeasure, scaleMeasure } from './quantities';
 import { dinnerId, privateId, privateLabel } from './cookbook-types';
 import { isWeek } from './week-dates';
+import { dinnerWeek } from '@/data/dinner-weeks';
 
 export const monday = z.string().refine(isWeek);
 export const dayChange = z
@@ -103,6 +104,63 @@ export async function readWeek(db: Database, owner: string, week: string) {
   return { week, days, items, version, imported: receipt.length > 0 };
 }
 export type WeekPlan = Awaited<ReturnType<typeof readWeek>>;
+export const applyDinnerWeek = z
+  .object({
+    slug: z.string().refine((slug) => !!dinnerWeek(slug)),
+    week: monday,
+    servings: z.number().int().min(1).max(12),
+    days: z
+      .array(z.number().int().min(0).max(4))
+      .min(1)
+      .max(5)
+      .refine((days) => new Set(days).size === days.length),
+  })
+  .strict();
+
+export async function fillWeek(
+  db: Database,
+  owner: string,
+  input: z.infer<typeof applyDinnerWeek>,
+) {
+  const menu = dinnerWeek(input.slug);
+  if (!menu) throw new AppError('Fann ikkje middagsveka.', 404);
+  const ids = menu.days.map((day) => day.recipeId);
+  const inserted = await db.transaction(async (tx) => {
+    const recipes = await tx
+      .select({ data: recipeCatalog.data })
+      .from(recipeCatalog)
+      .where(inArray(recipeCatalog.id, ids));
+    if (
+      recipes.length !== ids.length ||
+      recipes.some(
+        ({ data }) =>
+          data.archived ||
+          data.language !== 'nn' ||
+          (menu.slug === 'raske-kvardagar' && (!data.minutes || data.minutes > 30)),
+      )
+    )
+      throw new AppError(
+        'Ein middag i denne malen er ikkje tilgjengeleg. Vel ei anna middagsveke.',
+        409,
+      );
+    // Apply only days that were blank in the preview. The unique calendar key
+    // also preserves a choice made on another device since that preview.
+    return tx
+      .insert(weekDinners)
+      .values(
+        input.days.map((day) => ({
+          userId: owner,
+          week: input.week,
+          day,
+          servings: input.servings,
+          recipeId: ids[day],
+        })),
+      )
+      .onConflictDoNothing({ target: [weekDinners.userId, weekDinners.week, weekDinners.day] })
+      .returning({ day: weekDinners.day });
+  });
+  return { count: inserted.length, plan: await readWeek(db, owner, input.week) };
+}
 const importKey = (week: string, version: string) => 'week:' + week + ':' + version;
 
 export async function changeDay(db: Database, owner: string, input: z.infer<typeof dayChange>) {

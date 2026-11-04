@@ -78,5 +78,165 @@
     "id": "kikertgryte",
     "subject": "A mild golden-red chickpea curry with tomato, coconut milk and wilted spinach, served alongside plain white rice in a cream ceramic shallow bowl.",
     "style": "Original 4:3 serving illustration for MÅLTID. Warm daylight, cream ceramics, light oak table, realistic home-cooked food. No brands or text. Built-in imagegen, 2026-10-30."
+  },
+  {
+    "id": "pytt-i-panne",
+    "subject": "Norwegian pytt i panne: browned small potato cubes, diced pale smoked dinner sausage, carrot and onion with one sunny-side-up fried egg on top.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 1,
+    "panel": "top left",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "plukkfisk",
+    "subject": "Norwegian plukkfisk: creamy roughly crushed potatoes, irregular flakes of white cod and green leek in a shallow bowl. Rustic mash, no egg.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 1,
+    "panel": "top right",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "potetsuppe",
+    "subject": "Creamy pale pureed potato and leek soup with golden toasted cube-shaped bread croutons in a bowl.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 1,
+    "panel": "bottom left",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "fiskepinnar",
+    "subject": "Three rectangular golden breadcrumbed cod fish fingers, white flaky interior in one cut finger, boiled potatoes and finely shredded raw green cabbage and carrot slaw.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 1,
+    "panel": "bottom right",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "kyllingpanne",
+    "subject": "Golden cooked chicken breast strips and broccoli florets in light creamy curry sauce alongside plain white rice.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 2,
+    "panel": "top left",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "gronsakslasagne",
+    "subject": "Square of layered vegetarian lasagne: stacked pasta sheets with red tomato sauce, green spinach, grated carrot, white sauce and browned golden cheese.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 2,
+    "panel": "top right",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "grove-pannekaker",
+    "subject": "Three thin Norwegian wholewheat pancakes rolled loosely with green spinach, white beans and yellow cheese peeking out of a cut end. No syrup or berries.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 2,
+    "panel": "bottom left",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "bonnetaco",
+    "subject": "Soft wheat tortillas filled with spiced white beans, sweetcorn, raw green cabbage ribbons, sour cream and diced tomato. No meat.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 2,
+    "panel": "bottom right",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "sei-med-lauk",
+    "subject": "Pan-fried dark grey saithe fillet with golden sautéed onion rings, peeled boiled potatoes and grated carrot.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 3,
+    "panel": "top left",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "kalpanne",
+    "subject": "Pan-fried ribbons of pale green cabbage with crumbled browned ground beef, carrot and onion; a little plain rice alongside.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 3,
+    "panel": "top right",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "laksepasta",
+    "subject": "Penne pasta in a light cream sauce with chunks of pink cooked salmon, peas and dill.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 3,
+    "panel": "bottom left",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "steikt-ris",
+    "subject": "Fried rice with distinct grains, strips of cooked egg, diced carrot, shredded cabbage and peas. No meat.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 3,
+    "panel": "bottom right",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "polsegrateng",
+    "subject": "Macaroni gratin with elbow macaroni, slices of pink smoked sausage, broccoli, white sauce and golden cheese crust.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 4,
+    "panel": "top left",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "fiskesuppe",
+    "subject": "Creamy Norwegian fish soup with chunks of cooked white saithe, small potato cubes, carrot and green leek. No shellfish.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 4,
+    "panel": "top right",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "bygg-og-bonner",
+    "subject": "Pearl barley bowl with ivory barley grains, white beans, roasted carrots, red onion and parsley, lemon dressing.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 4,
+    "panel": "bottom left",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "kyllingwrap",
+    "subject": "A folded, halved flour tortilla wrap with golden cooked chicken breast strips, shredded green cabbage, grated carrot and white dressing.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 4,
+    "panel": "bottom right",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "spinatpasta",
+    "subject": "Penne dressed with green spinach, white beans and lightly grated yellow vegetarian hard cheese. No meat.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 5,
+    "panel": "top left",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "bonner-og-egg",
+    "subject": "Eggs cooked in thick red tomato and white bean sauce with paprika pieces, served in shallow pan with brown wholegrain bread beside it; visibly set egg whites.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 5,
+    "panel": "top right",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "karbonadar",
+    "subject": "Two flat Norwegian browned beef karbonade patties with soft golden onion slices, peeled boiled potatoes and green peas. No bun or gravy.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 5,
+    "panel": "bottom left",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
+  },
+  {
+    "id": "blomkalgrateng",
+    "subject": "Norwegian cauliflower gratin with potato chunks and cauliflower florets in white sauce under browned golden cheese in cream oven dish.",
+    "style": "One professional food editorial illustration atlas for MÅLTID. Landscape 4:3. FOUR independent edge-to-edge photographs in an exact 2 x 2 grid meeting precisely at the horizontal and vertical midpoint. Every panel is 4:3 and has its own entire plated dish. No gutters, borders, frames, lettering or captions. Centre food within each cell with margin for cropping. Consistent natural Scandinavian window light, matte cream ceramics on light oak tabletop, lightly oblique overhead view. Restrained colours, real Norwegian home cooking, photographic realism but original generated illustrations. No hands, logos, herbs or sides other than those specified. Subjects in fixed order:\n",
+    "atlas": 5,
+    "panel": "bottom right",
+    "origin": "Built-in OpenAI imagegen, 2026-11-04. Original MÅLTID serving illustration; four separate dishes per sheet, individually cropped and reviewed."
   }
 ]

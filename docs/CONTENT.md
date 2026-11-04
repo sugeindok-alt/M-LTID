@@ -2,11 +2,13 @@
 
 Kjeldevurdering 30. oktober 2026: Matprat sine retningslinjer krev løyve for bruk av tekst/bilete i ei eiga oppskriftsplattform (https://www.matprat.no/retningslinjer-for-bruk-av-innhold/). ReceptAPI tilbyr svensk innhald med avgrensa gratiskvote og vilkår for replikering (https://receptapi.se/docs). Ingen av dei vart importerte. TheMealDB er ikkje lenger ei aktiv kjelde i nettsida.
 
-MÅLTID har 16 nyskrivne nynorske middagsoppskrifter med vanlege norske råvarer. Oppskriftene er utvikla med KI-hjelp, ikkje kopierte frå matnettstader. Dei er ikkje kjøkkentesta; tidene er redaksjonelle estimat. Porsjonar, Celsius og metriske mål er eksplisitte. Ingen næringsverdiar eller NOVA-klasse for heile retten er konstruerte.
+MÅLTID har 36 aktive, nyskrivne nynorske middagsoppskrifter. Utgangspunktet 4. november 2026 var 16 aktive rettar og éi eiga arkivoppføring for ein eldre favoritt. Etter utvidinga med 20 rettar er det 37 oppføringar i databasen. Oppskriftene er utvikla med KI-hjelp, ikkje kopierte frå matnettstader. Mengder, rekkjefølgje og tidsbruk er redaksjonelt gjennomgått på papiret. Ingen rett er oppgitt som prøvelaga. Tidene er estimat med førebuing, og det er ikkje konstruert næringsverdiar eller NOVA-klasse for heile retten.
+
+For steikt ris er innkjøpsmengda tørr ris. Steget seier kor mykje ferdig kokt ris ho svarar til, og skil mellom tida ved bruk av tørr ris og kokte restar. Rådet om rask nedkjøling og kjølelagring følgjer [Mattilsynet](https://www.mattilsynet.no/mat-og-drikke/forbrukere/kokt-ris-og-pasta-som-star-fremme-kan-lage-giftstoffer).
 
 ## Bilete og rettar
 
-Alle 16 bileta er genererte spesielt for kvar rett med det innebygde imagegen-verktøyet, utan referansefoto frå andre. Tekstgrunnlaget er i IMAGE-PROMPTS.json. Originalane er lagra privat; optimaliserte 1200 × 900 WebP-filer ligg i public/images/middagar. Kreditering er i src/data/image-credits.json og synleg på oppskriftssida. Kort og hovudbilete er merkte som illustrasjonar.
+Kvar av dei 36 aktive rettane har si eiga KI-genererte illustrasjon med eige WebP-bilete i 4:3-format i public/images/middagar. Dei første 16 vart genererte kvar for seg. Dei nye 20 vart genererte i fem ark med fire rettsspesifikke bilete per ark, utan eksterne referansefoto. Kvart felt vart skore ut, knytt til rett ID og kontrollert på ei kontaktflate med biletnamn. Tekstgrunnlag, opphav og plassering i arka er registrerte i IMAGE-PROMPTS.json. Krediteringa er i src/data/image-credits.json og synleg på oppskriftssida. Kort og hovudbilete er merkte som illustrasjonar.
 
 Bruk av generert innhald følgjer OpenAI sine vilkår (https://openai.com/policies/terms-of-use/, kontrollert 30. oktober 2026). Det blir ikkje hevda at motiva er unike eller fotografi av kjøkkentesta resultat. Ingen Wikimedia-, Matprat- eller TheMealDB-foto er tekne inn i den nye katalogen. Open Food Facts-produktfoto beheld eigne kjelde-/lisensopplysningar.
 

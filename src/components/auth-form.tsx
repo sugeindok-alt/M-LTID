@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import { authErrorMessage, emailRequestFeedback } from '@/lib/auth-feedback';
+import { safeReturnPath, withReturnPath } from '@/lib/auth-return';
 type Mode = 'login' | 'register' | 'forgot' | 'reset' | 'verify' | 'confirm';
 const subscribe = () => () => {};
 const titles: Record<Mode, string> = {
@@ -49,10 +50,7 @@ export function AuthForm({
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [failed, setFailed] = useState(false);
-  const next =
-    nextPath?.startsWith('/') && !nextPath.startsWith('//') && !nextPath.includes('\\')
-      ? nextPath
-      : '/profil';
+  const next = safeReturnPath(nextPath);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
@@ -77,12 +75,12 @@ export function AuthForm({
                     email,
                     password,
                     name: String(data.get('name')),
-                    callbackURL: '/profil',
+                    callbackURL: next,
                   })
                 : mode === 'forgot'
                   ? await authClient.requestPasswordReset({ email, redirectTo: '/nytt-passord' })
                   : mode === 'verify'
-                    ? await authClient.sendVerificationEmail({ email, callbackURL: '/profil' })
+                    ? await authClient.sendVerificationEmail({ email, callbackURL: next })
                     : await authClient.resetPassword({ newPassword: password, token: token || '' });
       if (result.error) {
         setFeedback(
@@ -216,15 +214,17 @@ export function AuthForm({
       <div className="auth-links">
         {mode === 'login' ? (
           <>
-            <Link href="/registrer">Opprett ein konto</Link>
-            <Link href="/gloymt-passord">Gløymt passord?</Link>
-            <Link href="/stadfest-epost">Ny stadfestingslenkje</Link>
+            <Link href={withReturnPath('/registrer', next)}>Opprett ein konto</Link>
+            <Link href={withReturnPath('/gloymt-passord', next)}>Gløymt passord?</Link>
+            <Link href={withReturnPath('/stadfest-epost', next)}>Ny stadfestingslenkje</Link>
           </>
         ) : (
           <>
-            <Link href="/logg-inn">Tilbake til innlogging</Link>
+            <Link href={withReturnPath('/logg-inn', next)}>Tilbake til innlogging</Link>
             {mode === 'reset' && <Link href="/gloymt-passord">Ny passordlenkje</Link>}
-            {mode === 'register' && <Link href="/stadfest-epost">Ny stadfestingslenkje</Link>}
+            {mode === 'register' && (
+              <Link href={withReturnPath('/stadfest-epost', next)}>Ny stadfestingslenkje</Link>
+            )}
           </>
         )}
       </div>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Search, ArrowUpRight } from 'lucide-react';
 import { ingredients, ingredientGroups } from '@/data/ingredients';
-import { IngredientSymbol } from '@/components/ingredient-symbol';
+import { RawIngredientPhoto } from '@/components/raw-ingredient-photo';
 import { SectionHeading } from '@/components/shared';
 import { fold } from '@/lib/catalog-filter';
 import { ProductSearch } from '@/components/product-search';
@@ -59,8 +59,8 @@ export default async function Ingredients({
         ))}
       </nav>
       <p className="source-note" style={{ marginBottom: 24 }}>
-        {filtered.length} ingrediensar · Kategoriar er redaksjonelle, ikkje NOVA-vurderingar.
-        Råvarer og basisvarer frå MÅLTID-oppskriftene.
+        {filtered.length} ingrediensar · Kategoriar er redaksjonelle, ikkje NOVA-vurderingar. Bileta
+        er KI-genererte illustrasjonar av kvar råvare, laga for MÅLTID.
       </p>
       {filtered.length ? (
         <>
@@ -68,7 +68,7 @@ export default async function Ingredients({
             {filtered.slice((page - 1) * 24, page * 24).map((i) => (
               <Link className="ingredient-tile" key={i.id} href={`/ingrediensar/${i.slug}`}>
                 <div className="ingredient-image">
-                  <IngredientSymbol group={i.group} />
+                  <RawIngredientPhoto ingredient={i} />
                 </div>
                 <h3>{i.name}</h3>
                 <p>{i.group}</p>

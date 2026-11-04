@@ -7,7 +7,7 @@ if (!process.env.DATABASE_URL || process.env.EMAIL_TRANSPORT !== 'file')
   );
 export default defineConfig({
   testDir: './tests/e2e',
-  testMatch: 'auth.spec.ts',
+  testMatch: ['auth.spec.ts', 'sharing.spec.ts'],
   workers: 1,
   timeout: 180000,
   expect: { timeout: 30000 },

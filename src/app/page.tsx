@@ -44,7 +44,9 @@ export default async function Home() {
           </div>
           <div className="hero-footnote">
             <Sprout size={18} />
-            <span>Vanlege råvarer. Godt å samlast om.</span>
+            <Link className="text-link" href="/middagsveker">
+              Sjå fire ferdige middagsveker <ArrowUpRight size={15} />
+            </Link>
           </div>
         </div>
         <div className="hero-visual">

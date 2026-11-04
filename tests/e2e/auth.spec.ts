@@ -1,6 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { readFile, readdir } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
+import { thisWeek } from '../../src/lib/week-dates';
 const password = 'local-browser-test-password-123';
 async function login(page: Page, email: string, pass = password) {
   await page.goto('/logg-inn');
@@ -36,6 +37,83 @@ async function visitPrivateLink(page: Page, link: string) {
     throw new Error('Could not open local test link (token redacted).');
   }
 }
+test('ready-made dinner week on mobile: sign up, keep Monday, replace Wednesday, shop once and open the recipe', async ({
+  browser,
+}) => {
+  const origin = 'http://127.0.0.1:3100',
+    marker = randomUUID(),
+    name = 'Middagsveke ' + marker;
+  const ctx = await browser.newContext({
+    baseURL: origin,
+    viewport: { width: 360, height: 780 },
+    extraHTTPHeaders: {
+      'x-real-ip': `198.51.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250)}`,
+    },
+  });
+  const page = await ctx.newPage();
+  page.setDefaultTimeout(18000);
+  try {
+    await page.goto('/middagsveker');
+    await page
+      .getByRole('link')
+      .filter({ has: page.getByRole('heading', { name: 'Raske kvardagar', exact: true }) })
+      .click();
+    await page.getByRole('link', { name: 'Vel denne middagsveka' }).click();
+    await expect(page).toHaveURL(/logg-inn\?next=/);
+    const back = new URL(page.url()).searchParams.get('next');
+    expect(back).toContain('mal=raske-kvardagar');
+    await page.getByRole('link', { name: 'Opprett ein konto' }).click();
+    expect(new URL(page.url()).searchParams.get('next')).toBe(back);
+    await page.getByLabel('Namnet ditt').fill(name);
+    await page
+      .getByLabel('E-postadresse', { exact: true })
+      .fill('meny-' + marker + '@example.test');
+    await page.getByLabel('Passord', { exact: true }).fill(password);
+    await page.getByRole('button', { name: 'Opprett konto' }).click();
+    await visitPrivateLink(page, await mailLink(name, 'verify-email'));
+    await expect(page).toHaveURL(origin + back);
+    const week = new URL(page.url()).searchParams.get('veke') || thisWeek();
+    expect(
+      (
+        await page.request.post('/api/library/week', {
+          headers: { origin },
+          data: { week, day: 0, recipeId: 'nn-pytt-i-panne', servings: 4 },
+        })
+      ).ok(),
+    ).toBe(true);
+    await page.reload();
+    await expect(page.locator('.week-menu-preview')).toContainText('står som før');
+    await page.getByRole('combobox', { name: 'Porsjonar for nye middagar' }).selectOption('2');
+    await page.getByRole('button', { name: 'Legg inn 4 middagar' }).click();
+    await expect(page.getByRole('button', { name: 'Endre middag for tysdag' })).toContainText(
+      '2 porsjonar',
+    );
+    await page.getByRole('button', { name: 'Endre middag for onsdag' }).click();
+    await page.getByRole('combobox', { name: 'Middag', exact: true }).selectOption('nn-torsk');
+    await page.getByRole('combobox', { name: 'Porsjonar', exact: true }).selectOption('4');
+    await page.getByRole('button', { name: 'Lagre dagen' }).click();
+    await expect(page.locator('.week-basket li').filter({ hasText: 'poteter' })).toContainText(
+      '1,4 kg',
+    );
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    await page.getByRole('button', { name: 'Legg veka i handlelista' }).click({ clickCount: 2 });
+    await expect(page.getByRole('button', { name: 'Veka er lagd i handlelista' })).toBeDisabled();
+    await page.getByRole('link', { name: 'Opne handlelista' }).click();
+    await expect(page.getByRole('textbox', { name: 'Mengd for poteter' })).toHaveValue(
+      /^1\s?400 g$/,
+    );
+    await page
+      .getByRole('navigation', { name: 'Mine sider' })
+      .getByRole('link', { name: 'Mi veke', exact: true })
+      .click();
+    await page.getByRole('link', { name: 'Opne oppskrifta for onsdag' }).click();
+    await expect(page.getByRole('heading', { level: 1, name: 'Torsk i tomatform' })).toBeVisible();
+  } finally {
+    await ctx.close();
+  }
+});
 test('private cookbook variant follows the user from mobile to a new login on desktop', async ({
   browser,
 }) => {

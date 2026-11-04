@@ -1,0 +1,97 @@
+.collections,
+.collection-editor fieldset,
+.collection-creator,
+.share-preview,
+.shared-recipe {
+  margin: 1.4rem 0;
+}
+.collections > h2,
+.collection-editor legend,
+.shared-recipe h2 {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+}
+.collection-creator,
+.share-preview,
+.shared-recipe,
+.collection-editor fieldset {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+}
+.collection-creator summary,
+.share-preview summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 0.55rem;
+}
+.collection-creator form {
+  max-width: 42rem;
+}
+.collection-creator label,
+.collection-editor label {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.5rem 0;
+}
+.collection-creator input,
+.collection-creator textarea,
+.collection-editor input:not([type='checkbox']):not([type='radio']),
+.collection-editor textarea {
+  width: 100%;
+  padding: 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 1rem;
+}
+.collection-editor .collection-check {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 44px;
+}
+.collection-check input {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+}
+.share-choice,
+.shared-recipe li {
+  border-bottom: 1px solid var(--line);
+  padding: 0.45rem 0;
+}
+.share-preview ol,
+.shared-recipe ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+.shared-recipe {
+  max-width: 52rem;
+  scroll-margin-top: 6rem;
+}
+.shared-recipe h3 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  margin-top: 0.9rem;
+}
+.shared-recipe img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.shared-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.collection-editor section > a {
+  margin-right: 1rem;
+}
+.collection-editor fieldset > button,
+.collection-creator button,
+.share-preview button {
+  margin-top: 0.6rem;
+}

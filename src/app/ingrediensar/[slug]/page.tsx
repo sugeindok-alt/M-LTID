@@ -3,7 +3,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
 import { catalog } from '@/lib/catalog';
 import { findIngredient } from '@/data/ingredients';
-import { IngredientSymbol } from '@/components/ingredient-symbol';
+import { RawIngredientPhoto } from '@/components/raw-ingredient-photo';
 import { RecipeGrid } from '@/components/recipe-card';
 import { SourceFailure, SectionHeading } from '@/components/shared';
 import { ProductSearch } from '@/components/product-search';
@@ -27,7 +27,7 @@ export default async function IngredientDetail({ params }: { params: Promise<{ s
       </nav>
       <section className="ingredient-detail">
         <div className="ingredient-detail-image">
-          <IngredientSymbol group={ingredient.group} />
+          <RawIngredientPhoto ingredient={ingredient} detail />
         </div>
         <div>
           <p className="eyebrow">{ingredient.group}</p>
@@ -35,7 +35,11 @@ export default async function IngredientDetail({ params }: { params: Promise<{ s
           <div className="ingredient-description">
             <p>{ingredient.description}</p>
           </div>
-          <p className="source-note">Råvareguiden til MÅLTID.</p>
+          <p className="source-note">
+            {ingredient.image
+              ? 'KI-generert råvareillustrasjon, laga for MÅLTID med OpenAI.'
+              : 'Vi manglar bilete av denne råvara.'}
+          </p>
         </div>
       </section>
       <section>

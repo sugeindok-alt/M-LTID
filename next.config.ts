@@ -24,6 +24,14 @@ const config: NextConfig = {
   },
   async headers() {
     return [
+      ...['/boker/:path*', '/api/delte-boker/:path*'].map((source) => ({
+        source,
+        headers: [
+          { key: 'Cache-Control', value: 'private, no-store, must-revalidate' },
+          { key: 'Vercel-CDN-Cache-Control', value: 'no-store' },
+          { key: 'X-Robots-Tag', value: 'noindex, noarchive' },
+        ],
+      })),
       {
         source: '/(.*)',
         headers: [

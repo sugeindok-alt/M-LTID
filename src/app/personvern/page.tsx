@@ -31,8 +31,15 @@ export default function Page() {
       </p>
       <h2>Informasjonskapslar og lokal lagring</h2>
       <p>
-        Innlogging brukar nødvendige øktinformasjonskapslar. Val av visuelt tema kan òg bli lagra
-        lokalt i nettlesaren. Passord, databasepassord og API-nøklar blir ikkje lagra i nettlesaren.
+        Innlogging brukar nødvendige øktinformasjonskapslar. Visuelt tema, porsjonsval,
+        matlagingssteg og slutttida for nedteljingar kan bli lagra lokalt i nettlesaren.
+      </p>
+      <h2>Deling av kokebøker</h2>
+      <p>
+        Nye bøker er private. Når du publiserer, kan alle med lenkja lese den utgåva du har
+        godkjent, med dei oppskriftene og fotoa du valde i førehandsvisinga. Endrar du ei privat
+        oppskrift, må du publisere på nytt for å dele endringa. Når boka blir privat igjen, stengjer
+        lenkja og bilettilgangen. Kopiar som andre alt har lagra, kan dei framleis ha.
       </p>
       <h2>Tilgang og sletting</h2>
       <p>
@@ -43,9 +50,9 @@ export default function Page() {
       </p>
       <div className="notice">
         <p>
-          Denne installasjonen er eit porteføljeprosjekt. Før offentleg registrering blir opna, må
-          eigaren oppgi behandlingsansvarleg, ei fungerande kontaktadresse, behandlingsgrunnlag,
-          lagringstider og rutinar for innsyn og sletting. Sjå prosjektet si oppsettsrettleiing.
+          MÅLTID er eit porteføljeprosjekt. Fullstendige kontaktopplysningar for
+          behandlingsansvarleg, lagringstider og rutinar for innsyn og sletting er enno ikkje
+          oppgjevne.
         </p>
       </div>
       <h2>Eksterne kjelder</h2>

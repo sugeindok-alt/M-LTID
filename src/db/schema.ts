@@ -124,6 +124,40 @@ export const cookbookRecipes = pgTable(
   ],
 );
 // A blank day has no row. Each user can choose one dinner per day of a calendar week.
+export const namedBooks = pgTable(
+  'named_books',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    title: text('title').notNull(),
+    description: text('description').default('').notNull(),
+    recipeIds: jsonb('recipe_ids').$type<string[]>().default([]).notNull(),
+    revision: integer('revision').default(1).notNull(),
+    publishedAt: timestamp('published_at', { withTimezone: true }),
+    publishedTitle: text('published_title'),
+    publishedDescription: text('published_description'),
+  },
+  (t) => [index('named_books_owner_idx').on(t.userId)],
+);
+// Public copies are scoped to one book. The private source and its photo keep their own access rules.
+export const sharedRecipes = pgTable(
+  'shared_book_recipes',
+  {
+    bookId: text('book_id')
+      .notNull()
+      .references(() => namedBooks.id, { onDelete: 'cascade' }),
+    recipeId: text('recipe_id').notNull(),
+    position: integer('position').notNull(),
+    title: text('title').notNull(),
+    servings: integer('servings').notNull(),
+    ingredients: jsonb('ingredients').$type<Ingredient[]>().notNull(),
+    steps: jsonb('steps').$type<string[]>().notNull(),
+    image: text('image_webp'),
+  },
+  (t) => [primaryKey({ columns: [t.bookId, t.recipeId] })],
+);
 export const weekDinners = pgTable(
   'week_dinners',
   {

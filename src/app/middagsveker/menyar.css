@@ -1,0 +1,73 @@
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem;
+}
+.menu-card {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--paper);
+}
+.menu-photo,
+.menu-day-photo {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: var(--soft);
+}
+.menu-card > div:not(.menu-photo) {
+  padding: 1.2rem;
+}
+.menu-card h2,
+.menu-days h2 {
+  font: 1.65rem/1.15 var(--serif);
+  margin: 0.4rem 0;
+}
+.menu-card .text-link {
+  margin-top: 0.8rem;
+}
+.menu-detail {
+  max-width: 920px;
+}
+.menu-detail .page-intro {
+  margin-top: 1.3rem;
+}
+.menu-days li {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--line);
+}
+.menu-days h2 a {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 4px;
+}
+.menu-day-photo {
+  border-radius: 7px;
+}
+.menu-detail > .button {
+  margin: 1.2rem 0 0.5rem;
+}
+.menu-days .eyebrow {
+  margin-bottom: 0.4rem;
+}
+@media (max-width: 650px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+  .menu-days li {
+    grid-template-columns: 80px minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+  .menu-days h2 {
+    font-size: 1.28rem;
+  }
+  .menu-days li p:not(.eyebrow) {
+    font-size: 0.9rem;
+  }
+}

@@ -24,7 +24,10 @@ describe('Norwegian editorial catalogue', () => {
     ]);
   });
   it('publishes complete Nynorsk recipes with real local image files and valid ingredient links', () => {
-    expect(filterRecipes(catalogSnapshot)).toHaveLength(16);
+    const published = filterRecipes(catalogSnapshot);
+    expect(published).toHaveLength(36);
+    expect(new Set(published.map((r) => r.id)).size).toBe(published.length);
+    expect(new Set(published.map((r) => r.image)).size).toBe(published.length);
     for (const recipe of catalogSnapshot) {
       expect(mealId.safeParse(recipe.id).success).toBe(true);
       expect(recipe.language).toBe('nn');
@@ -35,6 +38,10 @@ describe('Norwegian editorial catalogue', () => {
       for (const ingredient of recipe.ingredients) {
         expect(ingredients.some((i) => i.slug === ingredient.slug)).toBe(true);
         expect(parseMeasure(ingredient.measure)).not.toBeNull();
+        expect(parseMeasure(scaleMeasure(ingredient.measure, 0.5))?.amount).toBeCloseTo(
+          parseMeasure(ingredient.measure)!.amount / 2,
+          3,
+        );
       }
     }
   });

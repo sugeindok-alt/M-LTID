@@ -33,6 +33,12 @@ export default function Page() {
         </a>
         . Vi gjer ikkje krav på at KI-genererte motiv er unike.
       </p>
+      <h2>Bilete av råvarene</h2>
+      <p>
+        Råvareguiden viser 70 KI-genererte illustrasjonar. Kvart motiv er laga for den namngjevne
+        råvara og kontrollert saman med namnet. Det same biletet følgjer råvara frå søk til
+        detaljside.
+      </p>
       <h2>Råvarer og prosessering</h2>
       <p>
         Vi finn ikkje på næringsverdiar. Eit oppskriftsnamn fortel ikkje kor prosessert maten er.

@@ -1,0 +1,462 @@
+[
+  {
+    "sheet": 1,
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "lauk",
+        "description": "whole golden yellow onion and a half showing white layers"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "name": "kvitlauksfedd",
+        "description": "two peeled white garlic CLOVES with one clove still in its papery skin"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "name": "raudlauk",
+        "description": "whole red onion and cut half with purple rings"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "name": "gulrøter",
+        "description": "three whole orange carrots with tiny trimmed green tops"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "name": "kålrot",
+        "description": "rutabaga / swede, purple top yellow bottom with a wedge exposing yellow flesh"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "name": "poteter",
+        "description": "three unpeeled Norwegian yellow potatoes with a halved potato"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "name": "purre",
+        "description": "one leek white stalk with long dark green leaves"
+      },
+      {
+        "row": 3,
+        "column": 2,
+        "name": "hovudkål",
+        "description": "one pale green cabbage head and a wedge"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "name": "agurk",
+        "description": "long dark green cucumber and two freshly cut circular slices"
+      }
+    ]
+  },
+  {
+    "sheet": 2,
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "laksefilet",
+        "description": "one raw skin-on orange Atlantic salmon fillet with marbling, uncooked"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "name": "torskefilet",
+        "description": "one raw white Atlantic cod loin, thick white coarse flaky raw flesh with faint translucent lines"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "name": "seifilet",
+        "description": "two raw grey pollock/coalfish fillets, slender distinctly grey flesh"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "name": "kjøtdeig",
+        "description": "raw minced beef in loose long red minced strands"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "name": "høgrygg",
+        "description": "a thick raw boneless beef chuck steak with characteristic seams of connective tissue"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "name": "fårikålkjøt",
+        "description": "three raw bone-in lamb shoulder chunks with exposed bone cross-sections"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "name": "kyllinglår",
+        "description": "one uncooked whole skin-on chicken leg quarter including thigh and drumstick"
+      },
+      {
+        "row": 3,
+        "column": 2,
+        "name": "egg",
+        "description": "two whole fresh light brown hen eggs"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "name": "smør",
+        "description": "small thick rectangular slab of pale yellow butter with a cut slice"
+      }
+    ]
+  },
+  {
+    "sheet": 3,
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "eple",
+        "description": "whole red apple and a single wedge"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "name": "sitron",
+        "description": "one whole lemon and one lemon half"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "name": "sitronsaft",
+        "description": "pale cloudy lemon juice in small transparent measuring jug alongside a visibly squeezed lemon half"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "name": "tomatar",
+        "description": "three red tomatoes with green stems"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "name": "hakka tomatar",
+        "description": "chopped canned red tomatoes in juice in small white ceramic bowl"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "name": "paprika",
+        "description": "one raw red bell pepper with a cut wedge showing seeds"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "name": "hjartesalat",
+        "description": "one green little gem romaine lettuce heart split lengthwise"
+      },
+      {
+        "row": 3,
+        "column": 2,
+        "name": "spinat",
+        "description": "small loose handful of raw baby spinach leaves"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "name": "erter",
+        "description": "pile of small round shelled green peas with a single open pea pod"
+      }
+    ]
+  },
+  {
+    "sheet": 4,
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "dill",
+        "description": "three feathery green dill sprigs"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "name": "basilikum",
+        "description": "fresh basil cluster with broad smooth oval green leaves"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "name": "persille",
+        "description": "fresh curly parsley bunch"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "name": "timian",
+        "description": "fresh thyme sprigs showing tiny paired green leaves on fine stems"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "name": "oregano",
+        "description": "dried oregano flakes in light ceramic pinch bowl with one oregano sprig beside it"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "name": "chiliflak",
+        "description": "crushed dry red chilli flakes and a few characteristic pale seeds in a pinch bowl"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "name": "karri",
+        "description": "golden yellow curry powder heaped in a small pinch bowl"
+      },
+      {
+        "row": 3,
+        "column": 2,
+        "name": "paprikapulver",
+        "description": "vivid warm red paprika powder heaped in a small pinch bowl"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "name": "spisskummen",
+        "description": "fine tan-brown ground cumin in small pinch bowl with some ridged elongated cumin seeds beside it"
+      }
+    ]
+  },
+  {
+    "sheet": 5,
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "kjøtkraft",
+        "description": "transparent glass pouring jug of deep brown clear beef stock"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "name": "grønsakskraft",
+        "description": "transparent glass pouring jug of clear golden vegetable stock with a small carrot end and leek top beside it"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "name": "vatn",
+        "description": "transparent tumbler of colourless water"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "name": "rapsolje",
+        "description": "glass cruet of pale golden rapeseed oil with yellow rapeseed flowers beside it"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "name": "olivenolje",
+        "description": "glass cruet of yellow-green olive oil with a few olives beside it"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "name": "rømme",
+        "description": "thick cultured sour cream in a small white bowl with a soft swirl"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "name": "kokosmjølk",
+        "description": "opaque white coconut milk in small glass jug with a single piece of brown coconut beside it"
+      },
+      {
+        "row": 3,
+        "column": 2,
+        "name": "mjølk",
+        "description": "plain opaque white cow's milk in a clear drinking glass"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "name": "salt",
+        "description": "coarse white salt crystals heaped in a tiny light ceramic pinch bowl"
+      }
+    ]
+  },
+  {
+    "sheet": 6,
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "pepar",
+        "description": "fine ground black pepper powder in a shallow white pinch bowl"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "name": "heil pepar",
+        "description": "whole black peppercorns in shallow white pinch bowl"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "name": "potetmjøl",
+        "description": "bright white potato starch in a pinch bowl with half a raw potato behind it"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "name": "kveitemjøl",
+        "description": "fine pale wheat flour in a small bowl with two golden wheat ears beside it"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "name": "brødsmular",
+        "description": "coarse pale golden dry breadcrumbs in a small bowl with a broken crust beside it"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "name": "tørrgjær",
+        "description": "fine beige granular dry baker's yeast in small pinch bowl"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "name": "ris",
+        "description": "uncooked long-grain white rice in small bowl"
+      },
+      {
+        "row": 3,
+        "column": 2,
+        "name": "raude linser",
+        "description": "dry orange-red split lentils, small flattened round discs in a bowl"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "name": "mais",
+        "description": "yellow sweetcorn kernels in small bowl, one short unpeeled bit of corn cob beside it"
+      }
+    ]
+  },
+  {
+    "sheet": 7,
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "makaroni",
+        "description": "dry short curved yellow elbow macaroni pasta"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "name": "penne",
+        "description": "uncooked yellow ridged penne tubes with diagonal-cut ends"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "name": "skiver grovbrød",
+        "description": "two slices of Norwegian seeded wholegrain brown bread"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "name": "tortillalefser",
+        "description": "two soft round plain wheat flour tortillas in a flat stack, no filling"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "name": "kokte kvite bønner",
+        "description": "plump cooked white cannellini beans in a shallow bowl"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "name": "kokte kikerter",
+        "description": "plump cooked beige chickpeas in a shallow bowl"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "name": "ost",
+        "description": "block and slices of mild yellow Norwegian cheese"
+      },
+      {
+        "row": 3,
+        "column": 2,
+        "name": "vegetarisk ost",
+        "description": "wedge of mild semi-hard vegetarian yellow cheese cut into slices"
+      },
+      {
+        "row": 3,
+        "column": 3,
+        "name": "vegetarisk hardost",
+        "description": "firm pale aged vegetarian hard cheese wedge and coarse shavings"
+      }
+    ]
+  },
+  {
+    "sheet": 8,
+    "cells": [
+      {
+        "row": 1,
+        "column": 1,
+        "name": "middagspølse",
+        "description": "thick mild Norwegian cooked dinner sausage in ring form with a few cut slices, plain on the surface"
+      },
+      {
+        "row": 1,
+        "column": 2,
+        "name": "kyllingfilet",
+        "description": "one raw skinless boneless chicken breast, pale pink uncooked flesh"
+      },
+      {
+        "row": 1,
+        "column": 3,
+        "name": "lasagneplater",
+        "description": "three uncooked flat rectangular yellow lasagna pasta sheets"
+      },
+      {
+        "row": 2,
+        "column": 1,
+        "name": "sammalen kveite",
+        "description": "whole wheat flour with visible brown bran specks in a small bowl with golden wheat kernels beside it"
+      },
+      {
+        "row": 2,
+        "column": 2,
+        "name": "brokkoli",
+        "description": "green broccoli crown with sturdy stalk and florets"
+      },
+      {
+        "row": 2,
+        "column": 3,
+        "name": "matbygg",
+        "description": "uncooked pale pearled barley grains in small ceramic bowl, short oval grains with central furrows"
+      },
+      {
+        "row": 3,
+        "column": 1,
+        "name": "blomkål",
+        "description": "whole white cauliflower head with two green leaves"
+      }
+    ]
+  }
+]

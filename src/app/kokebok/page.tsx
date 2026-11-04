@@ -5,17 +5,43 @@ import { privatePage } from '@/lib/private-page';
 import { getDb } from '@/db';
 import { listCookbook } from '@/lib/cookbook';
 import { privateLabel } from '@/lib/cookbook-types';
+import { listBooks } from '@/lib/book-sharing';
+import { BookCreator } from '@/components/book-manager';
 export default async function Page() {
   const user = await privatePage('/kokebok');
-  const rows = await listCookbook(getDb(), user.id);
+  const [rows, books] = await Promise.all([
+    listCookbook(getDb(), user.id),
+    listBooks(getDb(), user.id),
+  ]);
   return (
     <div className="container page-shell private-layout book-page">
       <div className="page-intro">
         <p className="eyebrow">DINE OPPSKRIFTER</p>
         <h1>Mi kokebok.</h1>
-        <p>Samle eigne middagar og variantar her. Berre du kan sjå dei.</p>
+        <p>
+          Samle eigne middagar og variantar. Vel kva bøker du vil ha for deg sjølv, og kva du vil
+          dele.
+        </p>
       </div>
       <PrivateNavigation current="/kokebok" />
+      <section className="collections">
+        <h2>Kokebøkene mine</h2>
+        <BookCreator />
+        {books.length > 0 && (
+          <ul className="book-list">
+            {books.map((b) => (
+              <li key={b.id}>
+                <Link href={'/kokebok/boker/' + b.id}>
+                  <span className="eyebrow">{b.publishedAt ? 'Offentleg' : 'Privat'}</span>
+                  <h3>{b.title}</h3>
+                  <p>{b.description}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+      <h2>Oppskriftene mine</h2>
       <Link href="/kokebok/ny" className="button">
         <Plus size={18} />
         Ny oppskrift

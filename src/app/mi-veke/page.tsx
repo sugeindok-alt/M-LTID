@@ -10,15 +10,23 @@ import { PrivateNavigation } from '@/components/private-navigation';
 import { WeekPlanner } from '@/components/week-planner';
 import { listCookbook } from '@/lib/cookbook';
 import { privateLabel } from '@/lib/cookbook-types';
+import { dinnerWeek } from '@/data/dinner-weeks';
 import './week.css';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Mi veke', robots: { index: false } };
-export default async function Page({ searchParams }: { searchParams: Promise<{ veke?: string }> }) {
-  const { veke } = await searchParams;
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ veke?: string; mal?: string }>;
+}) {
+  const { veke, mal } = await searchParams;
   const week = veke === undefined ? thisWeek() : veke;
   if (!isWeek(week)) notFound();
-  const user = await privatePage(veke ? '/mi-veke?veke=' + week : '/mi-veke');
+  const menu = dinnerWeek(mal);
+  if (mal && !menu) notFound();
+  const menuParam = menu ? '&mal=' + menu.slug : '';
+  const user = await privatePage(veke || menu ? '/mi-veke?veke=' + week + menuParam : '/mi-veke');
   const [plan, recipes, own] = await Promise.all([
     readWeek(getDb(), user.id, week),
     catalog.browse({ sort: 'az' }),
@@ -34,11 +42,14 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ v
         </p>
       </header>
       <PrivateNavigation current="/mi-veke" />
+      <Link href="/middagsveker" className="text-link">
+        Vel frå fire ferdige middagsveker →
+      </Link>
       <nav className="week-switcher" aria-label="Vel veke">
         <Link
           className="week-arrow"
           prefetch={false}
-          href={'/mi-veke?veke=' + plusDays(week, -7)}
+          href={'/mi-veke?veke=' + plusDays(week, -7) + menuParam}
           aria-label="Førre veke"
         >
           <ChevronLeft size={19} />
@@ -49,14 +60,15 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ v
         <Link
           className="week-arrow"
           prefetch={false}
-          href={'/mi-veke?veke=' + plusDays(week, 7)}
+          href={'/mi-veke?veke=' + plusDays(week, 7) + menuParam}
           aria-label="Neste veke"
         >
           <ChevronRight size={19} />
         </Link>
       </nav>
       <WeekPlanner
-        key={week}
+        key={week + menuParam}
+        menu={menu}
         initial={plan}
         recipes={recipes.map(({ id, title }) => ({ id, title }))}
         personal={own.map((r) => ({
