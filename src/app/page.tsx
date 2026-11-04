@@ -39,25 +39,6 @@ export default async function Home() {
             <Link href="/oppskrifter?category=Tradisjonsmat">Norske klassikarar</Link>
             <Link href={streetFoodHref}>{streetFoodCategory}</Link>
           </nav>
-          <form action="/oppskrifter" className="search-field home-search">
-            <Search size={20} />
-            <label className="sr-only" htmlFor="home-search">
-              Søk etter middag eller råvare
-            </label>
-            <input
-              id="home-search"
-              name="q"
-              placeholder="Laks, suppe eller noko med potet?"
-              maxLength={80}
-            />
-            <button className="button">Søk</button>
-          </form>
-          <div className="hero-footnote">
-            <Sprout size={18} />
-            <Link className="text-link" href="/middagsveker">
-              Sjå fire ferdige middagsveker <ArrowUpRight size={15} />
-            </Link>
-          </div>
         </div>
         <div className="hero-visual">
           {hero ? (
@@ -88,6 +69,27 @@ export default async function Home() {
           )}
         </div>
       </section>
+      <div className="container home-browse">
+        <form action="/oppskrifter" className="search-field home-search">
+          <Search size={20} />
+          <label className="sr-only" htmlFor="home-search">
+            Søk etter middag eller råvare
+          </label>
+          <input
+            id="home-search"
+            name="q"
+            placeholder="Laks, suppe eller noko med potet?"
+            maxLength={80}
+          />
+          <button className="button">Søk</button>
+        </form>
+        <div className="hero-footnote">
+          <Sprout size={18} />
+          <Link className="text-link" href="/middagsveker">
+            Sjå fire ferdige middagsveker <ArrowUpRight size={15} />
+          </Link>
+        </div>
+      </div>
       {recipes && (
         <div className="container">
           <DinnerChoice
