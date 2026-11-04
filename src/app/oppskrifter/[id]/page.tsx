@@ -78,15 +78,25 @@ export default async function RecipePage({ params, searchParams }: PageProps<'/o
           )}
         </div>
         <p className="recipe-description">{recipe.description}</p>
+        <a href="#matlagingsstart" className="recipe-cooking-link">
+          Til ingrediensar og matlaging ↓
+        </a>
       </div>
       <div className="detail-hero">
         <Photo
           src={recipe.image}
           alt={recipe.imageAlt || recipe.title}
           priority
-          sizes="(max-width: 1400px) 100vw, 1280px"
+          natural
+          sizes="(max-width: 936px) 100vw, 900px"
         />
       </div>
+      {recipe.imageCredit && (
+        <p className="source-note image-credit">
+          {recipe.imageCredit.note} {recipe.imageCredit.author}.{' '}
+          <Link href="/om-innhaldet">Om bileta og oppskriftene</Link>
+        </p>
+      )}
       <RecipeActions
         key={'actions-' + recipe.id}
         recipe={recipe}
@@ -94,18 +104,6 @@ export default async function RecipePage({ params, searchParams }: PageProps<'/o
         initialServings={initialServings}
         recipeEmailReady={Boolean(process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL)}
       />
-      <Link
-        href={'/kokebok/ny?original=' + encodeURIComponent(recipe.id)}
-        className="button secondary"
-      >
-        Lag min variant
-      </Link>
-      {recipe.imageCredit && (
-        <p className="source-note image-credit">
-          {recipe.imageCredit.note} {recipe.imageCredit.author}.{' '}
-          <Link href="/om-innhaldet">Om bileta og oppskriftene</Link>
-        </p>
-      )}
       <RecipeDirections
         key={'directions-' + recipe.id}
         recipe={recipe}

@@ -8,12 +8,16 @@ export function Photo({
   priority = false,
   sizes = '(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 33vw',
   contain = false,
+  natural = false,
+  unoptimized = false,
 }: {
   src: string;
   alt: string;
   priority?: boolean;
   sizes?: string;
   contain?: boolean;
+  natural?: boolean;
+  unoptimized?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
   if (failed || !src)
@@ -27,10 +31,11 @@ export function Photo({
     <Image
       src={src}
       alt={alt}
-      fill
-      priority={priority}
+      {...(natural ? { width: 1200, height: 900 } : { fill: true })}
+      preload={priority}
+      unoptimized={unoptimized}
       sizes={sizes}
-      className={contain ? 'photo-contain' : 'photo-cover'}
+      className={natural ? 'photo-natural' : contain ? 'photo-contain' : 'photo-cover'}
       onError={() => setFailed(true)}
     />
   );

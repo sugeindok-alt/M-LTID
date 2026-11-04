@@ -40,12 +40,96 @@
 }
 .recipe-description {
   max-width: 690px;
-  margin: 20px auto 0;
-  line-height: 1.8;
+  margin: 12px auto 0;
+  line-height: 1.65;
   font-size: 18px;
 }
+.detail-heading {
+  margin-bottom: 24px;
+}
+.detail-heading h1 {
+  margin-block: 10px 14px;
+}
+.detail-heading .recipe-meta {
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  gap: 10px;
+}
 .image-credit {
-  margin: -24px 0 40px;
+  max-width: 900px;
+  margin: 12px auto 0;
+  line-height: 1.7;
+}
+.cookbook-home h1 {
+  font-size: clamp(42px, 4.7vw, 68px);
+  line-height: 1.07;
+  text-wrap: balance;
+}
+.cookbook-home .hero-description {
+  margin-top: 18px;
+  max-width: 450px;
+  font-size: 17px;
+  line-height: 1.65;
+}
+.cookbook-home .hero-buttons {
+  gap: 14px;
+  margin-top: 20px;
+}
+.cookbook-home .hero-buttons > span {
+  font-size: 14px;
+  color: var(--muted);
+}
+.cookbook-home .quick-links {
+  margin-top: 22px;
+}
+.cookbook-home .hero-footnote {
+  margin-top: 22px;
+}
+.dinner-choice {
+  margin-block: 24px 32px;
+  padding: clamp(18px, 3vw, 32px);
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.dinner-choice-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.dinner-choice h2 {
+  font-size: clamp(26px, 3vw, 34px);
+  margin: 6px 0 8px;
+}
+.dinner-choice p {
+  line-height: 1.6;
+}
+.dinner-choice-result {
+  max-width: 420px;
+  margin-top: 22px;
+}
+.dinner-choice-result > p {
+  margin-block: 12px;
+}
+.recipe-cooking-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-top: 10px;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+#matlagingsstart {
+  scroll-margin-top: 6rem;
+}
+.detail-tools .form-message {
+  flex-basis: 100%;
+}
+.detail-tools .button {
+  min-height: 48px;
+  white-space: normal;
 }
 .dinner-entries {
   display: grid;
@@ -165,10 +249,6 @@
     height: auto;
     aspect-ratio: 4/3;
     min-height: 0;
-  }
-  .detail-hero {
-    height: auto;
-    aspect-ratio: 4/3;
   }
   .recipe-description {
     font-size: 16px;

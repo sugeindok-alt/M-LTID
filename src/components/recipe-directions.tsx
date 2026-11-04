@@ -179,7 +179,7 @@ export function RecipeDirections({
   return (
     <>
       {steps.length > 0 && (
-        <div className="cook-launch">
+        <div className="cook-launch" id="matlagingsstart">
           <div>
             <p className="eyebrow">PÅ KJØKKENET</p>
             <p>{finished ? 'Matlaginga er fullført.' : 'Følg oppskrifta eitt steg om gongen.'}</p>

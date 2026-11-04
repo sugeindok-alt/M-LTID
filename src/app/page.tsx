@@ -4,6 +4,7 @@ import { catalog } from '@/lib/catalog';
 import { filterRecipes, streetFoodCategory } from '@/lib/catalog-filter';
 import { Photo } from '@/components/photo';
 import { RecipeGrid } from '@/components/recipe-card';
+import { DinnerChoice } from '@/components/dinner-choice';
 import { SectionHeading, SourceFailure, NovaEducation } from '@/components/shared';
 export const revalidate = 300;
 export default async function Home() {
@@ -13,31 +14,31 @@ export default async function Home() {
   const streetFoodHref = '/oppskrifter?category=' + encodeURIComponent(streetFoodCategory);
   return (
     <>
-      <section className="container hero">
+      <section className="container hero cookbook-home">
         <div className="hero-copy">
           <p className="eyebrow">
-            <span className="small-rule" /> GOD MAT. KVAR DAG.
+            <span className="small-rule" /> KVA FREISTAR I DAG?
           </p>
-          <h1>
-            God middag.
-            <br />
-            <em>Heile veka.</em>
-          </h1>
+          <h1>{hero?.title || 'God middag. Heile veka.'}</h1>
           <p className="hero-description">
-            Frå kjøtkaker til fredagstaco. Finn middagar som passar kvardagen, med råvarer frå
-            butikken rundt hjørnet.
+            {hero?.description ||
+              'Finn noko godt å lage til middag, med råvarer frå butikken rundt hjørnet.'}
           </p>
-          {recipes && (
-            <nav className="tonight-links" aria-label="Tre forslag til middag">
-              <strong>Kva skal vi ha til middag?</strong>
-              {recipes.slice(0, 3).map((r) => (
-                <Link key={r.id} href={'/oppskrifter/' + r.id}>
-                  {r.title}
-                  <ArrowUpRight size={15} aria-hidden />
-                </Link>
-              ))}
-            </nav>
+          {hero && (
+            <div className="hero-buttons">
+              <Link className="button" href={'/oppskrifter/' + hero.id}>
+                Sjå oppskrifta <ArrowUpRight size={18} aria-hidden />
+              </Link>
+              <span>
+                Om lag {hero.minutes} minutt · {hero.servings} porsjonar
+              </span>
+            </div>
           )}
+          <nav className="quick-links" aria-label="Finn middag">
+            <Link href="/oppskrifter?maxTime=29">Under 30 minutt</Link>
+            <Link href="/oppskrifter?category=Tradisjonsmat">Norske klassikarar</Link>
+            <Link href={streetFoodHref}>{streetFoodCategory}</Link>
+          </nav>
           <form action="/oppskrifter" className="search-field home-search">
             <Search size={20} />
             <label className="sr-only" htmlFor="home-search">
@@ -51,12 +52,6 @@ export default async function Home() {
             />
             <button className="button">Søk</button>
           </form>
-          <div className="quick-links" aria-label="Finn middag">
-            <Link href={streetFoodHref}>{streetFoodCategory}</Link>
-            <Link href="/oppskrifter?maxTime=30">30 min eller mindre</Link>
-            <Link href="/oppskrifter?vegetarian=1">Vegetar</Link>
-            <Link href="/oppskrifter?category=Tradisjonsmat">Norske klassikarar</Link>
-          </div>
           <div className="hero-footnote">
             <Sprout size={18} />
             <Link className="text-link" href="/middagsveker">
@@ -93,6 +88,23 @@ export default async function Home() {
           )}
         </div>
       </section>
+      {recipes && (
+        <div className="container">
+          <DinnerChoice
+            recipes={recipes.map(
+              ({ id, title, image, imageAlt, imageCredit, minutes, category }) => ({
+                id,
+                title,
+                image,
+                imageAlt,
+                imageCredit,
+                minutes,
+                category,
+              }),
+            )}
+          />
+        </div>
+      )}
       <div className="values-strip">
         <div className="container">
           <span>
@@ -134,10 +146,10 @@ export default async function Home() {
         <div className="container">
           <SectionHeading kicker="KVA PASSAR I DAG?" title="Finn din type middag." />
           <div className="dinner-entries">
-            <Link href="/oppskrifter?maxTime=30">
+            <Link href="/oppskrifter?maxTime=29">
               <span className="eyebrow">NÅR TIDA ER KNAPP</span>
               <h3>Raskt på bordet</h3>
-              <p>Middagar på 30 minutt eller mindre.</p>
+              <p>Middagar som tek under 30 minutt.</p>
               <ArrowUpRight />
             </Link>
             <Link href="/oppskrifter?vegetarian=1">

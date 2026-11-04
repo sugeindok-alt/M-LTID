@@ -5,14 +5,14 @@ test('editorial homepage renders real images and works without horizontal overfl
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: /God middag.*Heile veka\./ })).toBeVisible();
-  const dinnerLinks = page
-    .getByRole('navigation', { name: 'Tre forslag til middag' })
-    .getByRole('link');
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Omnsbakt laks med ris' }),
+  ).toBeVisible();
+  const dinnerLinks = page.getByRole('navigation', { name: 'Finn middag' }).getByRole('link');
   await expect(dinnerLinks).toHaveText([
-    'Spagetti med kjøtsaus',
-    'Fiskekaker med poteter og gulrøter',
-    'Kjøtkaker i brun saus',
+    'Under 30 minutt',
+    'Norske klassikarar',
+    'Gatekjøkken heime',
   ]);
   for (const link of await dinnerLinks.all()) await expect(link).toBeInViewport();
   const hero = page.locator('.hero-visual img');
@@ -24,7 +24,7 @@ test('editorial homepage renders real images and works without horizontal overfl
     true,
   );
   await page.screenshot({
-    path: `docs/screenshots/${info.project.name}-home.png`,
+    path: `.local/${info.project.name}-home.png`,
     fullPage: false,
   });
   expect(errors).toEqual([]);

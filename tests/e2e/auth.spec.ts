@@ -1,6 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { readFile, readdir } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
+import sharp from 'sharp';
 import { thisWeek } from '../../src/lib/week-dates';
 const password = 'local-browser-test-password-123';
 async function login(page: Page, email: string, pass = password) {
@@ -249,7 +250,13 @@ test('private cookbook variant follows the user from mobile to a new login on de
   await page.getByLabel('Mengd 1', { exact: true }).fill('420 g');
   await page.getByLabel('Mengd 2', { exact: true }).fill('etter smak');
   await page.getByRole('textbox', { name: 'Steg 1', exact: true }).fill('Skjer sitronen i skiver.');
-  await page.locator('input[type=file]').setInputFiles('public/images/middagar/laks.webp');
+  await page.locator('input[type=file]').setInputFiles({
+    name: 'staeande-testfoto.jpg',
+    mimeType: 'image/jpeg',
+    buffer: await sharp({ create: { width: 600, height: 900, channels: 3, background: '#b7b48f' } })
+      .jpeg()
+      .toBuffer(),
+  });
   await expect(page.getByRole('img', { name: 'Foto til oppskrifta' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole('button', { name: 'Lagre varianten' }).click();
@@ -257,6 +264,15 @@ test('private cookbook variant follows the user from mobile to a new login on de
   const path = new URL(page.url()).pathname;
   await expect(page.getByRole('heading', { name: 'Min sitronlaks', level: 1 })).toBeVisible();
   await expect(page.getByRole('img', { name: 'Min sitronlaks' })).toBeVisible();
+  const portrait = page.locator('.detail-hero img');
+  await expect
+    .poll(() => portrait.evaluate((img: HTMLImageElement) => img.naturalHeight > img.naturalWidth))
+    .toBe(true);
+  expect(
+    await portrait.evaluate(
+      (img) => img.getBoundingClientRect().height / img.getBoundingClientRect().width,
+    ),
+  ).toBeCloseTo(1.5, 1);
   await page.request.post('/api/auth/sign-out', { headers: { origin }, data: {} });
   await mobile.close();
   const desktop = await browser.newContext({ baseURL: origin });

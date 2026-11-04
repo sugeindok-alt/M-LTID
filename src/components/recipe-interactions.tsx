@@ -71,7 +71,7 @@ export function RecipeActions({
         notify(
           saved
             ? 'Oppskrifta er fjerna frå favorittane.'
-            : 'Oppskrifta er lagra i favorittane dine.',
+            : `«${recipe.title}» er lagra i favorittane dine.`,
         );
       } else {
         const result = await api<{ message: string }>('email', { recipeId: recipe.id });
@@ -111,6 +111,12 @@ export function RecipeActions({
           </button>
         )
       )}
+      <Link
+        href={'/kokebok/ny?original=' + encodeURIComponent(recipe.id)}
+        className="button secondary"
+      >
+        Lag min variant
+      </Link>
       {recipeEmailReady && loaded && !guest && !loadError && (
         <button
           className="button secondary"

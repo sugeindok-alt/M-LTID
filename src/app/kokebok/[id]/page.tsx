@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import { Photo } from '@/components/photo';
 import { Pencil } from 'lucide-react';
 import { RecipeDirections, RecipePortionLink } from '@/components/recipe-directions';
 import { linkedServings } from '@/lib/cooking';
@@ -39,13 +39,12 @@ export default async function Page({ params, searchParams }: PageProps<'/kokebok
       </div>
       {recipe.image && (
         <div className="detail-hero">
-          <Image
+          <Photo
             unoptimized
-            fill
-            sizes="100vw"
+            natural
+            sizes="(max-width: 936px) 100vw, 900px"
             src={recipe.image}
             alt={entry.title}
-            className="photo-cover"
           />
         </div>
       )}

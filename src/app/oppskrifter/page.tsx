@@ -4,6 +4,7 @@ import { Search, ArrowRight } from 'lucide-react';
 import { catalog } from '@/lib/catalog';
 import { dinnerCategories, filterRecipes, streetFoodCategory } from '@/lib/catalog-filter';
 import { RecipeGrid } from '@/components/recipe-card';
+import { DinnerChoice } from '@/components/dinner-choice';
 import { SourceFailure } from '@/components/shared';
 export const metadata: Metadata = {
   title: 'Middagar',
@@ -64,6 +65,7 @@ export default async function Recipes({
             Tidsbruk
             <select name="maxTime" defaultValue={query.maxTime}>
               <option value="">Alle tider</option>
+              <option value="29">Under 30 minutt</option>
               <option value="30">Inntil 30 min</option>
               <option value="45">Inntil 45 min</option>
               <option value="60">Inntil 60 min</option>
@@ -121,6 +123,22 @@ export default async function Recipes({
           Nullstill filter
         </Link>
       </div>
+      {recipes && (
+        <DinnerChoice
+          key={JSON.stringify(query)}
+          recipes={recipes.map(
+            ({ id, title, image, imageAlt, imageCredit, minutes, category }) => ({
+              id,
+              title,
+              image,
+              imageAlt,
+              imageCredit,
+              minutes,
+              category,
+            }),
+          )}
+        />
+      )}
       {recipes === null ? (
         <SourceFailure />
       ) : recipes.length ? (
