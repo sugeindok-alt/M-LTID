@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowUpRight, Leaf, Search, Sprout, Utensils } from 'lucide-react';
+import { ArrowUpRight, CalendarDays, Clock3, Leaf, Search, Soup, Timer } from 'lucide-react';
 import { catalog } from '@/lib/catalog';
 import { filterRecipes, streetFoodCategory } from '@/lib/catalog-filter';
 import { Photo } from '@/components/photo';
@@ -16,7 +16,7 @@ export default async function Home() {
     <>
       <section className="container hero cookbook-home">
         <div className="hero-copy">
-          <p className="eyebrow">
+          <p className="eyebrow hero-kicker">
             <span className="small-rule" /> KVA FREISTAR I DAG?
           </p>
           <h1>{hero?.title || 'God middag. Heile veka.'}</h1>
@@ -29,11 +29,26 @@ export default async function Home() {
               <Link className="button" href={'/oppskrifter/' + hero.id}>
                 Sjå oppskrifta <ArrowUpRight size={18} aria-hidden />
               </Link>
-              <span>
-                Om lag {hero.minutes} minutt · {hero.servings} porsjonar
+              <span className="hero-meta">
+                <Clock3 size={16} aria-hidden /> Om lag {hero.minutes} minutt · {hero.servings}{' '}
+                porsjonar
               </span>
             </div>
           )}
+          <form action="/oppskrifter" className="search-field home-search" role="search">
+            <Search size={20} aria-hidden />
+            <label className="sr-only" htmlFor="home-search">
+              Søk etter middag eller råvare
+            </label>
+            <input
+              id="home-search"
+              name="q"
+              type="search"
+              placeholder="Laks, suppe eller noko med potet?"
+              maxLength={80}
+            />
+            <button className="button">Søk</button>
+          </form>
           <nav className="quick-links" aria-label="Finn middag">
             <Link href="/oppskrifter?maxTime=29">Under 30 minutt</Link>
             <Link href="/oppskrifter?category=Tradisjonsmat">Norske klassikarar</Link>
@@ -69,27 +84,6 @@ export default async function Home() {
           )}
         </div>
       </section>
-      <div className="container home-browse">
-        <form action="/oppskrifter" className="search-field home-search">
-          <Search size={20} />
-          <label className="sr-only" htmlFor="home-search">
-            Søk etter middag eller råvare
-          </label>
-          <input
-            id="home-search"
-            name="q"
-            placeholder="Laks, suppe eller noko med potet?"
-            maxLength={80}
-          />
-          <button className="button">Søk</button>
-        </form>
-        <div className="hero-footnote">
-          <Sprout size={18} />
-          <Link className="text-link" href="/middagsveker">
-            Sjå fire ferdige middagsveker <ArrowUpRight size={15} />
-          </Link>
-        </div>
-      </div>
       {recipes && (
         <div className="container">
           <DinnerChoice
@@ -107,19 +101,6 @@ export default async function Home() {
           />
         </div>
       )}
-      <div className="values-strip">
-        <div className="container">
-          <span>
-            <Utensils size={18} /> Middagar for norske hushald
-          </span>
-          <span>
-            <Sprout size={18} /> Råvarene i sentrum
-          </span>
-          <span>
-            <Leaf size={18} /> Plass til meir grønt
-          </span>
-        </div>
-      </div>
       <section className="container section">
         <SectionHeading
           kicker="LITT HJELP TIL MIDDAGSVALET"
@@ -133,42 +114,62 @@ export default async function Home() {
           førebuing.
         </p>
       </section>
-      {streetFood && streetFood.length > 0 && (
-        <section className="container section">
-          <SectionHeading
-            kicker="NÅR DET ER FREDAG"
-            title={streetFoodCategory}
-            href={streetFoodHref}
-            link="Sjå heile utvalet"
-          />
-          <RecipeGrid recipes={streetFood.slice(0, 3)} />
-        </section>
-      )}
-      <section className="ingredient-band">
+      <section className="section-band">
         <div className="container">
           <SectionHeading kicker="KVA PASSAR I DAG?" title="Finn din type middag." />
           <div className="dinner-entries">
             <Link href="/oppskrifter?maxTime=29">
+              <span className="entry-icon" aria-hidden>
+                <Timer size={22} />
+              </span>
               <span className="eyebrow">NÅR TIDA ER KNAPP</span>
               <h3>Raskt på bordet</h3>
               <p>Middagar som tek under 30 minutt.</p>
-              <ArrowUpRight />
+              <ArrowUpRight className="entry-arrow" aria-hidden />
             </Link>
             <Link href="/oppskrifter?vegetarian=1">
+              <span className="entry-icon" aria-hidden>
+                <Leaf size={22} />
+              </span>
               <span className="eyebrow">GRØNT OG GODT</span>
               <h3>Meir vegetar</h3>
               <p>Tomatsuppe med makaroni og egg, grønsakslasagne og heimelaga pizza.</p>
-              <ArrowUpRight />
+              <ArrowUpRight className="entry-arrow" aria-hidden />
             </Link>
             <Link href="/oppskrifter?category=Tradisjonsmat">
+              <span className="entry-icon" aria-hidden>
+                <Soup size={22} />
+              </span>
               <span className="eyebrow">SMAKAR SOM VARER</span>
               <h3>Norske klassikarar</h3>
               <p>Kjøtkaker, lapskaus og fårikål.</p>
-              <ArrowUpRight />
+              <ArrowUpRight className="entry-arrow" aria-hidden />
+            </Link>
+            <Link href="/middagsveker">
+              <span className="entry-icon" aria-hidden>
+                <CalendarDays size={22} />
+              </span>
+              <span className="eyebrow">PLANLAGT PÅ FØREHAND</span>
+              <h3>Ferdige middagsveker</h3>
+              <p>Fire veker med fem middagar som passar saman.</p>
+              <ArrowUpRight className="entry-arrow" aria-hidden />
             </Link>
           </div>
         </div>
       </section>
+      {streetFood && streetFood.length > 0 && (
+        <section className="street-band">
+          <div className="container">
+            <SectionHeading
+              kicker="NÅR DET ER FREDAG"
+              title={streetFoodCategory}
+              href={streetFoodHref}
+              link="Sjå heile utvalet"
+            />
+            <RecipeGrid recipes={streetFood.slice(0, 3)} />
+          </div>
+        </section>
+      )}
       <div className="container section nova-section">
         <NovaEducation />
       </div>

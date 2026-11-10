@@ -2,8 +2,10 @@
   display: inline-flex;
   min-height: 44px;
   align-items: center;
+  font-weight: 600;
   text-decoration: underline;
-  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 4px;
 }
 #scale {
   scroll-margin-top: 6rem;
@@ -13,33 +15,47 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1rem;
-  background: var(--soft);
-  padding: 1.2rem 1.5rem;
-  border-radius: 10px;
-  margin: 1rem 0 2rem;
+  gap: 16px 24px;
+  background: var(--warm, var(--soft));
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  padding: 22px 28px;
+  border-radius: var(--radius-lg, 16px);
+  margin: 0 0 40px;
 }
 .cook-launch .eyebrow {
   margin-bottom: 0.35rem;
+}
+.cook-launch p:not(.eyebrow) {
+  font: 400 clamp(22px, 2.4vw, 28px) / 1.2 var(--serif);
+}
+.cook-launch small {
+  flex-basis: 100%;
+  font-size: 14px;
+  color: var(--muted);
 }
 .cook-launch-actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 8px 20px;
+}
+.cook-launch .button {
+  min-height: 52px;
+  padding-inline: 28px;
 }
 .cooking-dialog {
   position: fixed;
   inset: 0;
   margin: auto;
-  width: min(580px, calc(100% - 2rem));
+  width: min(620px, calc(100% - 2rem));
   max-width: 100%;
-  max-height: 85dvh;
+  max-height: 88dvh;
   background: var(--paper);
   color: var(--ink);
   padding: 0;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: var(--shadow);
 }
 .cooking-dialog[open] {
   display: flex;
@@ -47,6 +63,7 @@
 }
 .cooking-dialog::backdrop {
   background: rgb(15 33 24 / 62%);
+  backdrop-filter: blur(3px);
 }
 .cook-head,
 .cook-nav {
@@ -61,7 +78,7 @@
   border-bottom: 1px solid var(--line);
 }
 .cook-head h2 {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   line-height: 1.2;
   margin: 0;
 }
@@ -72,10 +89,14 @@
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 46px;
-  height: 46px;
-  border: 1px solid var(--line);
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--line-strong, var(--line));
   border-radius: 50%;
+  transition: background 0.2s;
+}
+.cook-close:hover {
+  background: var(--soft);
 }
 .cook-body {
   padding: 1.4rem 1.5rem;
@@ -90,21 +111,21 @@
 }
 .cook-dots i {
   flex: 1;
-  height: 4px;
+  height: 6px;
   border-radius: 3px;
   background: var(--line);
 }
 .cook-dots i.filled {
-  background: var(--ink);
+  background: color-mix(in srgb, var(--accent) 60%, var(--ink));
 }
 .cook-body h3 {
   font-family: var(--serif);
-  font-size: 2rem;
+  font-size: 2.1rem;
   margin-bottom: 0.6rem;
 }
 .cook-instruction {
-  font-size: 1.2rem;
-  line-height: 1.65;
+  font-size: 1.25rem;
+  line-height: 1.7;
   white-space: pre-line;
 }
 .cook-timer {
@@ -114,8 +135,8 @@
   flex-wrap: wrap;
   gap: 0.7rem;
   background: var(--soft);
-  padding: 0.9rem 1rem;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border-radius: var(--radius, 10px);
   margin: 1.3rem 0 0.35rem;
 }
 .cook-timer label {
@@ -124,15 +145,17 @@
   gap: 0.5rem;
 }
 .cook-timer select {
+  width: auto;
   min-height: 44px;
-  padding: 0.35rem;
-  border: 1px solid var(--line);
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--line-strong, var(--line));
   background: var(--paper);
   color: var(--ink);
-  border-radius: 4px;
+  border-radius: 10px;
+  font-size: 16px;
 }
 .cook-timer [role='timer'] {
-  font-size: 1.6rem;
+  font: 400 2rem/1.1 var(--serif);
   font-variant-numeric: tabular-nums;
   display: block;
 }
@@ -142,17 +165,26 @@
   gap: 0.5rem;
   min-height: 48px;
   margin-top: 0.75rem;
+  padding: 0 4px;
   font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 #cook-ingredients ul {
   margin-top: 0.5rem;
+  padding: 0;
+  list-style: none;
 }
 #cook-ingredients li {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.4rem 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--line);
+}
+#cook-ingredients li span {
+  font-weight: 600;
+  text-align: right;
 }
 .cook-nav {
   border-top: 1px solid var(--line);
@@ -165,8 +197,20 @@
 }
 @media (max-width: 640px) {
   .cook-launch {
-    align-items: flex-start;
-    padding: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 18px;
+  }
+  .cook-launch-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  .cook-launch-actions .button {
+    width: 100%;
+  }
+  .cook-launch-actions .text-link {
+    justify-content: center;
   }
   .cooking-dialog {
     width: 100%;
@@ -183,6 +227,12 @@
   }
   .cook-body {
     flex: 1;
+  }
+  .cook-body h3 {
+    font-size: 1.8rem;
+  }
+  .cook-instruction {
+    font-size: 1.15rem;
   }
   .cook-head {
     padding-top: max(1rem, env(safe-area-inset-top));

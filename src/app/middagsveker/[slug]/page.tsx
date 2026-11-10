@@ -38,7 +38,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 <Photo
                   src={recipe.image}
                   alt={recipe.imageAlt || recipe.title}
-                  sizes="(max-width:650px) 80px, 150px"
+                  sizes="(max-width:650px) 96px, 170px"
                 />
               </div>
             )}

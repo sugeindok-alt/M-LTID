@@ -9,6 +9,8 @@ test('a complete plate, caption and wrapping action row remain separate', async 
     shown: img.width / img.height,
   }));
   expect(Math.abs(ratio.shown - ratio.natural)).toBeLessThan(0.01);
+  // Wait for hydration before inserting the long caption into React-owned markup.
+  await expect(page.getByRole('button', { name: 'Start matlaging', exact: true })).toBeEnabled();
   const credit = page.locator('.image-credit');
   await credit.evaluate((el) =>
     el.prepend(
@@ -30,6 +32,14 @@ test('a complete plate, caption and wrapping action row remain separate', async 
       true,
     );
   }
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.evaluate(() => {
+    document.documentElement.style.zoom = '2';
+  });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.evaluate(() => {
+    document.documentElement.style.zoom = '1';
+  });
   await variant.click();
   await expect(page).toHaveURL(/logg-inn\?next=/);
 });

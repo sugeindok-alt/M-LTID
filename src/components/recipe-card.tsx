@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Clock3, Leaf } from 'lucide-react';
 import { Photo } from './photo';
 import { categoryLabels, type RecipeCardData } from '@/lib/recipes';
 export function RecipeCard({ recipe }: { recipe: RecipeCardData }) {
@@ -16,26 +16,26 @@ export function RecipeCard({ recipe }: { recipe: RecipeCardData }) {
           <ArrowUpRight size={20} />
         </span>
       </Link>
-      <div className="recipe-meta">
-        <span>
+      <div className="recipe-card-body">
+        <p className="meta-category">
           {recipe.category ? categoryLabels[recipe.category] || recipe.category : 'Oppskrift'}
-        </span>
-        {recipe.minutes && (
-          <>
-            <span className="meta-dot" />
-            <span>Om lag {recipe.minutes} min</span>
-          </>
-        )}
-        {recipe.vegetarian && (
-          <>
-            <span className="meta-dot" />
-            <span>Vegetar</span>
-          </>
-        )}
+        </p>
+        <h3>
+          <Link href={`/oppskrifter/${recipe.id}`}>{recipe.title}</Link>
+        </h3>
+        <div className="recipe-meta">
+          {recipe.minutes && (
+            <span className="meta-chip">
+              <Clock3 size={14} aria-hidden /> Om lag {recipe.minutes} min
+            </span>
+          )}
+          {recipe.vegetarian && (
+            <span className="meta-chip meta-green">
+              <Leaf size={14} aria-hidden /> Vegetar
+            </span>
+          )}
+        </div>
       </div>
-      <h3>
-        <Link href={`/oppskrifter/${recipe.id}`}>{recipe.title}</Link>
-      </h3>
     </article>
   );
 }

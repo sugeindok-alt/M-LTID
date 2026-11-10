@@ -36,11 +36,10 @@ export function Favorites({ initial }: { initial: Recipe[] }) {
   return (
     <div className="recipe-grid">
       {recipes.map((recipe) => (
-        <div key={recipe.id}>
+        <div key={recipe.id} className="favorite-item">
           <RecipeCard recipe={recipe} />
           <button
             className="text-link"
-            style={{ marginTop: 14 }}
             disabled={!!busy}
             onClick={() => remove(recipe.id)}
           >

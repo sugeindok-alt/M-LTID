@@ -7,6 +7,7 @@ import '@fontsource/dm-serif-display/latin-400.css';
 import '@fontsource/dm-serif-display/latin-400-italic.css';
 import './globals.css';
 import './editorial.css';
+import './design.css';
 import { Header } from '@/components/header';
 import { Providers } from '@/components/providers';
 import { authConfigured } from '@/lib/auth';
@@ -28,18 +29,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main id="hovudinnhald">{children}</main>
           <footer className="footer">
             <div className="container footer-top">
-              <div>
+              <div className="footer-brand">
                 <Link href="/" className="wordmark">
                   MÅLTID<span>.</span>
                 </Link>
-                <p>Matglede byrjar med nysgjerrigheit.</p>
+                <p>Matglede byrjar med nysgjerrigheit. Norske kvardagsmiddagar for heile hushaldet.</p>
               </div>
-              <nav aria-label="Botnmeny">
-                <Link href="/oppskrifter">Finn noko godt</Link>
-                <Link href="/ingrediensar">Utforsk råvarene</Link>
-                <Link href="/om-maten">Om maten</Link>
-                <Link href="/personvern">Personvern</Link>
-                <Link href="/om-innhaldet">Om innhaldet</Link>
+              <nav aria-label="Botnmeny" className="footer-nav">
+                <div>
+                  <p className="eyebrow">Finn mat</p>
+                  <Link href="/oppskrifter">Finn noko godt</Link>
+                  <Link href="/middagsveker">Middagsveker</Link>
+                  <Link href="/ingrediensar">Utforsk råvarene</Link>
+                </div>
+                <div>
+                  <p className="eyebrow">Mine sider</p>
+                  <Link href="/mi-veke">Mi veke</Link>
+                  <Link href="/kokebok">Mi kokebok</Link>
+                  <Link href="/handleliste">Handleliste</Link>
+                </div>
+                <div>
+                  <p className="eyebrow">Om MÅLTID</p>
+                  <Link href="/om-maten">Om maten</Link>
+                  <Link href="/om-innhaldet">Om innhaldet</Link>
+                  <Link href="/personvern">Personvern</Link>
+                </div>
               </nav>
             </div>
             <div className="container footer-bottom">

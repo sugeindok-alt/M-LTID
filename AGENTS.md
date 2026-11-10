@@ -7,3 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Samarbeid mellom Codex og Claude Code
+
+Når Codex og Claude Code samarbeider, følg arbeidsdelinga og prosjektomsyna i `CLAUDE.md`. Den konkrete oppgåva frå eigaren avgjer kva kvar agent skal gjere.

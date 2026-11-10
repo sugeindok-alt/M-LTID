@@ -9,22 +9,31 @@
 .collection-editor legend,
 .shared-recipe h2 {
   font-family: var(--serif);
+  font-size: clamp(28px, 3vw, 36px);
+  line-height: 1.15;
+}
+.collection-editor legend {
+  padding: 0 0 8px;
   font-size: 1.6rem;
 }
 .collection-creator,
 .share-preview,
 .shared-recipe,
 .collection-editor fieldset {
-  padding: 1rem;
+  padding: clamp(16px, 2.4vw, 26px);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius-lg, 10px);
   background: var(--paper);
+  box-shadow: var(--shadow-sm);
 }
 .collection-creator summary,
 .share-preview summary {
+  display: flex;
+  align-items: center;
   cursor: pointer;
   min-height: 44px;
   padding: 0.55rem;
+  font-weight: 600;
 }
 .collection-creator form {
   max-width: 42rem;
@@ -32,36 +41,37 @@
 .collection-creator label,
 .collection-editor label {
   display: grid;
-  gap: 0.3rem;
-  margin: 0.5rem 0;
+  gap: 0.35rem;
+  margin: 0.6rem 0;
 }
 .collection-creator input,
 .collection-creator textarea,
 .collection-editor input:not([type='checkbox']):not([type='radio']),
 .collection-editor textarea {
   width: 100%;
-  padding: 0.55rem;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  min-height: var(--tap, 44px);
+  padding: 11px 14px;
+  border: 1px solid var(--line-strong, var(--line));
+  border-radius: 12px;
   background: var(--paper);
   color: var(--ink);
-  font-size: 1rem;
+  font-size: 16px;
 }
 .collection-editor .collection-check {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  min-height: 44px;
+  gap: 0.75rem;
+  min-height: 48px;
 }
 .collection-check input {
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1.25rem;
+  height: 1.25rem;
   flex: none;
 }
 .share-choice,
 .shared-recipe li {
   border-bottom: 1px solid var(--line);
-  padding: 0.45rem 0;
+  padding: 10px 0;
 }
 .share-preview ol,
 .shared-recipe ol {
@@ -74,18 +84,33 @@
 }
 .shared-recipe h3 {
   font-family: var(--serif);
-  font-size: 1.25rem;
-  margin-top: 0.9rem;
+  font-size: 1.35rem;
+  margin-top: 1.1rem;
 }
 .shared-recipe img {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: var(--radius, 8px);
+}
+.shared-recipe p,
+.shared-recipe li {
+  font-size: 16px;
+  line-height: 1.65;
 }
 .shared-index {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: 8px;
+}
+.shared-index .text-link {
+  padding: 4px 16px;
+  border: 1px solid var(--line-strong, var(--line));
+  border-radius: var(--pill, 999px);
+  background: var(--paper);
+  text-decoration: none;
+}
+.shared-index .text-link:hover {
+  background: var(--soft);
 }
 .collection-editor section > a {
   margin-right: 1rem;
@@ -95,12 +120,17 @@
 .share-preview button {
   margin-top: 0.6rem;
 }
+.share-preview figure {
+  margin: 0.8rem 0;
+}
 .share-preview figure img {
   display: block;
   width: min(16rem, 100%);
   height: auto;
-  border-radius: 6px;
+  border-radius: var(--radius, 6px);
 }
 .share-preview figcaption {
   margin-top: 0.4rem;
+  font-size: 14px;
+  color: var(--muted);
 }

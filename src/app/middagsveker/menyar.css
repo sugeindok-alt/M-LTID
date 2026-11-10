@@ -1,14 +1,22 @@
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.4rem;
+  gap: 24px;
 }
 .menu-card {
   display: block;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-lg, 12px);
   overflow: hidden;
   background: var(--paper);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.25s var(--ease, ease),
+    box-shadow 0.25s;
+}
+.menu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
 }
 .menu-photo,
 .menu-day-photo {
@@ -17,16 +25,28 @@
   overflow: hidden;
   background: var(--soft);
 }
+.menu-photo {
+  aspect-ratio: 16/10;
+}
+.menu-card .photo-cover {
+  transition: transform 0.6s var(--ease, ease);
+}
+.menu-card:hover .photo-cover {
+  transform: scale(1.04);
+}
 .menu-card > div:not(.menu-photo) {
-  padding: 1.2rem;
+  padding: 22px 24px 24px;
 }
 .menu-card h2,
 .menu-days h2 {
-  font: 1.65rem/1.15 var(--serif);
+  font: clamp(26px, 2.6vw, 32px) / 1.15 var(--serif);
   margin: 0.4rem 0;
 }
+.menu-card p:not(.eyebrow) {
+  color: var(--muted);
+}
 .menu-card .text-link {
-  margin-top: 0.8rem;
+  margin-top: 0.6rem;
 }
 .menu-detail {
   max-width: 920px;
@@ -34,40 +54,65 @@
 .menu-detail .page-intro {
   margin-top: 1.3rem;
 }
+.menu-days {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 .menu-days li {
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
+  grid-template-columns: 170px minmax(0, 1fr);
   align-items: center;
-  gap: 1.1rem;
-  padding: 1rem 0;
+  gap: 22px;
+  padding: 18px 0;
   border-top: 1px solid var(--line);
+}
+.menu-days h2 {
+  font-size: 26px;
 }
 .menu-days h2 a {
   text-decoration: underline;
-  text-decoration-color: var(--line);
+  text-decoration-color: var(--line-strong, var(--line));
   text-underline-offset: 4px;
 }
+.menu-days li p:not(.eyebrow) {
+  color: var(--muted);
+}
 .menu-day-photo {
-  border-radius: 7px;
+  border-radius: var(--radius, 7px);
 }
 .menu-detail > .button {
-  margin: 1.2rem 0 0.5rem;
+  margin: 1.4rem 0 0.6rem;
 }
 .menu-days .eyebrow {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
 }
 @media (max-width: 650px) {
   .menu-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .menu-card > div:not(.menu-photo) {
+    padding: 18px 18px 20px;
   }
   .menu-days li {
-    grid-template-columns: 80px minmax(0, 1fr);
-    gap: 0.75rem;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 14px;
+    padding: 14px 0;
   }
   .menu-days h2 {
-    font-size: 1.28rem;
+    font-size: 21px;
   }
   .menu-days li p:not(.eyebrow) {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+  }
+  .menu-detail > .button {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-card:hover,
+  .menu-card:hover .photo-cover {
+    transform: none;
   }
 }
