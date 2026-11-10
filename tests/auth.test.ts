@@ -164,7 +164,7 @@ describe('Better Auth against migrated PostgreSQL, no external mail', () => {
         await database.db.select().from(emailRecords).where(eq(emailRecords.status, 'failed')),
       ).toHaveLength(1);
       expect(JSON.stringify(log.mock.calls)).not.toContain('provider-private-details');
-      expect(emailRequestFeedback).toContain('stadfestar vi ikkje');
+      expect(emailRequestFeedback).not.toMatch(/sendt|send\.|konto.*finst/i);
       expect(authErrorMessage('PRIVATE_PROVIDER_ERROR')).not.toContain('PRIVATE_PROVIDER');
     } finally {
       log.mockRestore();

@@ -1,6 +1,5 @@
 // Public mail endpoints confirm receipt, never account existence or delivery.
-export const emailRequestFeedback =
-  'Førespurnaden er teken imot. Av omsyn til personvernet stadfestar vi ikkje om adressa har konto eller om e-post vart send. Sjå etter ei lenkje i innboksen og søppelpost. Kjem ho ikkje, kan du prøve igjen seinare.';
+export const emailRequestFeedback = 'Sjekk e-posten din.';
 
 export function authErrorMessage(code?: string, status?: number) {
   if (status === 429) return 'For mange forsøk. Vent litt og prøv igjen.';
@@ -17,5 +16,5 @@ export function authErrorMessage(code?: string, status?: number) {
     ACCOUNT_LINK_REQUIRED:
       'Det finst eldre kontodata som må knytast til denne innlogginga. Kontakt eigaren av nettsida for hjelp.',
   };
-  return messages[code || ''] || 'Førespurnaden kunne ikkje fullførast. Prøv igjen seinare.';
+  return messages[code || ''] || 'Noko gjekk gale. Prøv igjen.';
 }

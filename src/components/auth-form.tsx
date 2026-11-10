@@ -111,7 +111,7 @@ export function AuthForm({
           : emailRequestFeedback,
       );
     } catch {
-      setFeedback('Vi fekk ikkje kontakt med tenesta. Kontroller tilkoplinga og prøv igjen.');
+      setFeedback('Noko gjekk gale. Prøv igjen.');
       setFailed(true);
     } finally {
       setBusy(false);
