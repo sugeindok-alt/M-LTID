@@ -60,9 +60,14 @@ main {
     translate: 0 5%;
   }
 }
-@keyframes hero-copy-out {
+@keyframes cine-drift {
+  from {
+    scale: 1.14;
+    translate: 0 -6%;
+  }
   to {
-    translate: 0 -28px;
+    scale: 1.14;
+    translate: 0 6%;
   }
 }
 @keyframes header-lift {
@@ -107,12 +112,16 @@ main {
       animation-timeline: scroll(root);
       animation-range: 0 100vh;
     }
-    @media (min-width: 801px) {
-      .cookbook-home .hero-copy {
-        animation: hero-copy-out linear both;
-        animation-timeline: scroll(root);
-        animation-range: 30vh 100vh;
-      }
+    /* Panela på forsida: biletet glir sakte bak teksten, og teksten stig inn. */
+    .cine:not(.cine-hero) .cine-media .photo-cover {
+      animation: cine-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    .cine:not(.cine-hero) .cine-content > * {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
     }
 
     /* Toppmenyen får skugge når sida er rulla. */

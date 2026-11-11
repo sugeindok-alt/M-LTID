@@ -1,37 +1,89 @@
 import Link from 'next/link';
-import { ArrowUpRight, CalendarDays, Clock3, Leaf, Search, Soup, Timer } from 'lucide-react';
+import { ArrowRight, Clock3, Search } from 'lucide-react';
 import { catalog } from '@/lib/catalog';
 import { filterRecipes, streetFoodCategory } from '@/lib/catalog-filter';
 import { Photo } from '@/components/photo';
 import { RecipeGrid } from '@/components/recipe-card';
 import { DinnerChoice } from '@/components/dinner-choice';
-import { HeroGlow } from '@/components/hero-glow';
 import { SectionHeading, SourceFailure, NovaEducation } from '@/components/shared';
 export const revalidate = 300;
 export default async function Home() {
   const recipes = await catalog.browse().catch(() => null);
   const hero = recipes?.find((r) => r.id === 'nn-laks-med-ris');
-  const streetFood = recipes && filterRecipes(recipes, { category: streetFoodCategory });
   const streetFoodHref = '/oppskrifter?category=' + encodeURIComponent(streetFoodCategory);
+  // Kvart panel får biletet til den første passande retten som ikkje alt er brukt på sida.
+  const used = new Set(hero ? [hero.id] : []);
+  const pick = (query: Parameters<typeof filterRecipes>[1]) => {
+    const recipe = recipes && filterRecipes(recipes, query).find((r) => !used.has(r.id));
+    if (recipe) used.add(recipe.id);
+    return recipe;
+  };
+  const panels = [
+    {
+      kicker: 'NÅR DET ER FREDAG',
+      title: streetFoodCategory,
+      text: 'Kebabrull i varm lefse, sprø kyllingspyd og smashburger rett frå steikjepanna.',
+      cta: 'Sjå gatekjøkkenmiddagane',
+      href: streetFoodHref,
+      recipe: pick({ category: streetFoodCategory }),
+    },
+    {
+      kicker: 'NÅR TIDA ER KNAPP',
+      title: 'Raskt på bordet',
+      text: 'Middagar som tek under 30 minutt, frå du byrjar til maten står på bordet.',
+      cta: 'Finn ein rask middag',
+      href: '/oppskrifter?maxTime=29',
+      recipe: pick({ maxTime: '29' }),
+    },
+    {
+      kicker: 'SMAKAR SOM VARER',
+      title: 'Norske klassikarar',
+      text: 'Kjøtkaker, lapskaus og fårikål. Middagane du kjenner att frå første bit.',
+      cta: 'Sjå klassikarane',
+      href: '/oppskrifter?category=Tradisjonsmat',
+      recipe: pick({ category: 'Tradisjonsmat' }),
+    },
+    {
+      kicker: 'GRØNT OG GODT',
+      title: 'Meir vegetar',
+      text: 'Tomatsuppe med makaroni og egg, grønsakslasagne og heimelaga pizza.',
+      cta: 'Sjå vegetarmiddagane',
+      href: '/oppskrifter?vegetarian=1',
+      recipe: pick({ vegetarian: '1' }),
+    },
+    {
+      kicker: 'PLANLAGT PÅ FØREHAND',
+      title: 'Ferdige middagsveker',
+      text: 'Fire veker med fem middagar som passar saman. Vel ei veke og byt ut det du vil.',
+      cta: 'Sjå middagsvekene',
+      href: '/middagsveker',
+      recipe: pick({}),
+    },
+  ];
   return (
     <>
-      <HeroGlow />
-      <section className="container hero cookbook-home">
-        <div className="hero-copy">
-          <p className="eyebrow hero-kicker">
-            <span className="small-rule" /> KVA FREISTAR I DAG?
-          </p>
+      <section className="cine cine-hero">
+        <div className="cine-media hero-visual">
+          {hero && (
+            <>
+              <Photo src={hero.image} alt={hero.imageAlt || hero.title} priority sizes="100vw" />
+              <span className="image-label">Illustrasjon</span>
+            </>
+          )}
+        </div>
+        <div className="container cine-content">
+          <p className="eyebrow">KVA FREISTAR I DAG?</p>
           <h1>{hero?.title || 'God middag. Heile veka.'}</h1>
-          <p className="hero-description">
+          <p className="cine-text">
             {hero?.description ||
               'Finn noko godt å lage til middag, med råvarer frå butikken rundt hjørnet.'}
           </p>
           {hero && (
-            <div className="hero-buttons">
-              <Link className="button" href={'/oppskrifter/' + hero.id}>
-                Sjå oppskrifta <ArrowUpRight size={18} aria-hidden />
+            <div className="cine-actions">
+              <Link className="button cine-button" href={'/oppskrifter/' + hero.id}>
+                Sjå oppskrifta <ArrowRight size={18} aria-hidden />
               </Link>
-              <span className="hero-meta">
+              <span className="cine-meta">
                 <Clock3 size={16} aria-hidden /> Om lag {hero.minutes} minutt · {hero.servings}{' '}
                 porsjonar
               </span>
@@ -57,37 +109,9 @@ export default async function Home() {
             <Link href={streetFoodHref}>{streetFoodCategory}</Link>
           </nav>
         </div>
-        <div className="hero-visual">
-          {hero ? (
-            <>
-              <Photo
-                src={hero.image}
-                alt={hero.imageAlt || hero.title}
-                priority
-                sizes="(max-width: 800px) 100vw, 55vw"
-              />
-              <span className="image-label">Illustrasjon</span>
-              <div className="hero-caption">
-                <div>
-                  <p className="eyebrow">PÅ BORDET OM LAG {hero.minutes} MINUTT</p>
-                  <Link href={`/oppskrifter/${hero.id}`}>{hero.title}</Link>
-                </div>
-                <Link
-                  className="round-button"
-                  href={`/oppskrifter/${hero.id}`}
-                  aria-label={`Sjå ${hero.title}`}
-                >
-                  <ArrowUpRight size={23} />
-                </Link>
-              </div>
-            </>
-          ) : (
-            <SourceFailure href="/" />
-          )}
-        </div>
       </section>
       {recipes && (
-        <div className="container">
+        <div className="container cine-choice">
           <DinnerChoice
             recipes={recipes.map(
               ({ id, title, image, imageAlt, imageCredit, minutes, category }) => ({
@@ -103,6 +127,27 @@ export default async function Home() {
           />
         </div>
       )}
+      {panels.map(
+        ({ kicker, title, text, cta, href, recipe }) =>
+          recipe && (
+            <section className="cine" key={href}>
+              <div className="cine-media">
+                <Photo src={recipe.image} alt={recipe.imageAlt || recipe.title} sizes="100vw" />
+                {recipe.imageCredit && <span className="image-label">Illustrasjon</span>}
+              </div>
+              <div className="container cine-content">
+                <p className="eyebrow">{kicker}</p>
+                <h2>{title}</h2>
+                <p className="cine-text">{text}</p>
+                <div className="cine-actions">
+                  <Link className="button cine-button" href={href}>
+                    {cta} <ArrowRight size={18} aria-hidden />
+                  </Link>
+                </div>
+              </div>
+            </section>
+          ),
+      )}
       <section className="container section">
         <SectionHeading
           kicker="LITT HJELP TIL MIDDAGSVALET"
@@ -116,62 +161,6 @@ export default async function Home() {
           førebuing.
         </p>
       </section>
-      <section className="section-band">
-        <div className="container">
-          <SectionHeading kicker="KVA PASSAR I DAG?" title="Finn din type middag." />
-          <div className="dinner-entries">
-            <Link href="/oppskrifter?maxTime=29">
-              <span className="entry-icon" aria-hidden>
-                <Timer size={22} />
-              </span>
-              <span className="eyebrow">NÅR TIDA ER KNAPP</span>
-              <h3>Raskt på bordet</h3>
-              <p>Middagar som tek under 30 minutt.</p>
-              <ArrowUpRight className="entry-arrow" aria-hidden />
-            </Link>
-            <Link href="/oppskrifter?vegetarian=1">
-              <span className="entry-icon" aria-hidden>
-                <Leaf size={22} />
-              </span>
-              <span className="eyebrow">GRØNT OG GODT</span>
-              <h3>Meir vegetar</h3>
-              <p>Tomatsuppe med makaroni og egg, grønsakslasagne og heimelaga pizza.</p>
-              <ArrowUpRight className="entry-arrow" aria-hidden />
-            </Link>
-            <Link href="/oppskrifter?category=Tradisjonsmat">
-              <span className="entry-icon" aria-hidden>
-                <Soup size={22} />
-              </span>
-              <span className="eyebrow">SMAKAR SOM VARER</span>
-              <h3>Norske klassikarar</h3>
-              <p>Kjøtkaker, lapskaus og fårikål.</p>
-              <ArrowUpRight className="entry-arrow" aria-hidden />
-            </Link>
-            <Link href="/middagsveker">
-              <span className="entry-icon" aria-hidden>
-                <CalendarDays size={22} />
-              </span>
-              <span className="eyebrow">PLANLAGT PÅ FØREHAND</span>
-              <h3>Ferdige middagsveker</h3>
-              <p>Fire veker med fem middagar som passar saman.</p>
-              <ArrowUpRight className="entry-arrow" aria-hidden />
-            </Link>
-          </div>
-        </div>
-      </section>
-      {streetFood && streetFood.length > 0 && (
-        <section className="street-band">
-          <div className="container">
-            <SectionHeading
-              kicker="NÅR DET ER FREDAG"
-              title={streetFoodCategory}
-              href={streetFoodHref}
-              link="Sjå heile utvalet"
-            />
-            <RecipeGrid recipes={streetFood.slice(0, 3)} />
-          </div>
-        </section>
-      )}
       <div className="container section nova-section">
         <NovaEducation />
       </div>
