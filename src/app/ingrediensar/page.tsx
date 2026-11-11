@@ -4,7 +4,9 @@ import { Search, ArrowUpRight } from 'lucide-react';
 import { ingredients, ingredientGroups } from '@/data/ingredients';
 import { RawIngredientPhoto } from '@/components/raw-ingredient-photo';
 import { SectionHeading } from '@/components/shared';
-import { fold } from '@/lib/catalog-filter';
+import { fold, filterRecipes } from '@/lib/catalog-filter';
+import { catalog } from '@/lib/catalog';
+import { PageHero } from '@/components/page-hero';
 import { ProductSearch } from '@/components/product-search';
 export const metadata: Metadata = { title: 'Ingrediensar' };
 export default async function Ingredients({
@@ -25,14 +27,26 @@ export default async function Ingredients({
   );
   const pageUrl = (n: number) =>
     `/ingrediensar?${new URLSearchParams({ q: query, group, page: String(n) })}`;
+  // Toppbiletet er ein grønsaksrett frå katalogen. Utan katalog blir toppen eit mørkt band.
+  const lead = await catalog
+    .browse()
+    .then((recipes) => filterRecipes(recipes, { vegetarian: '1' })[0])
+    .catch(() => null);
   return (
-    <div className="container page-shell">
-      <div className="page-intro">
-        <p className="eyebrow">FRÅ JORDA. FRÅ HAVET. TIL BORDET.</p>
-        <h1>Bli kjend med råvarene.</h1>
-        <p>Finn nye bruksområde, oppdag oppskrifter og utforsk kva som finst i maten din.</p>
-      </div>
-      <form action="/ingrediensar" className="search-field">
+    <div className="cine-shell">
+      <PageHero
+        kicker="FRÅ JORDA. FRÅ HAVET. TIL BORDET."
+        title="Bli kjend med råvarene."
+        text="Finn nye bruksområde, oppdag oppskrifter og utforsk kva som finst i maten din."
+        image={
+          lead && {
+            src: lead.image,
+            alt: lead.imageAlt || lead.title,
+            illustration: !!lead.imageCredit,
+          }
+        }
+      />
+      <form action="/ingrediensar" className="search-field ingredient-search">
         <Search size={20} />
         <label className="sr-only" htmlFor="ingredient-search">
           Søk etter ingrediens

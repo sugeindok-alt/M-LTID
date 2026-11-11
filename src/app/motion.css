@@ -113,12 +113,18 @@ main {
       animation-range: 0 100vh;
     }
     /* Panela på forsida: biletet glir sakte bak teksten, og teksten stig inn. */
-    .cine:not(.cine-hero) .cine-media .photo-cover {
+    .cine:not(.cine-hero, .cine-page) .cine-media .photo-cover {
       animation: cine-drift linear both;
       animation-timeline: view();
       animation-range: cover 0% cover 100%;
     }
-    .cine:not(.cine-hero) .cine-content > * {
+    /* Sidetoppane ligg øvst og følgjer rullinga frå toppen, som hovudbiletet på forsida. */
+    .cine-page .cine-media .photo-cover {
+      animation: hero-drift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+    .cine:not(.cine-hero, .cine-page) .cine-content > * {
       animation: rise-in linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 100%;

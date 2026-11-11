@@ -3,8 +3,10 @@
  * og éi tydeleg handling. Panela er mørke uansett tema, slik at kvit tekst alltid står mot
  * det same mørke sløret over biletet.
  */
-.cine {
+:root {
   --cine-dark: 9 15 11;
+}
+.cine {
   position: relative;
   isolation: isolate;
   display: flex;
@@ -228,7 +230,241 @@
     right: 10px;
   }
 }
+/* ==========================================================================
+   Resten av nettstaden i same uttrykk
+   ========================================================================== */
+
+/* ---------- Sidetopp med bilete (components/page-hero.tsx) ---------- */
+.cine.cine-page {
+  min-height: clamp(360px, 58svh, 620px);
+}
+.cine-page > .cine-content {
+  padding-block: clamp(72px, 12vh, 120px) clamp(64px, 10vh, 104px);
+}
+/* Sider med slik topp: innhaldet under held den vanlege sidebreidda. */
+.cine-shell {
+  padding-bottom: 88px;
+}
+.cine-shell > :not(.cine) {
+  width: min(var(--page), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+/* Søk og filter ligg delvis oppå biletet, slik at toppen og innhaldet heng saman. */
+.cine-shell > .discovery-form,
+.cine-shell > .ingredient-search {
+  position: relative;
+  margin-top: -40px;
+}
+.cine-shell > .ingredient-search {
+  border-color: transparent;
+  box-shadow: var(--shadow);
+}
+.cine-shell > .menu-grid {
+  margin-top: 48px;
+}
+
+/* ---------- Sidetopp utan bilete: mørkt band over heile breidda ---------- */
+.page-intro,
+.detail-heading,
+.breadcrumb:has(+ .detail-heading),
+.ingredient-detail,
+.breadcrumb:has(+ .ingredient-detail) {
+  /* Skuggen fyller breidda utan å gje vassrett rulling. */
+  background: rgb(var(--cine-dark));
+  box-shadow: 0 0 0 100vmax rgb(var(--cine-dark));
+  clip-path: inset(0 -100vmax);
+  color: #fff;
+}
+.page-shell:has(> .page-intro:first-child),
+.page-shell:has(> .breadcrumb + :is(.detail-heading, .ingredient-detail)) {
+  padding-top: 0;
+}
+/* Brødsmulestien og tittelen er to band som skal sjå ut som eitt, utan synleg skøyt. */
+.breadcrumb + :is(.detail-heading, .ingredient-detail) {
+  margin-top: -1px;
+}
+.page-intro {
+  margin-bottom: 40px;
+  padding-block: clamp(48px, 9vh, 96px) clamp(40px, 7vh, 72px);
+}
+.page-intro h1 {
+  margin-block: 12px 14px;
+  font-size: clamp(40px, 5.4vw, 80px);
+  line-height: 1.02;
+}
+:is(.page-intro, .detail-heading, .ingredient-detail) .eyebrow {
+  color: rgb(255 255 255 / 88%);
+  letter-spacing: 0.2em;
+}
+.page-intro > p:not(.eyebrow),
+.detail-heading .recipe-description,
+.detail-heading .source-note,
+.ingredient-detail p:not(.eyebrow),
+.ingredient-detail .source-note {
+  color: rgb(255 255 255 / 92%);
+}
+:is(.page-intro, .detail-heading, .ingredient-detail, .breadcrumb:has(+ .detail-heading), .breadcrumb:has(+ .ingredient-detail))
+  :is(a, button):focus-visible {
+  outline-color: #fff;
+  box-shadow: none;
+}
+
+/* Oppskriftssida: tittelen står i det mørke bandet, og biletet stig opp i det. */
+.breadcrumb:has(+ .detail-heading),
+.breadcrumb:has(+ .ingredient-detail) {
+  margin: 0;
+  padding: 22px 0 0;
+  color: rgb(255 255 255 / 82%);
+}
+.detail-heading {
+  max-width: none;
+  margin: 0 0 28px;
+  padding: 32px 0 48px;
+}
+.detail-heading > * {
+  max-width: 820px;
+  margin-inline: auto;
+}
+.detail-heading .recipe-meta {
+  color: #fff;
+}
+.detail-heading:has(+ .detail-hero) {
+  margin-bottom: 0;
+  padding-bottom: 150px;
+}
+.detail-heading + .detail-hero {
+  position: relative;
+  margin-top: -110px;
+}
+/* Ramma ligg på sjølve biletet, så ho følgjer biletet når det er smalare enn plassen. */
+.detail-hero {
+  overflow: visible;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.detail-hero .photo-natural {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+/* Råvaresida */
+.ingredient-detail {
+  margin-bottom: 64px;
+  padding: 36px 0 72px;
+}
+
+/* ---------- Felles: knappar, overskrifter og botntekst ---------- */
+.button {
+  font-size: 14px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.button.small {
+  font-size: 13px;
+}
+.section-heading h2 {
+  font-size: clamp(34px, 4.4vw, 60px);
+  line-height: 1.04;
+}
+.footer {
+  margin-top: 0;
+  border-top: 0;
+  background: rgb(var(--cine-dark));
+  color: #fff;
+}
+.footer .eyebrow {
+  color: rgb(255 255 255 / 72%);
+}
+.footer-brand p,
+.footer-bottom {
+  color: rgb(255 255 255 / 80%);
+}
+.footer-bottom {
+  border-top-color: rgb(255 255 255 / 16%);
+}
+.footer :is(a, button):focus-visible {
+  outline-color: #fff;
+  box-shadow: none;
+}
+
+@media (max-width: 800px) {
+  .cine.cine-page {
+    min-height: 44svh;
+  }
+  .cine-page > .cine-content {
+    padding-block: 56px 64px;
+  }
+  .cine-shell > .discovery-form,
+  .cine-shell > .ingredient-search {
+    margin-top: -32px;
+  }
+  .detail-heading:has(+ .detail-hero) {
+    padding-bottom: 110px;
+  }
+  .detail-heading + .detail-hero {
+    margin-top: -80px;
+  }
+}
+@media (max-width: 560px) {
+  .cine-shell {
+    padding-bottom: 64px;
+  }
+  .page-intro h1 {
+    font-size: clamp(36px, 10vw, 44px);
+  }
+  .ingredient-detail {
+    padding: 24px 0 48px;
+  }
+}
+
+/* Hald fokusringen innanfor det klipte, mørke bandet. */
+.breadcrumb:has(+ .detail-heading) a:focus-visible,
+.breadcrumb:has(+ .ingredient-detail) a:focus-visible {
+  outline-offset: -3px;
+}
+
 @media print {
+  :root,
+  :root[data-theme] {
+    --bg: #fff;
+    --paper: #fff;
+    --surface: #fff;
+    --soft: #fff;
+    --warm: #fff;
+    --ink: #000;
+    --muted: #333;
+    --deep: #000;
+    --on-primary: #fff;
+    color-scheme: light;
+  }
+  .page-intro,
+  .detail-heading,
+  .ingredient-detail,
+  .breadcrumb,
+  .footer {
+    background: none;
+    box-shadow: none;
+    clip-path: none;
+    color: #000;
+  }
+  .breadcrumb:has(+ .detail-heading),
+  .breadcrumb:has(+ .ingredient-detail) {
+    background: #fff;
+    box-shadow: none;
+    clip-path: none;
+    color: #000;
+  }
+  .header,
+  .footer,
+  .skip-link,
+  .detail-tools,
+  .cook-launch {
+    display: none;
+  }
+  :is(.page-intro, .detail-heading, .ingredient-detail, .footer) * {
+    color: #000 !important;
+  }
   .cine {
     min-height: 0;
     color: #000;

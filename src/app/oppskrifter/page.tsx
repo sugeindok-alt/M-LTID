@@ -6,6 +6,7 @@ import { dinnerCategories, filterRecipes, streetFoodCategory } from '@/lib/catal
 import { RecipeGrid } from '@/components/recipe-card';
 import { DinnerChoice } from '@/components/dinner-choice';
 import { SourceFailure } from '@/components/shared';
+import { PageHero } from '@/components/page-hero';
 export const metadata: Metadata = {
   title: 'Middagar',
   description:
@@ -32,17 +33,26 @@ export default async function Recipes({
   const mainIngredients = [
     ...new Set(selection?.map((r) => r.mainIngredient).filter((name): name is string => !!name)),
   ].sort((a, b) => a.localeCompare(b, 'nn'));
+  // Toppbiletet følgjer utvalet: den første middagen som passar søket og filtera.
+  const lead = recipes?.[0] ?? selection?.[0];
   return (
-    <div className="container page-shell">
-      <div className="page-intro">
-        <p className="eyebrow">GOD MAT TIL VANLEGE DAGAR</p>
-        <h1>{streetFood ? streetFoodCategory : 'Kva blir det til middag?'}</h1>
-        <p>
-          {streetFood
+    <div className="cine-shell">
+      <PageHero
+        kicker="GOD MAT TIL VANLEGE DAGAR"
+        title={streetFood ? streetFoodCategory : 'Kva blir det til middag?'}
+        text={
+          streetFood
             ? 'Kebabrull i varm lefse, sprø kyllingspyd og smashburger rett frå steikjepanna. Finn fredagsmiddagen du vil lage heime.'
-            : 'Norske klassikarar og nye kvardagsfavorittar. Finn ein middag som passar tida og råvarene du har.'}
-        </p>
-      </div>
+            : 'Norske klassikarar og nye kvardagsfavorittar. Finn ein middag som passar tida og råvarene du har.'
+        }
+        image={
+          lead && {
+            src: lead.image,
+            alt: lead.imageAlt || lead.title,
+            illustration: !!lead.imageCredit,
+          }
+        }
+      />
       <form action="/oppskrifter" className="discovery-form">
         <div className="search-field">
           <Search size={20} />
