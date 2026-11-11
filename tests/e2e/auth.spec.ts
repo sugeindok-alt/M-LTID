@@ -4,6 +4,11 @@ import { randomUUID } from 'node:crypto';
 import sharp from 'sharp';
 import { thisWeek } from '../../src/lib/week-dates';
 const password = 'local-browser-test-password-123';
+// Separate synthetic clients keep repeated local runs from sharing the signup quota.
+function localBrowserHeaders() {
+  const id = randomUUID().replaceAll('-', '');
+  return { 'x-real-ip': `2001:db8:${id.slice(0, 4)}:${id.slice(4, 8)}::1` };
+}
 async function login(page: Page, email: string, pass = password) {
   await page.goto('/logg-inn');
   await page.getByLabel('E-postadresse', { exact: true }).fill(email);
@@ -48,9 +53,10 @@ test('Gatekjøkken heime on mobile: log in from a scaled smashburger and shop fo
   const marker = randomUUID();
   const name = 'Gatekjøkken ' + marker;
   const email = 'gate-' + marker + '@example.test';
+  const extraHTTPHeaders = localBrowserHeaders();
   // Verify the fixture in a separate request session so the phone starts as a guest.
   const signup = await request.post('/api/auth/sign-up/email', {
-    headers: { origin },
+    headers: { origin, ...extraHTTPHeaders },
     data: { name, email, password },
   });
   expect(signup.ok()).toBe(true);
@@ -63,6 +69,7 @@ test('Gatekjøkken heime on mobile: log in from a scaled smashburger and shop fo
   }
   const phone = await browser.newContext({
     baseURL: origin,
+    extraHTTPHeaders,
     viewport: { width: 360, height: 780 },
     isMobile: true,
     hasTouch: true,
@@ -228,8 +235,10 @@ test('private cookbook variant follows the user from mobile to a new login on de
     marker = randomUUID();
   const name = 'Kokebok ' + marker,
     email = 'kokebok-' + marker + '@example.test';
+  const extraHTTPHeaders = localBrowserHeaders();
   const mobile = await browser.newContext({
     baseURL: origin,
+    extraHTTPHeaders,
     viewport: { width: 390, height: 844 },
   });
   const page = await mobile.newPage();
@@ -275,7 +284,7 @@ test('private cookbook variant follows the user from mobile to a new login on de
   ).toBeCloseTo(1.5, 1);
   await page.request.post('/api/auth/sign-out', { headers: { origin }, data: {} });
   await mobile.close();
-  const desktop = await browser.newContext({ baseURL: origin });
+  const desktop = await browser.newContext({ baseURL: origin, extraHTTPHeaders });
   const again = await desktop.newPage();
   again.setDefaultTimeout(20000);
   again.setDefaultNavigationTimeout(60000);
@@ -339,9 +348,11 @@ test('guest salmon login returns to the recipe; mobile week and shopping preview
   const weekPath = '/mi-veke?veke=2026-11-02';
   const name = 'Veke ' + randomUUID(),
     email = 'veke-' + randomUUID() + '@example.test';
+  const extraHTTPHeaders = localBrowserHeaders();
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
     baseURL: origin,
+    extraHTTPHeaders,
   });
   const page = await context.newPage();
   page.setDefaultTimeout(20000);
@@ -395,7 +406,7 @@ test('guest salmon login returns to the recipe; mobile week and shopping preview
   await expect(page.getByRole('button', { name: 'Veka er lagd i handlelista' })).toBeDisabled();
   await page.request.post('/api/auth/sign-out', { headers: { origin }, data: {} });
   await context.close();
-  const fresh = await browser.newContext({ baseURL: origin });
+  const fresh = await browser.newContext({ baseURL: origin, extraHTTPHeaders });
   const again = await fresh.newPage();
   await again.goto(weekPath);
   await expect(again).toHaveURL(/logg-inn\?next=/);

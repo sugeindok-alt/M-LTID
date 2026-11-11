@@ -46,15 +46,18 @@ html {
   font-size: 100%;
   scroll-padding-top: 96px;
 }
+/* Lange ord får bryte i staden for å gje vassrett rulling når teksten er forstørra. */
 body {
   font-size: 1rem;
   line-height: 1.6;
   text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
 }
 h1,
 h2,
 h3 {
   text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 h1 {
   font-size: clamp(40px, 5.4vw, 72px);
@@ -240,9 +243,11 @@ input[type='file'] {
 }
 .search-field:focus-within {
   border-color: var(--ink);
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--accent) 45%, transparent),
-    var(--shadow-sm);
+}
+/* Feltet har ingen eigen ring, så heile søkjeboksen får den felles fokusringen. */
+.search-field:has(input:focus-visible) {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
 }
 .search-field > svg {
   color: var(--muted);
@@ -284,13 +289,21 @@ input[type='file'] {
   -webkit-backdrop-filter: saturate(1.4) blur(14px);
   border-bottom-color: var(--line);
 }
+/* Rada kan bryte, så konto og meny blir verande på skjermen når teksten er forstørra. */
 .header-inner {
   height: auto;
   min-height: 76px;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  padding-block: 8px;
 }
 .wordmark {
   font-size: 32px;
+}
+.header-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 100%;
 }
 .desktop-nav {
   gap: 4px;
@@ -395,6 +408,7 @@ input[type='file'] {
   display: inline-flex;
   align-items: center;
   min-height: 40px;
+  overflow-wrap: anywhere;
 }
 .footer nav a:hover {
   text-decoration: underline;
@@ -426,13 +440,19 @@ input[type='file'] {
   padding-block: 72px;
 }
 .section-heading {
+  flex-wrap: wrap;
+  gap: 8px 28px;
   margin-bottom: 28px;
+}
+.section-heading > div {
+  min-width: 0;
 }
 .section-heading h2 {
   margin-top: 10px;
 }
 .section-heading .text-link {
   padding-bottom: 0;
+  white-space: normal;
 }
 .section > .source-note {
   margin-top: 24px;
@@ -802,6 +822,7 @@ input[type='file'] {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
   padding: 16px 20px 22px;
 }
 .recipe-card .recipe-meta {
@@ -840,7 +861,6 @@ input[type='file'] {
   background: var(--soft);
   color: var(--ink);
   font-weight: 600;
-  white-space: nowrap;
 }
 .meta-green {
   background: color-mix(in srgb, #7fa36a 22%, var(--paper));
@@ -902,6 +922,7 @@ input[type='file'] {
   accent-color: var(--ink);
 }
 .results-heading {
+  flex-wrap: wrap;
   align-items: center;
   gap: 16px;
   margin-block: 28px 12px;
@@ -1414,6 +1435,9 @@ input[type='file'] {
   }
   .mobile-toggle {
     display: grid;
+  }
+  .header-actions {
+    margin-left: auto;
   }
   .mobile-nav {
     display: grid;

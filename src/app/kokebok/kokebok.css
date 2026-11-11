@@ -167,18 +167,29 @@
   outline-offset: 3px;
 }
 .book-submit {
-  position: sticky;
-  bottom: 0;
-  z-index: 5;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px 20px;
   margin-top: 8px;
-  padding: 14px 0 max(14px, env(safe-area-inset-bottom));
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: blur(8px);
+  padding: 14px 0;
   border-top: 1px solid var(--line);
+}
+/*
+ * Lagre-linja ligg fast nedst berre når skjermen er stor nok til at ho ikkje dekkjer felta.
+ * Rulleavstanden held eit fokusert felt over linja ved tastaturnavigasjon.
+ */
+@media (min-width: 800px) and (min-height: 700px) {
+  .book-submit {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(8px);
+  }
+  html:has(.book-submit) {
+    scroll-padding-bottom: 120px;
+  }
 }
 @media (max-width: 580px) {
   .book-ingredient {

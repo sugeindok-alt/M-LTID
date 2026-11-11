@@ -14,7 +14,7 @@ test('editorial homepage renders real images and works without horizontal overfl
     'Norske klassikarar',
     'Gatekjøkken heime',
   ]);
-  for (const link of await dinnerLinks.all()) await expect(link).toBeInViewport();
+  for (const link of await dinnerLinks.all()) await expect(link).toBeInViewport({ ratio: 1 });
   const hero = page.locator('.hero-visual img');
   await expect(hero).toBeVisible();
   await expect
@@ -108,6 +108,22 @@ test('recipe details retain source content and checkable steps', async ({ page }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
+  // Document the whole page without hiding below-fold content on a scroll timeline.
+  // The interactions above and the other tests still run with normal motion.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const image of await page.locator('main img').all()) {
+    await image.scrollIntoViewIfNeeded();
+    await image.evaluate((img: HTMLImageElement) => img.decode());
+  }
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+  });
+  await expect(page.locator('.processing-panel')).toHaveCSS('opacity', '1');
+  await expect(page.locator('.recipe-grid .recipe-card').first()).toHaveCSS('opacity', '1');
   await page.screenshot({
     path: `docs/screenshots/${info.project.name}-recipe.png`,
     fullPage: true,
@@ -194,7 +210,7 @@ test('private pages require authentication and no credentials means honest setup
   await expect(page.getByRole('heading', { name: 'Velkomen tilbake.' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Logg inn', exact: true })).toBeDisabled();
   const response = await request.post('/api/library/favorites', {
-    headers: { origin: 'http://127.0.0.1:3000' },
+    headers: { origin: new URL(page.url()).origin },
     data: { recipeId: '52771', saved: true },
   });
   expect([401, 503]).toContain(response.status());

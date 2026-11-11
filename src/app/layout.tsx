@@ -8,6 +8,7 @@ import '@fontsource/dm-serif-display/latin-400-italic.css';
 import './globals.css';
 import './editorial.css';
 import './design.css';
+import './motion.css';
 import { Header } from '@/components/header';
 import { Providers } from '@/components/providers';
 import { authConfigured } from '@/lib/auth';

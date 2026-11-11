@@ -12,6 +12,7 @@ import {
 import { useRecipePortions } from './use-cooking-progress';
 import { formatMeasure } from '@/lib/quantities';
 import { CookingSteps, IngredientRows, IngredientsPanel } from './recipe-interactions';
+import { useCookingWakeLock } from './use-cooking-wake-lock';
 
 const cookingHash = '#matlaging';
 const subscribeHydration = () => () => {};
@@ -123,6 +124,7 @@ export function RecipeDirections({
     () => false,
   );
   const dialog = useRef<HTMLDialogElement>(null);
+  useCookingWakeLock(dialog);
   const body = useRef<HTMLDivElement>(null);
   const [ingredientsOpen, setIngredientsOpen] = useState(false);
   const current = progress.step ?? 0;

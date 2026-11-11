@@ -23,9 +23,18 @@ test('a complete plate, caption and wrapping action row remain separate', async 
   const favorite = page.getByRole('link', { name: 'Logg inn for å lagre', exact: true });
   for (const width of [1440, 720]) {
     await page.setViewportSize({ width, height: 1000 });
-    const captionBox = (await credit.boundingBox())!;
-    const toolBox = (await page.locator('.detail-tools').boundingBox())!;
-    expect(toolBox.y).toBeGreaterThanOrEqual(captionBox.y + captionBox.height);
+    await image.evaluate((img: HTMLImageElement) => img.decode());
+    const layout = await page.evaluate(async () => {
+      await document.fonts.ready;
+      // Let the new viewport and fonts reach layout before comparing both boxes in one frame.
+      await new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      );
+      const caption = document.querySelector('.image-credit')!.getBoundingClientRect();
+      const tools = document.querySelector('.detail-tools')!.getBoundingClientRect();
+      return { captionBottom: caption.bottom, toolsTop: tools.top };
+    });
+    expect(layout.toolsTop).toBeGreaterThanOrEqual(layout.captionBottom);
     await expect(variant).toBeEnabled();
     await expect(favorite).toBeEnabled();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(

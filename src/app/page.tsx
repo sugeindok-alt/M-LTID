@@ -5,6 +5,7 @@ import { filterRecipes, streetFoodCategory } from '@/lib/catalog-filter';
 import { Photo } from '@/components/photo';
 import { RecipeGrid } from '@/components/recipe-card';
 import { DinnerChoice } from '@/components/dinner-choice';
+import { HeroGlow } from '@/components/hero-glow';
 import { SectionHeading, SourceFailure, NovaEducation } from '@/components/shared';
 export const revalidate = 300;
 export default async function Home() {
@@ -14,6 +15,7 @@ export default async function Home() {
   const streetFoodHref = '/oppskrifter?category=' + encodeURIComponent(streetFoodCategory);
   return (
     <>
+      <HeroGlow />
       <section className="container hero cookbook-home">
         <div className="hero-copy">
           <p className="eyebrow hero-kicker">

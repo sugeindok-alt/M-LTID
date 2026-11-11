@@ -11,6 +11,7 @@ import { SectionHeading, SourceFailure } from '@/components/shared';
 import { RecipeActions, ProcessingPanel } from '@/components/recipe-interactions';
 import { RecipeDirections, RecipePortionLink } from '@/components/recipe-directions';
 import { linkedServings } from '@/lib/cooking';
+import { recipeMetadata, recipeStructuredData, serializeJsonLd } from '@/lib/recipe-metadata';
 import './cooking.css';
 export async function generateMetadata({
   params,
@@ -20,10 +21,7 @@ export async function generateMetadata({
   const { id } = await params;
   if (!mealId.safeParse(id).success) return { title: 'Ukjend oppskrift' };
   const recipe = await catalog.detail(id).catch(() => null);
-  return {
-    title: recipe?.title || 'Oppskrift',
-    description: recipe ? recipe.description : undefined,
-  };
+  return recipe ? recipeMetadata(recipe) : { title: 'Oppskrift' };
 }
 export default async function RecipePage({ params, searchParams }: PageProps<'/oppskrifter/[id]'>) {
   const { id } = await params;
@@ -44,6 +42,10 @@ export default async function RecipePage({ params, searchParams }: PageProps<'/o
   const related = await catalog.browse({ category: recipe.category }).catch(() => []);
   return (
     <div className="container page-shell">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(recipeStructuredData(recipe)) }}
+      />
       <nav className="breadcrumb" aria-label="Brødsmulesti">
         <Link href="/">Heim</Link>
         <ChevronRight size={12} />
